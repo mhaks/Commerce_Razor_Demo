@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using CommerceRazorDemo.Data;
 using CommerceRazorDemo.Models;
 
-namespace CommerceRazorDemo.Pages.Products
+namespace CommerceRazorDemo.Pages.Customers
 {
     public class IndexModel : PageModel
     {
@@ -19,17 +19,14 @@ namespace CommerceRazorDemo.Pages.Products
             _context = context;
         }
 
-        public IList<Product> Product { get;set; } = default!;
+        public IList<Customer> Customer { get;set; } = default!;
 
         public async Task OnGetAsync()
         {
-            if (_context.Product != null)
+            if (_context.Customer != null)
             {
-                Product = await _context.Product
-                    .AsNoTracking()
-                    .Include(x => x.ProductCategory)
-                    .Include(x => x.ProductSubCategory)
-                    .ToListAsync();
+                Customer = await _context.Customer
+                .Include(c => c.StateLocation).ToListAsync();
             }
         }
     }

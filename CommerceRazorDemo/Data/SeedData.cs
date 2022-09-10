@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using System.Drawing;
+using System.Net.Mail;
 using System.Reflection.PortableExecutable;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -191,6 +192,103 @@ namespace CommerceRazorDemo.Data
 
                     context.SaveChanges();
                 }
+                #endregion
+
+                #region customer
+                if (!context.Customer.Any())
+                {
+                    var customers = new Customer[]
+                    {
+                        new Customer{UserName = "jerry", FirstName = "Jerry", LastName="Seinfeld", Address1="151 5th Avenue", Address2="#201", City="New York", StateLocationId=context.StateLocation.Single(x=>x.Abbreviation=="NY").Id, PostalCode="10001", PhoneNumber="212-555-1234", EmailAddress="jerry@seinfeld.com"},
+                        new Customer{UserName = "elaine", FirstName = "Elaine", LastName="Benes", Address1="325 Columbus Avenue", Address2="#12", City="New York", StateLocationId=context.StateLocation.Single(x=>x.Abbreviation=="NY").Id, PostalCode="10001", PhoneNumber="212-555-2345", EmailAddress="elaine@seinfeld.com"},
+                        new Customer{UserName = "kramer", FirstName = "Cosmo", LastName="Kramer", Address1="151 5th Avenue", Address2="#202", City="New York", StateLocationId=context.StateLocation.Single(x=>x.Abbreviation=="NY").Id, PostalCode="10001", PhoneNumber="212-555-3456", EmailAddress="kramer@seinfeld.com"},
+                        new Customer{UserName = "george", FirstName = "George", LastName="Costanza", Address1="525 42nd St", Address2="#604", City="New York", StateLocationId=context.StateLocation.Single(x=>x.Abbreviation=="NY").Id, PostalCode="10001", PhoneNumber="212-555-4567", EmailAddress="george@seinfeld.com"},
+                        new Customer{UserName = "newman", FirstName = "N", LastName="Newman", Address1="151 5th Avenue", Address2="#5", City="New York", StateLocationId=context.StateLocation.Single(x=>x.Abbreviation=="NY").Id, PostalCode="10001", PhoneNumber="212-555-5678", EmailAddress="newman@seinfeld.com"}
+                    };
+
+                    foreach(var item in customers)
+                        context.Customer.Add(item);
+
+                    context.SaveChanges();
+                }
+
+                #endregion
+
+                #region order status
+                if(!context.OrderStatus.Any())
+                {
+                    var orderStatus = new OrderStatus[]
+                    {
+                        new OrderStatus { Name = "Cart"},
+                        new OrderStatus { Name = "Ordered"},
+                        new OrderStatus { Name = "Cancelled"},
+                        new OrderStatus { Name = "Shipped"},
+                        new OrderStatus { Name = "Delivered"},
+                        new OrderStatus { Name = "Returned"},
+                    };
+
+                    foreach (var item in orderStatus)   
+                        context.OrderStatus.Add(item);
+
+                    context.SaveChanges();
+                }
+                #endregion
+
+                #region orders
+                if (!context.Order.Any())
+                {
+                    var orders = new Order[]
+                    {
+                        new Order { CustomerId = context.Customer.Single(x => x.UserName=="jerry").Id, OrderStatusId = context.OrderStatus.Single(x => x.Name=="Cart").Id },
+                        new Order { CustomerId = context.Customer.Single(x => x.UserName=="elaine").Id, OrderStatusId = context.OrderStatus.Single(x => x.Name=="Ordered").Id },
+                        new Order { CustomerId = context.Customer.Single(x => x.UserName=="kramer").Id, OrderStatusId = context.OrderStatus.Single(x => x.Name=="Ordered").Id },
+                        new Order { CustomerId = context.Customer.Single(x => x.UserName=="george").Id, OrderStatusId = context.OrderStatus.Single(x => x.Name=="Shipped").Id },
+                        new Order { CustomerId = context.Customer.Single(x => x.UserName=="newman").Id, OrderStatusId = context.OrderStatus.Single(x => x.Name=="Delivered").Id }
+                    };
+
+                    foreach (var item in orders)
+                    {
+                        context.Order.Add(item);
+                    }
+
+                    context.SaveChanges();
+                }
+
+                #endregion
+
+                #region order products
+                if (!context.OrderProduct.Any())
+                {
+                    var orderProducts = new OrderProduct[]
+                    {
+                        new OrderProduct { Quantity = 1, OrderId = context.Order.First().Id, ProductId = context.Product.First().Id },
+
+                        new OrderProduct { Quantity = 1, OrderId = context.Order.Take(1).First().Id, ProductId = context.Product.First().Id },
+                        new OrderProduct { Quantity = 2, OrderId = context.Order.Take(1).First().Id, ProductId = context.Product.Take(1).First().Id },
+
+                        new OrderProduct { Quantity = 1, OrderId = context.Order.Take(2).First().Id, ProductId = context.Product.First().Id },
+                        new OrderProduct { Quantity = 2, OrderId = context.Order.Take(2).First().Id, ProductId = context.Product.Take(1).First().Id },
+                        new OrderProduct { Quantity = 3, OrderId = context.Order.Take(2).First().Id, ProductId = context.Product.Take(2).First().Id },
+
+                        new OrderProduct { Quantity = 1, OrderId = context.Order.Take(3).First().Id, ProductId = context.Product.First().Id },
+                        new OrderProduct { Quantity = 2, OrderId = context.Order.Take(3).First().Id, ProductId = context.Product.Take(1).First().Id },
+                        new OrderProduct { Quantity = 3, OrderId = context.Order.Take(3).First().Id, ProductId = context.Product.Take(2).First().Id },
+                        new OrderProduct { Quantity = 4, OrderId = context.Order.Take(3).First().Id, ProductId = context.Product.Take(3).First().Id },
+
+                        new OrderProduct { Quantity = 1, OrderId = context.Order.Take(4).First().Id, ProductId = context.Product.First().Id },
+                        new OrderProduct { Quantity = 2, OrderId = context.Order.Take(4).First().Id, ProductId = context.Product.Take(1).First().Id },
+                        new OrderProduct { Quantity = 3, OrderId = context.Order.Take(4).First().Id, ProductId = context.Product.Take(2).First().Id },
+                        new OrderProduct { Quantity = 4, OrderId = context.Order.Take(4).First().Id, ProductId = context.Product.Take(3).First().Id },
+                        new OrderProduct { Quantity = 5, OrderId = context.Order.Take(4).First().Id, ProductId = context.Product.Take(4).First().Id }
+                    };
+
+                    foreach (var item in orderProducts)
+                    {
+                        context.OrderProduct.Add(item);
+                    }
+                    context.SaveChanges();
+                }
+
                 #endregion
             }
         }

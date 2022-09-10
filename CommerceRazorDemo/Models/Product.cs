@@ -28,9 +28,11 @@ namespace CommerceRazorDemo.Models
         public int AvailableQty { get; set; }
 
         public int? ProductCategoryId { get; set; }
+        [Display(Name = "Category")]
         public ProductCategory ProductCategory { get; set; } = null!;
 
         public int? ProductSubCategoryId { get; set; }
+        [Display(Name = "Subcategory")]
         public ProductSubCategory ProductSubCategory { get; set; } = null!;
     }
 }

@@ -17,8 +17,8 @@ namespace CommerceRazorDemo.Data
         public DbSet<CommerceRazorDemo.Models.Product> Product { get; set; } = default!;
         public DbSet<CommerceRazorDemo.Models.ProductCategory> ProductCategory { get; set; } = default!;
         public DbSet<CommerceRazorDemo.Models.ProductSubCategory> ProductSubCategory { get; set; } = default!;
-        public DbSet<CommerceRazorDemo.Models.Customer> Customer { get; set; } = default!;
         public DbSet<CommerceRazorDemo.Models.StateLocation> StateLocation { get; set; } = default!;
+        public DbSet<CommerceRazorDemo.Models.Customer> Customer { get; set; } = default!;       
         public DbSet<CommerceRazorDemo.Models.Order> Order { get; set; } = default!;
         public DbSet<CommerceRazorDemo.Models.OrderProduct> OrderProduct { get; set; } = default!;
         public DbSet<CommerceRazorDemo.Models.OrderStatus> OrderStatus { get; set; } = default!;

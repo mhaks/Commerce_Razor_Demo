@@ -8,10 +8,10 @@ namespace CommerceRazorDemo.Models
     {
         public int Id { get; set; }
 
-        public int CustomerId { get; set; }
+        public int? CustomerId { get; set; }
         public Customer Customer { get; set; } = null!;
 
-        public int OrderStatusId { get; set; }
+        public int? OrderStatusId { get; set; }
         public OrderStatus OrderStatus { get; set; } = null!;
         
         public ICollection<OrderProduct> Products { get; set; } = null!;

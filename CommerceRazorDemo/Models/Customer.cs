@@ -10,6 +10,11 @@ namespace CommerceRazorDemo.Models
 
         [Required]
         [StringLength(100, MinimumLength = 1)]
+        [Display(Name = "User Name")]
+        public string UserName { get; set; } = string.Empty;
+
+        [Required]
+        [StringLength(100, MinimumLength = 1)]
         [Display(Name = "First Name")]
         public string FirstName { get; set; } = string.Empty;
 
@@ -33,15 +38,17 @@ namespace CommerceRazorDemo.Models
         public string City { get; set; } = string.Empty;
 
         public int StateLocationId { get; set; }
+        [Display(Name = "State")]
         public StateLocation StateLocation { get; set; } = null!;
 
         [Required]
         [StringLength(5, MinimumLength = 5)]
-        [Display(Name = "Zipcode")]
+        [Display(Name = "Zip")]
         public string PostalCode { get; set; } = string.Empty;
 
         [Required]
         [Phone]
+        [Display(Name = "Phone")]
         public string PhoneNumber { get; set; } = string.Empty;
 
         [Required]
