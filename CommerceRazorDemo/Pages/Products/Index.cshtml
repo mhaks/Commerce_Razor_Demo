@@ -2,33 +2,76 @@
 @model CommerceRazorDemo.Pages.Products.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Products";
 }
 
-<h1>Index</h1>
+<h1>Products</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a asp-page="./Edit">Create New Product</a>
+</p>
+<p>
+    <form>
+        <div class="row">
+            <div class="col-6">
+                <label class="form-label">Search</label>
+                <input type="text" class="form-control" asp-for="SearchString" placeholder="search title text" />
+            </div>
+            
+        </div>
+        
+        <div class="row">
+            <div class="col-4">
+                <label class="form-label">Brand</label>
+                <select class="form-control" asp-for="BrandFilterString" asp-items="Model.Brands">
+                    <option value="">ALL</option>
+                </select>
+            </div>
+            <div class="col-4">
+                <label class="form-label">Category</label>
+                <select class ="form-control" asp-for="CategoryFilterId" asp-items="Model.Categories">
+                    <option value="">ALL</option>
+                </select>
+            </div>            
+        </div>
+        <div class="row mt-3">
+            <div class="col-4">
+                <input type="submit" class="form-control btn btn-primary"  value="Filter" />
+            </div>
+        </div>
+    </form>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Product[0].Title)
+                <a asp-page="./Index" asp-route-sortOrder="@Model.TitleSort">
+                    @Html.DisplayNameFor(model => model.Product[0].Title)
+                </a>                
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Product[0].Brand)
+                <a asp-page="./Index" asp-route-sortOrder="@Model.BrandSort">
+                    @Html.DisplayNameFor(model => model.Product[0].Brand)
+                </a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Product[0].ProductCategory)
+                <a asp-page="./Index" asp-route-sortOrder="@Model.CategorySort">
+                    @Html.DisplayNameFor(model => model.Product[0].ProductCategory)
+                </a>
+            </th>
+                        <th>
+                <a asp-page="./Index" asp-route-sortOrder="@Model.PriceSort">
+                    @Html.DisplayNameFor(model => model.Product[0].Price)
+                </a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Product[0].ProductSubCategory)
+                <a asp-page="./Index" asp-route-sortOrder="@Model.QuantitySort">
+                    @Html.DisplayNameFor(model => model.Product[0].AvailableQty)
+                </a>
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Product[0].Price)
-            </th>
-            <th></th>
+            <th style="text-align:right;">
+                Results: @Model.Product.Count()
+            </th>            
         </tr>
     </thead>
     <tbody>
@@ -44,14 +87,15 @@
                 @Html.DisplayFor(modelItem => item.ProductCategory.Title)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ProductSubCategory.Title)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                    @Html.DisplayFor(modelItem => item.AvailableQty)
+            </td>
+           
+            <td>
                 <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>

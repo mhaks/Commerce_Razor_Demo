@@ -28,7 +28,10 @@ namespace CommerceRazorDemo.Pages.Products
                 return NotFound();
             }
 
-            var product = await _context.Product.FirstOrDefaultAsync(m => m.Id == id);
+            var product = await _context.Product.AsNoTracking()
+                .Include(x => x.ProductCategory)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            
             if (product == null)
             {
                 return NotFound();

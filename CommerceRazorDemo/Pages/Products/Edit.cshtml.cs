@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CommerceRazorDemo.Data;
 using CommerceRazorDemo.Models;
+using System.ComponentModel.DataAnnotations;
+using System.Xml.Linq;
 
 namespace CommerceRazorDemo.Pages.Products
 {
@@ -21,21 +23,36 @@ namespace CommerceRazorDemo.Pages.Products
         }
 
         [BindProperty]
-        public Product Product { get; set; } = default!;
+        public ProductVM ProductVM { get; set; } = default!;
+
+        public List<string> Brands { get; set; } = default!;        
+
+        public SelectList? Categories { get; set; } = default!;
+
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.Product == null)
+            if (_context.Product == null)
             {
                 return NotFound();
             }
 
-            var product =  await _context.Product.FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
+            if (id.HasValue && id.Value != 0)
             {
-                return NotFound();
+                var product = await _context.Product.FindAsync(id);
+                if (product == null)
+                {
+                    return NotFound();
+                }
+
+                ProductVM = new ProductVM();
+                ProductVM.MapToViewModel(product);
             }
-            Product = product;
+            else
+                ProductVM = new ProductVM { Id = 0 };
+
+
+            PopulateSelections();
             return Page();
         }
 
@@ -45,33 +62,82 @@ namespace CommerceRazorDemo.Pages.Products
         {
             if (!ModelState.IsValid)
             {
+                PopulateSelections();
                 return Page();
             }
 
-            _context.Attach(Product).State = EntityState.Modified;
-
-            try
+            if (ProductVM.Id != 0)
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductExists(Product.Id))
-                {
+                var product = await _context.Product.FindAsync(ProductVM.Id);
+                if (product == null)
                     return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
 
+                ProductVM.MapToDomain(product);                
+            }
+            else
+            {
+                var product = new Product();
+                ProductVM.MapToDomain(product);
+               _context.Product.Add(product);
+               
+            }           
+
+            await _context.SaveChangesAsync();
             return RedirectToPage("./Index");
+
         }
 
-        private bool ProductExists(int id)
+        private async void PopulateSelections()
         {
-          return (_context.Product?.Any(e => e.Id == id)).GetValueOrDefault();
+            Brands = new List<string>(await _context.Product.OrderBy(x => x.Brand).Select(x => x.Brand).Distinct().ToListAsync());
+            Categories = new SelectList(await _context.ProductCategory.ToListAsync(), "Id", "Title");
+        }
+    }
+
+    public class ProductVM
+    {
+        public int Id { get; set; }
+        
+        [Required]
+        [StringLength(140, MinimumLength = 2)]
+        public string Title { get; set; } = String.Empty;
+
+        [Required]
+        [StringLength(1000, MinimumLength = 3)]
+        public string Description { get; set; } = String.Empty;
+
+        [Required]
+        [StringLength(60, MinimumLength = 2)]
+        public string Brand { get; set; } = String.Empty;
+        
+        public decimal Price { get; set; }
+
+        [Range(0, 1000)]
+        [Display(Name = "In Stock")]
+        public int AvailableQty { get; set; }
+
+        [Display(Name = "Category")]
+        public int? ProductCategoryId { get; set; }
+
+        public void MapToDomain(Product product)
+        {
+            product.Title = Title;
+            product.Description = Description;
+            product.Brand = Brand;
+            product.Price = Price;
+            product.AvailableQty = AvailableQty;
+            product.ProductCategoryId = ProductCategoryId;
+        }
+
+        public void MapToViewModel(Product product)
+        {
+            Id = product.Id;
+            Title = product.Title;
+            Description = product.Description;
+            Brand = product.Brand;
+            Price = product.Price;
+            AvailableQty = product.AvailableQty;
+            ProductCategoryId = product.ProductCategoryId;
         }
     }
 }
