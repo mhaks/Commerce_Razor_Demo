@@ -1,0 +1,44 @@
+﻿@page
+@model CommerceRazorDemo.Pages.ProductCategories.EditModel
+
+@{
+    if (Model.ProductCategory.Id != 0)
+    {
+        ViewData["Title"] = "Category Edit";
+    }
+    else
+    {
+        ViewData["Title"] = "Category Create";
+
+    }
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h4>Product Category</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ProductCategory.Id" />
+            <div class="form-group">
+                <label asp-for="ProductCategory.Title" class="control-label"></label>
+                <input asp-for="ProductCategory.Title" class="form-control" />
+                <span asp-validation-for="ProductCategory.Title" class="text-danger"></span>
+            </div>
+           
+            <div class="form-group mt-3">
+                <input type="submit" value="Save" class="btn btn-primary col-4" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="mt-4">
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,59 @@
+﻿@page
+@model CommerceRazorDemo.Pages.ProductCategories.IndexModel
+
+@{
+    ViewData["Title"] = "Product Categories";
+}
+
+<h1>Product Categories</h1>
+
+<p>
+    <a asp-page="Edit">Create New Product Category</a>
+</p>
+<p>
+    <form>
+        <div class="row">
+            <div class="col-6">
+                <label class="form-label">Search</label>
+                <input type="text" class="form-control" asp-for="SearchString" placeholder="search title text" />
+            </div>
+
+        </div>       
+        <div class="row mt-3">
+            <div class="col-4">
+                <input type="submit" class="form-control btn btn-primary" value="Filter" />
+            </div>
+        </div>
+    </form>
+</p>
+<div class="col-6">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    <a asp-page="Index" asp-route-sortOrder="@Model.TitleSort">
+                        @Html.DisplayNameFor(model => model.ProductCategory[0].Title)
+                    </a>
+                </th>
+                <th style="text-align:right;">
+                    Results: @Model.ProductCategory.Count()
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ProductCategory)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td style="text-align:right;">
+                        <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
