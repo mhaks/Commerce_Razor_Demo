@@ -2,39 +2,85 @@
 @model CommerceRazorDemo.Pages.Orders.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Orders";
 }
 
-<h1>Index</h1>
+<h1>@ViewData["Title"]</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <form>
+        <div class="row">
+            <div class="col-6">
+                <label class="form-label">Search Order</label>
+                <input type="text" class="form-control" asp-for="OrderSearchId" placeholder="order id" />
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <label class="form-label">Search Customer</label>
+                    <input type="text" class="form-control" asp-for="CustomerSearchId" placeholder="customer id" />
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <label class="form-label">Order Status</label>
+                    <select class="form-control" asp-items="@Model.OrderStatusSelect" asp-for="@Model.OrderStatusFilterId">
+                        <option value="">ALL</option>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-4">
+                <input type="submit" class="form-control btn btn-primary" value="Filter" />
+            </div>
+        </div>
+    </form>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Order[0].Customer)
+                Order
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Order[0].OrderStatus)
+                @Html.DisplayNameFor(model => model.Orders[0].Customer)
             </th>
-            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Orders[0].OrderStatus)
+            </th>            
+            <th>
+                Products
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Orders[0].TotalPrice)
+            </th>
+            <th>
+
+            </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Order) {
+@foreach (var item in Model.Orders) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Customer.Address1)
+                @Html.DisplayFor(modelItem => item.Id)
             </td>
+            <td>
+                @String.Format("#{0}  {1}", item.Customer.Id, item.Customer.FullName)
+            </td>            
             <td>
                 @Html.DisplayFor(modelItem => item.OrderStatus.Name)
             </td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                @item.Products.Count()
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalPrice)
+            </td>
+            <td>
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a>
             </td>
         </tr>
 }

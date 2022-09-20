@@ -227,23 +227,23 @@ namespace CommerceRazorDemo.Data
                     {
                         new OrderProduct { Quantity = 1, OrderId = context.Order.First().Id, ProductId = context.Product.First().Id },
 
-                        new OrderProduct { Quantity = 1, OrderId = context.Order.Take(1).First().Id, ProductId = context.Product.First().Id },
-                        new OrderProduct { Quantity = 2, OrderId = context.Order.Take(1).First().Id, ProductId = context.Product.Take(1).First().Id },
+                        new OrderProduct { Quantity = 1, OrderId = context.Order.Skip(1).First().Id, ProductId = context.Product.First().Id },
+                        new OrderProduct { Quantity = 2, OrderId = context.Order.Skip(1).First().Id, ProductId = context.Product.Skip(1).First().Id },
 
-                        new OrderProduct { Quantity = 1, OrderId = context.Order.Take(2).First().Id, ProductId = context.Product.First().Id },
-                        new OrderProduct { Quantity = 2, OrderId = context.Order.Take(2).First().Id, ProductId = context.Product.Take(1).First().Id },
-                        new OrderProduct { Quantity = 3, OrderId = context.Order.Take(2).First().Id, ProductId = context.Product.Take(2).First().Id },
+                        new OrderProduct { Quantity = 1, OrderId = context.Order.Skip(2).First().Id, ProductId = context.Product.First().Id },
+                        new OrderProduct { Quantity = 2, OrderId = context.Order.Skip(2).First().Id, ProductId = context.Product.Skip(1).First().Id },
+                        new OrderProduct { Quantity = 3, OrderId = context.Order.Skip(2).First().Id, ProductId = context.Product.Skip(2).First().Id },
 
-                        new OrderProduct { Quantity = 1, OrderId = context.Order.Take(3).First().Id, ProductId = context.Product.First().Id },
-                        new OrderProduct { Quantity = 2, OrderId = context.Order.Take(3).First().Id, ProductId = context.Product.Take(1).First().Id },
-                        new OrderProduct { Quantity = 3, OrderId = context.Order.Take(3).First().Id, ProductId = context.Product.Take(2).First().Id },
-                        new OrderProduct { Quantity = 4, OrderId = context.Order.Take(3).First().Id, ProductId = context.Product.Take(3).First().Id },
+                        new OrderProduct { Quantity = 1, OrderId = context.Order.Skip(3).First().Id, ProductId = context.Product.First().Id },
+                        new OrderProduct { Quantity = 2, OrderId = context.Order.Skip(3).First().Id, ProductId = context.Product.Skip(1).First().Id },
+                        new OrderProduct { Quantity = 3, OrderId = context.Order.Skip(3).First().Id, ProductId = context.Product.Skip(2).First().Id },
+                        new OrderProduct { Quantity = 4, OrderId = context.Order.Skip(3).First().Id, ProductId = context.Product.Skip(3).First().Id },
 
-                        new OrderProduct { Quantity = 1, OrderId = context.Order.Take(4).First().Id, ProductId = context.Product.First().Id },
-                        new OrderProduct { Quantity = 2, OrderId = context.Order.Take(4).First().Id, ProductId = context.Product.Take(1).First().Id },
-                        new OrderProduct { Quantity = 3, OrderId = context.Order.Take(4).First().Id, ProductId = context.Product.Take(2).First().Id },
-                        new OrderProduct { Quantity = 4, OrderId = context.Order.Take(4).First().Id, ProductId = context.Product.Take(3).First().Id },
-                        new OrderProduct { Quantity = 5, OrderId = context.Order.Take(4).First().Id, ProductId = context.Product.Take(4).First().Id }
+                        new OrderProduct { Quantity = 1, OrderId = context.Order.Skip(4).First().Id, ProductId = context.Product.First().Id },
+                        new OrderProduct { Quantity = 2, OrderId = context.Order.Skip(4).First().Id, ProductId = context.Product.Skip(1).First().Id },
+                        new OrderProduct { Quantity = 3, OrderId = context.Order.Skip(4).First().Id, ProductId = context.Product.Skip(2).First().Id },
+                        new OrderProduct { Quantity = 4, OrderId = context.Order.Skip(4).First().Id, ProductId = context.Product.Skip(3).First().Id },
+                        new OrderProduct { Quantity = 5, OrderId = context.Order.Skip(4).First().Id, ProductId = context.Product.Skip(4).First().Id }
                     };
 
                     foreach (var item in orderProducts)

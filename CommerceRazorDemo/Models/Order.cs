@@ -12,10 +12,13 @@ namespace CommerceRazorDemo.Models
         public Customer Customer { get; set; } = null!;
 
         public int? OrderStatusId { get; set; }
+
+        [Display(Name = "Status")]
         public OrderStatus OrderStatus { get; set; } = null!;
         
         public ICollection<OrderProduct> Products { get; set; } = null!;
 
+        [Display(Name ="Sub Total")]
         public decimal Subtotal { 
             get
             {
@@ -29,6 +32,7 @@ namespace CommerceRazorDemo.Models
             }                
         }
 
+        [Display(Name = "Tax")]
         public decimal Tax
         {
             get
@@ -37,6 +41,7 @@ namespace CommerceRazorDemo.Models
             }
         }
 
+        [Display(Name = "Total Price")]
         public decimal TotalPrice
         {
             get

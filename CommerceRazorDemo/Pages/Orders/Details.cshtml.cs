@@ -28,7 +28,15 @@ namespace CommerceRazorDemo.Pages.Orders
                 return NotFound();
             }
 
-            var order = await _context.Order.FirstOrDefaultAsync(m => m.Id == id);
+            var order = await _context.Order
+                .AsNoTracking()
+                .Include(x => x.Customer)
+                .ThenInclude(x => x.StateLocation)
+                .Include(x => x.OrderStatus)
+                .Include(x => x.Products)
+                .ThenInclude(x => x.Product)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
             if (order == null)
             {
                 return NotFound();
