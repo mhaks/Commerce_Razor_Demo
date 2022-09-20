@@ -28,7 +28,7 @@ namespace CommerceRazorDemo.Pages.Customers
                 return NotFound();
             }
 
-            var customer = await _context.Customer.FirstOrDefaultAsync(m => m.Id == id);
+            var customer = await _context.Customer.AsNoTracking().Include(c => c.StateLocation).FirstOrDefaultAsync(m => m.Id == id);
             if (customer == null)
             {
                 return NotFound();

@@ -2,10 +2,18 @@
 @model CommerceRazorDemo.Pages.Customers.EditModel
 
 @{
-    ViewData["Title"] = "Edit";
+    if (Model.Customer.Id != 0)
+    {
+        ViewData["Title"] = "Edit Customer";
+    }
+    else
+    {
+        ViewData["Title"] = "Create Customer ";
+
+    }
 }
 
-<h1>Edit</h1>
+<h1>@ViewData["Title"]</h1>
 
 <h4>Customer</h4>
 <hr />
@@ -14,11 +22,7 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Customer.Id" />
-            <div class="form-group">
-                <label asp-for="Customer.UserName" class="control-label"></label>
-                <input asp-for="Customer.UserName" class="form-control" />
-                <span asp-validation-for="Customer.UserName" class="text-danger"></span>
-            </div>
+            
             <div class="form-group">
                 <label asp-for="Customer.FirstName" class="control-label"></label>
                 <input asp-for="Customer.FirstName" class="form-control" />
@@ -46,7 +50,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Customer.StateLocationId" class="control-label"></label>
-                <select asp-for="Customer.StateLocationId" class="form-control" asp-items="ViewBag.StateLocationId"></select>
+                <select asp-for="Customer.StateLocationId" class="form-control" asp-items="Model.UsStates"></select>
                 <span asp-validation-for="Customer.StateLocationId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -65,13 +69,18 @@
                 <span asp-validation-for="Customer.EmailAddress" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <label asp-for="Customer.UserName" class="control-label"></label>
+                <input asp-for="Customer.UserName" class="form-control" />
+                <span asp-validation-for="Customer.UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3">
+                <input type="submit" value="Save" class="btn btn-primary col-4" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
+<div class="mt-4">
     <a asp-page="./Index">Back to List</a>
 </div>
 

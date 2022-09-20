@@ -2,22 +2,31 @@
 @model CommerceRazorDemo.Pages.Customers.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Customers";
 }
 
-<h1>Index</h1>
+<h1>@ViewData["Title"]</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a asp-page="Edit">Create New Customer</a>
+</p>
+<p>
+    <form>
+        <div class="row">
+            <div class="col-6">
+                <label class="form-label">Search</label>
+                <input type="text" class="form-control" asp-for="SearchString" placeholder="search title text" />
+            </div>
+        </div>        
+    </form>
 </p>
 <table class="table">
     <thead>
-        <tr>
+        <tr>            
             <th>
-                @Html.DisplayNameFor(model => model.Customer[0].UserName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Customer[0].FullName)
+                <a asp-page="Index" asp-route-sortOrder="@Model.NameSort">
+                    @Html.DisplayNameFor(model => model.Customer[0].FullName)
+                </a>
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Customer[0].Address1)
@@ -40,15 +49,16 @@
             <th>
                 @Html.DisplayNameFor(model => model.Customer[0].EmailAddress)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Customer[0].UserName)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model.Customer) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserName)
-            </td>
+            
             <td>
                 @Html.DisplayFor(modelItem => item.FullName)
             </td>           
@@ -74,9 +84,11 @@
                 @Html.DisplayFor(modelItem => item.EmailAddress)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a>
             </td>
         </tr>
 }

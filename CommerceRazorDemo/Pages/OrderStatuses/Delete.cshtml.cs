@@ -20,7 +20,7 @@ namespace CommerceRazorDemo.Pages.OrderStatuses
         }
 
         [BindProperty]
-      public OrderStatus OrderStatus { get; set; }
+        public OrderStatus OrderStatus { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {

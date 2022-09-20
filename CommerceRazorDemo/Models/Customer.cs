@@ -31,7 +31,7 @@ namespace CommerceRazorDemo.Models
         
         [StringLength(100)]
         [Display(Name = "Additional Address")]
-        public string Address2 { get; set; } = string.Empty;
+        public string? Address2 { get; set; } = string.Empty;
 
         [Required]
         [StringLength(100, MinimumLength = 1)]
