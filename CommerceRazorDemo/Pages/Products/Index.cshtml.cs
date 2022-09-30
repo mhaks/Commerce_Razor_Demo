@@ -23,9 +23,11 @@ namespace CommerceRazorDemo.Pages.Products
         public IList<Product> Product { get;set; } = default!;
         public SelectList? Brands { get; set; } = default!;
         public SelectList? Categories { get; set; } = default!;
+        public SelectList? ActiveStatus { get; set; } = default!;
 
         public string TitleSort { get; set; } = string.Empty;
         public string BrandSort { get; set; } = string.Empty;
+        public string ModelNumberSort { get; set; } = string.Empty;
         public string CategorySort { get; set; } = string.Empty;       
         public string PriceSort { get; set; } = string.Empty;
         public string QuantitySort { get; set; } = string.Empty;
@@ -39,7 +41,8 @@ namespace CommerceRazorDemo.Pages.Products
         [BindProperty(SupportsGet = true)]
         public int? CategoryFilterId { get; set; }
 
-        
+        [BindProperty(SupportsGet = true)]
+        public int? ActiveFilterId { get; set; }
 
         public async Task OnGetAsync(string sortOrder)
         {
@@ -56,10 +59,13 @@ namespace CommerceRazorDemo.Pages.Products
                 if (CategoryFilterId.HasValue)
                     productsQuery = productsQuery.Where(p => p.ProductCategoryId == CategoryFilterId);
 
+                if(ActiveFilterId.HasValue)
+                    productsQuery = productsQuery.Where(p => p.IsActive == (ActiveFilterId.Value == 1 ? true : false));
                 
 
                 TitleSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
                 BrandSort = sortOrder == "brand" ? "brand_desc" : "brand";
+                ModelNumberSort = sortOrder == "model" ? "model_desc" : "model";
                 CategorySort = sortOrder == "cat" ? "cat_desc" : "cat";               
                 PriceSort = sortOrder == "price" ? "price_desc" : "price";
                 QuantitySort = sortOrder == "qty" ? "qty_desc" : "qty";
@@ -75,6 +81,14 @@ namespace CommerceRazorDemo.Pages.Products
 
                     case "brand_desc":
                         productsQuery = productsQuery.OrderByDescending(p => p.Brand);
+                        break;
+
+                    case "model":
+                        productsQuery = productsQuery.OrderBy(p => p.ModelNumber);
+                        break;
+
+                    case "model_desc":
+                        productsQuery = productsQuery.OrderByDescending(p => p.ModelNumber);
                         break;
 
                     case "cat":
@@ -115,7 +129,14 @@ namespace CommerceRazorDemo.Pages.Products
 
                 Brands = new SelectList(await _context.Product.OrderBy(x => x.Brand).Select(x => x.Brand).Distinct().ToListAsync());
                 Categories = new SelectList(await _context.ProductCategory.ToListAsync(), "Id", "Title");
+                ActiveStatus = new SelectList(new ActiveStatusItem[] { new ActiveStatusItem() { Id = 1, Title = "Active" }, new ActiveStatusItem() { Id = 0, Title = "Inactive" } }, "Id", "Title");
             }
         }
+    }
+
+    public class ActiveStatusItem
+    {
+        public int Id { get; set; }
+        public string Title { get; set; } = String.Empty;
     }
 }

@@ -113,11 +113,17 @@ namespace CommerceRazorDemo.Pages.Products
         public decimal Price { get; set; }
 
         [Range(0, 1000)]
-        [Display(Name = "In Stock")]
+        [Display(Name = "Available")]
         public int AvailableQty { get; set; }
 
         [Display(Name = "Category")]
         public int? ProductCategoryId { get; set; }
+
+        [Display(Name = "Active")]
+        public bool IsActive { get; set; }
+
+        [Display(Name = "Model Number")]
+        public string ModelNumber { get; set; } = String.Empty;
 
         public void MapToDomain(Product product)
         {
@@ -127,6 +133,8 @@ namespace CommerceRazorDemo.Pages.Products
             product.Price = Price;
             product.AvailableQty = AvailableQty;
             product.ProductCategoryId = ProductCategoryId;
+            product.IsActive = IsActive;
+            product.ModelNumber = ModelNumber;
         }
 
         public void MapToViewModel(Product product)
@@ -138,6 +146,8 @@ namespace CommerceRazorDemo.Pages.Products
             Price = product.Price;
             AvailableQty = product.AvailableQty;
             ProductCategoryId = product.ProductCategoryId;
+            IsActive = product.IsActive;
+            ModelNumber = product.ModelNumber;
         }
     }
 }

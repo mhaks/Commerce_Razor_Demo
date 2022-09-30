@@ -23,17 +23,17 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ProductVM.Id" />
-            <div class="form-group">
+            <div class="form-group mt-3">
                 <label asp-for="ProductVM.Title" class="control-label"></label>
                 <input asp-for="ProductVM.Title" class="form-control" />
                 <span asp-validation-for="ProductVM.Title" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mt-3">
                 <label asp-for="ProductVM.Description" class="control-label"></label>
                 <textarea rows="5" cols="35" asp-for="ProductVM.Description" class="form-control"></textarea>
                 <span asp-validation-for="ProductVM.Description" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mt-3">
                 <label asp-for="ProductVM.Brand" class="control-label"></label>
                 <input class="form-control" asp-for="ProductVM.Brand" list="brands"></input>
                 <datalist id="brands">
@@ -44,20 +44,30 @@
                 </datalist>
                 <span asp-validation-for="ProductVM.Brand" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ProductVM.ProductCategoryId" class="control-label"></label>
-                <select class="form-control" asp-for="ProductVM.ProductCategoryId" asp-items="Model.Categories"></select>
-                <span asp-validation-for="ProductVM.ProductCategoryId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+            <div class="form-group mt-3">
                 <label asp-for="ProductVM.Price" class="control-label"></label>
                 <input asp-for="ProductVM.Price" class="form-control" />
                 <span asp-validation-for="ProductVM.Price" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mt-3">
+                <label asp-for="ProductVM.ProductCategoryId" class="control-label"></label>
+                <select class="form-control" asp-for="ProductVM.ProductCategoryId" asp-items="Model.Categories"></select>
+                <span asp-validation-for="ProductVM.ProductCategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3">
+                <label asp-for="ProductVM.ModelNumber" class="control-label"></label>
+                <input asp-for="ProductVM.ModelNumber" class="form-control" />
+                <span asp-validation-for="ProductVM.ModelNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3">
                 <label asp-for="ProductVM.AvailableQty" class="control-label"></label>
                 <input asp-for="ProductVM.AvailableQty" class="form-control" />
                 <span asp-validation-for="ProductVM.AvailableQty" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3">
+                <input asp-for="ProductVM.IsActive" class="form-check-input" />
+                <label asp-for="ProductVM.IsActive" class="form-check-label"></label>
+                <span asp-validation-for="ProductVM.IsActive" class="text-danger"></span>
             </div>
             <div class="form-group mt-3">
                 <input type="submit" value="Save" class="btn btn-primary col-4" />               

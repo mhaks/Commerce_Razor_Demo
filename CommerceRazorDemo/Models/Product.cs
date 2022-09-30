@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace CommerceRazorDemo.Models
 {
@@ -29,9 +30,12 @@ namespace CommerceRazorDemo.Models
         public int AvailableQty { get; set; }
 
         public int? ProductCategoryId { get; set; }
-
-        
+               
         public ProductCategory ProductCategory { get; set; } = null!;
 
+        [DefaultValue(true)]
+        public bool IsActive { get; set; } = true;
+
+        public string ModelNumber { get; set; } = string.Empty;
     }
 }
