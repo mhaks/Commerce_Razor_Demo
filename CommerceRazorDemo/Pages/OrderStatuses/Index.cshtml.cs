@@ -38,9 +38,13 @@ namespace CommerceRazorDemo.Pages.OrderStatuses
                     statusQuery = statusQuery.Where(s => s.Name.Contains(SearchString));
                 }
 
-                NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+                NameSort = String.IsNullOrEmpty(sortOrder) ? "name" : sortOrder == "name" ? "name_desc" : "name";
                 switch(NameSort)
                 {
+                    case "name":
+                        statusQuery = statusQuery.OrderBy(s => s.Name);
+                        break;
+
                     case "name_desc":
                         statusQuery = statusQuery.OrderByDescending(s => s.Name);
                         break;

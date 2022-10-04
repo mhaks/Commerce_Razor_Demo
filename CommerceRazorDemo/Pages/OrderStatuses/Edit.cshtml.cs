@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CommerceRazorDemo.Data;
 using CommerceRazorDemo.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace CommerceRazorDemo.Pages.OrderStatuses
 {
@@ -21,7 +22,7 @@ namespace CommerceRazorDemo.Pages.OrderStatuses
         }
 
         [BindProperty]
-        public OrderStatus OrderStatus { get; set; } = default!;
+        public OrderStatusVM OrderStatusVM { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -32,16 +33,16 @@ namespace CommerceRazorDemo.Pages.OrderStatuses
 
             if (id.HasValue && id != 0)
             {
-                var orderstatus = await _context.OrderStatus.FirstOrDefaultAsync(m => m.Id == id);
+                var orderstatus = await _context.OrderStatus.AsNoTracking().FirstOrDefaultAsync(m => m.Id == id);
                 if (orderstatus == null)
                 {
                     return NotFound();
                 }
-                OrderStatus = orderstatus;
+                OrderStatusVM = new OrderStatusVM { Id = orderstatus.Id, Name = orderstatus.Name };
             }
             else
             {
-                OrderStatus = new OrderStatus { Id = 0 };
+                OrderStatusVM = new OrderStatusVM { Id = 0 };
             }
             
             return Page();
@@ -56,16 +57,21 @@ namespace CommerceRazorDemo.Pages.OrderStatuses
                 return Page();
             }
 
-            if (OrderStatus.Id != 0)
+            if (OrderStatusVM.Id != 0)
             {
-                _context.Attach(OrderStatus).State = EntityState.Modified;
+                var orderStatus = await _context.OrderStatus.FirstOrDefaultAsync(x => x.Id == OrderStatusVM.Id);
+                if (orderStatus == null)
+                {
+                    return NotFound();
+                }
+                orderStatus.Name = OrderStatusVM.Name;                               
             }
             else
             {
-                _context.Attach(OrderStatus).State = EntityState.Added;
+                var orderStatus = new OrderStatus { Name = OrderStatusVM.Name };
+                _context.OrderStatus.Add(orderStatus);                
             }
-
-            
+                        
 
             try
             {
@@ -73,7 +79,7 @@ namespace CommerceRazorDemo.Pages.OrderStatuses
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!OrderStatusExists(OrderStatus.Id))
+                if (OrderStatusVM.Id != 0 && !OrderStatusExists(OrderStatusVM.Id))
                 {
                     return NotFound();
                 }
@@ -90,5 +96,14 @@ namespace CommerceRazorDemo.Pages.OrderStatuses
         {
           return _context.OrderStatus.Any(e => e.Id == id);
         }
+    }
+
+    public class OrderStatusVM
+    {
+        public int Id { get; set; }
+
+        [Required]
+        [StringLength(100, MinimumLength = 2)]
+        public string Name { get; set; } = String.Empty;
     }
 }

@@ -2,7 +2,7 @@
 @model CommerceRazorDemo.Pages.ProductCategories.EditModel
 
 @{
-    if (Model.ProductCategory.Id != 0)
+    if (Model.ProductCategoryVM.Id != 0)
     {
         ViewData["Title"] = "Category Edit";
     }
@@ -21,11 +21,11 @@
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ProductCategory.Id" />
+            <input type="hidden" asp-for="ProductCategoryVM.Id" />
             <div class="form-group mt-3">
-                <label asp-for="ProductCategory.Title" class="control-label"></label>
-                <input asp-for="ProductCategory.Title" class="form-control" />
-                <span asp-validation-for="ProductCategory.Title" class="text-danger"></span>
+                <label asp-for="ProductCategoryVM.Title" class="control-label"></label>
+                <input asp-for="ProductCategoryVM.Title" class="form-control" />
+                <span asp-validation-for="ProductCategoryVM.Title" class="text-danger"></span>
             </div>           
             <div class="form-group mt-3">
                 <input type="submit" value="Save" class="btn btn-primary col-4" />

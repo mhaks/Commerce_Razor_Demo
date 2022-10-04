@@ -39,7 +39,7 @@ namespace CommerceRazorDemo.Pages.Products
 
             if (id.HasValue && id.Value != 0)
             {
-                var product = await _context.Product.FindAsync(id);
+                var product = await _context.Product.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
                 if (product == null)
                 {
                     return NotFound();

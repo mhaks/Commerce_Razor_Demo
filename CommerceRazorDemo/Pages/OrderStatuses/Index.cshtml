@@ -7,9 +7,7 @@
 
 <h1>@ViewData["Title"]</h1>
 
-<p>
-    <a asp-page="Edit">Create New Order Status</a>
-</p>
+
 <p>
     <form>
         <form>
@@ -49,8 +47,7 @@
                             @Html.DisplayFor(modelItem => item.Name)
                         </td>
                         <td style="text-align:right">
-                            <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                            <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                            <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a>
                         </td>
                     </tr>
             }

@@ -2,7 +2,7 @@
 @model CommerceRazorDemo.Pages.OrderStatuses.EditModel
 
 @{
-    if (Model.OrderStatus.Id != 0)
+    if (Model.OrderStatusVM.Id != 0)
     {
         ViewData["Title"] = "Status Edit";
     }
@@ -21,11 +21,11 @@
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="OrderStatus.Id" />
+            <input type="hidden" asp-for="OrderStatusVM.Id" />
             <div class="form-group mt-3">
-                <label asp-for="OrderStatus.Name" class="control-label"></label>
-                <input asp-for="OrderStatus.Name" class="form-control" />
-                <span asp-validation-for="OrderStatus.Name" class="text-danger"></span>
+                <label asp-for="OrderStatusVM.Name" class="control-label"></label>
+                <input asp-for="OrderStatusVM.Name" class="form-control" />
+                <span asp-validation-for="OrderStatusVM.Name" class="text-danger"></span>
             </div>
             <div class="form-group mt-3">
                 <input type="submit" value="Save" class="btn btn-primary col-4" />
