@@ -48,8 +48,11 @@
                 @Html.DisplayNameFor(model => model.Orders[0].Customer)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Orders[0].OrderStatus)
-            </th>            
+                Status
+            </th>
+            <th>
+                Date
+            </th>
             <th>
                 Products
             </th>
@@ -71,7 +74,10 @@
                 @String.Format("#{0}  {1}", item.Customer.Id, item.Customer.FullName)
             </td>            
             <td>
-                @Html.DisplayFor(modelItem => item.OrderStatus.Name)
+                @item.OrderHistory.OrderBy(x => x.OrderDate).Last().OrderStatus.Name
+            </td>
+            <td>
+                @item.OrderHistory.OrderBy(x => x.OrderDate).Last().OrderDate
             </td>
             <td>
                 @item.Products.Count()

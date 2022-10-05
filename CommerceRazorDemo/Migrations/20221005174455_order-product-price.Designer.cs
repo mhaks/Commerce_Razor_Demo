@@ -4,6 +4,7 @@ using CommerceRazorDemo.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CommerceRazorDemo.Migrations
 {
     [DbContext(typeof(CommerceRazorDemoContext))]
-    partial class CommerceRazorDemoContextModelSnapshot : ModelSnapshot
+    [Migration("20221005174455_order-product-price")]
+    partial class orderproductprice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,37 +96,16 @@ namespace CommerceRazorDemo.Migrations
                     b.Property<int?>("CustomerId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("OrderStatusId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("Order");
-                });
-
-            modelBuilder.Entity("CommerceRazorDemo.Models.OrderHistory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderStatusId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
                     b.HasIndex("OrderStatusId");
 
-                    b.ToTable("OrderHistory");
+                    b.ToTable("Order");
                 });
 
             modelBuilder.Entity("CommerceRazorDemo.Models.OrderProduct", b =>
@@ -281,24 +262,11 @@ namespace CommerceRazorDemo.Migrations
                         .WithMany()
                         .HasForeignKey("CustomerId");
 
-                    b.Navigation("Customer");
-                });
-
-            modelBuilder.Entity("CommerceRazorDemo.Models.OrderHistory", b =>
-                {
-                    b.HasOne("CommerceRazorDemo.Models.Order", "Order")
-                        .WithMany("OrderHistory")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("CommerceRazorDemo.Models.OrderStatus", "OrderStatus")
                         .WithMany()
-                        .HasForeignKey("OrderStatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OrderStatusId");
 
-                    b.Navigation("Order");
+                    b.Navigation("Customer");
 
                     b.Navigation("OrderStatus");
                 });
@@ -333,8 +301,6 @@ namespace CommerceRazorDemo.Migrations
 
             modelBuilder.Entity("CommerceRazorDemo.Models.Order", b =>
                 {
-                    b.Navigation("OrderHistory");
-
                     b.Navigation("Products");
                 });
 #pragma warning restore 612, 618

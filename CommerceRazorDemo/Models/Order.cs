@@ -10,13 +10,10 @@ namespace CommerceRazorDemo.Models
 
         public int? CustomerId { get; set; }
         public Customer Customer { get; set; } = null!;
-
-        public int? OrderStatusId { get; set; }
-
-        [Display(Name = "Status")]
-        public OrderStatus OrderStatus { get; set; } = null!;
-        
+       
         public ICollection<OrderProduct> Products { get; set; } = null!;
+
+        public ICollection<OrderHistory> OrderHistory { get; set; } = null!;
 
         [Display(Name ="Sub Total")]
         public decimal Subtotal { 
@@ -25,7 +22,7 @@ namespace CommerceRazorDemo.Models
                 decimal subtotal = 0;
                 foreach(var item in Products)
                 {
-                    subtotal += item.Product.Price;
+                    subtotal += item.Price;
 
                 }
                 return subtotal;

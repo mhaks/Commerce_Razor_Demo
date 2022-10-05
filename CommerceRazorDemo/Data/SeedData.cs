@@ -203,11 +203,11 @@ namespace CommerceRazorDemo.Data
                 {
                     var orders = new Order[]
                     {
-                        new Order { CustomerId = context.Customer.Single(x => x.UserName=="jerry").Id, OrderStatusId = context.OrderStatus.Single(x => x.Name=="Cart").Id },
-                        new Order { CustomerId = context.Customer.Single(x => x.UserName=="elaine").Id, OrderStatusId = context.OrderStatus.Single(x => x.Name=="Ordered").Id },
-                        new Order { CustomerId = context.Customer.Single(x => x.UserName=="kramer").Id, OrderStatusId = context.OrderStatus.Single(x => x.Name=="Ordered").Id },
-                        new Order { CustomerId = context.Customer.Single(x => x.UserName=="george").Id, OrderStatusId = context.OrderStatus.Single(x => x.Name=="Shipped").Id },
-                        new Order { CustomerId = context.Customer.Single(x => x.UserName=="newman").Id, OrderStatusId = context.OrderStatus.Single(x => x.Name=="Delivered").Id }
+                        new Order { CustomerId = context.Customer.Single(x => x.UserName=="jerry").Id },
+                        new Order { CustomerId = context.Customer.Single(x => x.UserName=="elaine").Id },
+                        new Order { CustomerId = context.Customer.Single(x => x.UserName=="kramer").Id },
+                        new Order { CustomerId = context.Customer.Single(x => x.UserName=="george").Id },
+                        new Order { CustomerId = context.Customer.Single(x => x.UserName=="newman").Id }
                     };
 
                     foreach (var item in orders)
@@ -225,25 +225,25 @@ namespace CommerceRazorDemo.Data
                 {
                     var orderProducts = new OrderProduct[]
                     {
-                        new OrderProduct { Quantity = 1, OrderId = context.Order.First().Id, ProductId = context.Product.First().Id },
+                        new OrderProduct { Quantity = 1, OrderId = context.Order.First().Id, ProductId = context.Product.First().Id, Price =  context.Product.First().Price },
 
-                        new OrderProduct { Quantity = 1, OrderId = context.Order.Skip(1).First().Id, ProductId = context.Product.First().Id },
-                        new OrderProduct { Quantity = 2, OrderId = context.Order.Skip(1).First().Id, ProductId = context.Product.Skip(1).First().Id },
+                        new OrderProduct { Quantity = 1, OrderId = context.Order.Skip(1).First().Id, ProductId = context.Product.First().Id , Price =  context.Product.First().Price},
+                        new OrderProduct { Quantity = 2, OrderId = context.Order.Skip(1).First().Id, ProductId = context.Product.Skip(1).First().Id , Price =  context.Product.Skip(1).First().Price},
 
-                        new OrderProduct { Quantity = 1, OrderId = context.Order.Skip(2).First().Id, ProductId = context.Product.First().Id },
-                        new OrderProduct { Quantity = 2, OrderId = context.Order.Skip(2).First().Id, ProductId = context.Product.Skip(1).First().Id },
-                        new OrderProduct { Quantity = 3, OrderId = context.Order.Skip(2).First().Id, ProductId = context.Product.Skip(2).First().Id },
+                        new OrderProduct { Quantity = 1, OrderId = context.Order.Skip(2).First().Id, ProductId = context.Product.First().Id, Price =  context.Product.First().Price },
+                        new OrderProduct { Quantity = 2, OrderId = context.Order.Skip(2).First().Id, ProductId = context.Product.Skip(1).First().Id, Price =  context.Product.Skip(1).First().Price },
+                        new OrderProduct { Quantity = 3, OrderId = context.Order.Skip(2).First().Id, ProductId = context.Product.Skip(2).First().Id, Price =  context.Product.Skip(2).First().Price },
 
-                        new OrderProduct { Quantity = 1, OrderId = context.Order.Skip(3).First().Id, ProductId = context.Product.First().Id },
-                        new OrderProduct { Quantity = 2, OrderId = context.Order.Skip(3).First().Id, ProductId = context.Product.Skip(1).First().Id },
-                        new OrderProduct { Quantity = 3, OrderId = context.Order.Skip(3).First().Id, ProductId = context.Product.Skip(2).First().Id },
-                        new OrderProduct { Quantity = 4, OrderId = context.Order.Skip(3).First().Id, ProductId = context.Product.Skip(3).First().Id },
+                        new OrderProduct { Quantity = 1, OrderId = context.Order.Skip(3).First().Id, ProductId = context.Product.First().Id, Price =  context.Product.First().Price },
+                        new OrderProduct { Quantity = 2, OrderId = context.Order.Skip(3).First().Id, ProductId = context.Product.Skip(1).First().Id, Price =  context.Product.Skip(1).First().Price },
+                        new OrderProduct { Quantity = 3, OrderId = context.Order.Skip(3).First().Id, ProductId = context.Product.Skip(2).First().Id, Price =  context.Product.Skip(2).First().Price },
+                        new OrderProduct { Quantity = 4, OrderId = context.Order.Skip(3).First().Id, ProductId = context.Product.Skip(3).First().Id, Price =  context.Product.Skip(3).First().Price },
 
-                        new OrderProduct { Quantity = 1, OrderId = context.Order.Skip(4).First().Id, ProductId = context.Product.First().Id },
-                        new OrderProduct { Quantity = 2, OrderId = context.Order.Skip(4).First().Id, ProductId = context.Product.Skip(1).First().Id },
-                        new OrderProduct { Quantity = 3, OrderId = context.Order.Skip(4).First().Id, ProductId = context.Product.Skip(2).First().Id },
-                        new OrderProduct { Quantity = 4, OrderId = context.Order.Skip(4).First().Id, ProductId = context.Product.Skip(3).First().Id },
-                        new OrderProduct { Quantity = 5, OrderId = context.Order.Skip(4).First().Id, ProductId = context.Product.Skip(4).First().Id }
+                        new OrderProduct { Quantity = 1, OrderId = context.Order.Skip(4).First().Id, ProductId = context.Product.First().Id, Price =  context.Product.First().Price },
+                        new OrderProduct { Quantity = 2, OrderId = context.Order.Skip(4).First().Id, ProductId = context.Product.Skip(1).First().Id, Price =  context.Product.Skip(1).First().Price },
+                        new OrderProduct { Quantity = 3, OrderId = context.Order.Skip(4).First().Id, ProductId = context.Product.Skip(2).First().Id, Price =  context.Product.Skip(2).First().Price },
+                        new OrderProduct { Quantity = 4, OrderId = context.Order.Skip(4).First().Id, ProductId = context.Product.Skip(3).First().Id, Price =  context.Product.Skip(3).First().Price },
+                        new OrderProduct { Quantity = 5, OrderId = context.Order.Skip(4).First().Id, ProductId = context.Product.Skip(4).First().Id, Price =  context.Product.Skip(4).First().Price }
                     };
 
                     foreach (var item in orderProducts)
@@ -252,6 +252,41 @@ namespace CommerceRazorDemo.Data
                     }
                     context.SaveChanges();
                 }
+
+                #endregion
+
+                #region OrderHistory
+                if(!context.OrderHistory.Any())
+                {
+                    var orderHistorys = new OrderHistory[]
+                    {
+                        new OrderHistory { OrderId = context.Customer.Single(x => x.UserName == "jerry").Id, OrderStatusId = context.OrderStatus.Single(x => x.Name == "Cart").Id, OrderDate = new DateTime(2022, 01, 01, 01, 01, 01) },
+
+                        new OrderHistory { OrderId = context.Customer.Single(x => x.UserName == "elaine").Id, OrderStatusId = context.OrderStatus.Single(x => x.Name == "Cart").Id, OrderDate = new DateTime(2022, 02, 02, 02, 02, 01) },
+                        new OrderHistory { OrderId = context.Customer.Single(x => x.UserName == "elaine").Id, OrderStatusId = context.OrderStatus.Single(x => x.Name == "Ordered").Id, OrderDate = new DateTime(2022, 02, 02, 02, 02, 02) },
+
+                        new OrderHistory { OrderId = context.Customer.Single(x => x.UserName == "kramer").Id, OrderStatusId = context.OrderStatus.Single(x => x.Name == "Cart").Id, OrderDate = new DateTime(2022, 03, 03, 03, 03, 01) },
+                        new OrderHistory { OrderId = context.Customer.Single(x => x.UserName == "kramer").Id, OrderStatusId = context.OrderStatus.Single(x => x.Name == "Ordered").Id, OrderDate = new DateTime(2022, 03, 03, 03, 03, 03) },
+
+                        new OrderHistory { OrderId = context.Customer.Single(x => x.UserName == "george").Id, OrderStatusId = context.OrderStatus.Single(x => x.Name == "Cart").Id, OrderDate = new DateTime(2022, 04, 04, 04, 04, 01) },
+                        new OrderHistory { OrderId = context.Customer.Single(x => x.UserName == "george").Id, OrderStatusId = context.OrderStatus.Single(x => x.Name == "Ordered").Id, OrderDate = new DateTime(2022, 04, 04, 04, 04, 03) },
+                        new OrderHistory { OrderId = context.Customer.Single(x => x.UserName == "george").Id, OrderStatusId = context.OrderStatus.Single(x => x.Name == "Shipped").Id, OrderDate = new DateTime(2022, 04, 04, 04, 05, 05) },
+
+                        new OrderHistory { OrderId = context.Customer.Single(x => x.UserName == "newman").Id, OrderStatusId = context.OrderStatus.Single(x => x.Name == "Cart").Id, OrderDate = new DateTime(2022, 05, 05, 05, 05, 01) },
+                        new OrderHistory { OrderId = context.Customer.Single(x => x.UserName == "newman").Id, OrderStatusId = context.OrderStatus.Single(x => x.Name == "Ordered").Id, OrderDate = new DateTime(2022, 05, 05, 05, 05, 02) },
+                        new OrderHistory { OrderId = context.Customer.Single(x => x.UserName == "newman").Id, OrderStatusId = context.OrderStatus.Single(x => x.Name == "Shipped").Id, OrderDate = new DateTime(2022, 05, 05, 05, 06, 06) },
+                        new OrderHistory { OrderId = context.Customer.Single(x => x.UserName == "newman").Id, OrderStatusId = context.OrderStatus.Single(x => x.Name == "Delivered").Id, OrderDate = new DateTime(2022, 05, 05, 05, 07, 07) }
+                    };
+
+
+                    foreach (var item in orderHistorys)
+                    {
+                        context.OrderHistory.Add(item);
+                    }
+
+                    context.SaveChanges();
+                }
+
 
                 #endregion
             }

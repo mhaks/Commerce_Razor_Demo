@@ -18,17 +18,21 @@
             @Html.DisplayFor(model => model.Order.Id)
         </dd>
         <dt class="col-sm-2">
+            Customer ID
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Order.Customer.Id
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Order.Customer)
         </dt>
         <dd class="col-sm-10">
-            @String.Format("#{0}  {1}", Model.Order.Customer.Id, Model.Order.Customer.FullName)
+            @Model.Order.Customer.FullName<br />
+            @Model.Order.Customer.Address1<br />
+            @Model.Order.Customer.Address2<br />
+            @String.Format("{0} {1} {2}", Model.Order.Customer.City, Model.Order.Customer.StateLocation.Abbreviation, Model.Order.Customer.PostalCode)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Order.OrderStatus)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Order.OrderStatus.Name)
-        </dd>
+        
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Order.Subtotal)
         </dt>
@@ -69,6 +73,28 @@
                             <td>@item.Product.Price</td>
                         </tr>
                     }                    
+                </tbody>
+            </table>
+        </dd>
+        <dt class="col-sm-2">
+            Status
+        </dt>
+        <dd class="col-sm-10">            
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Status</th>                        
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Order.OrderHistory.OrderByDescending(x => x.OrderDate))
+                    {
+                        <tr>
+                            <td>@item.OrderDate</td>
+                            <td>@item.OrderStatus.Name</td>                            
+                        </tr>
+                    }
                 </tbody>
             </table>
         </dd>

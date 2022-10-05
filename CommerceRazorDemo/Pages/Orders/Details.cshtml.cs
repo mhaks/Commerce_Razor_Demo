@@ -32,7 +32,8 @@ namespace CommerceRazorDemo.Pages.Orders
                 .AsNoTracking()
                 .Include(x => x.Customer)
                 .ThenInclude(x => x.StateLocation)
-                .Include(x => x.OrderStatus)
+                .Include(x => x.OrderHistory)
+                .ThenInclude(x => x.OrderStatus)
                 .Include(x => x.Products)
                 .ThenInclude(x => x.Product)
                 .FirstOrDefaultAsync(m => m.Id == id);

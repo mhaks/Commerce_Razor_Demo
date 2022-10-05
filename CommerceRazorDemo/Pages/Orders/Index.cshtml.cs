@@ -55,7 +55,7 @@ namespace CommerceRazorDemo.Pages.Orders
 
                 if (OrderStatusFilterId.HasValue && OrderStatusFilterId > 0)
                 {
-                    query = query.Where(o => o.OrderStatus.Id == OrderStatusFilterId);
+                    query = query.Where(o => o.OrderHistory.OrderBy(x => x.OrderDate).Last().OrderStatus.Id == OrderStatusFilterId);
                 }
 
                 Orders = await query.AsNoTracking()
@@ -63,7 +63,8 @@ namespace CommerceRazorDemo.Pages.Orders
                     .ThenInclude(p => p.Product)
                     .Include(o => o.Customer)
                     .ThenInclude(c => c.StateLocation)
-                    .Include(o => o.OrderStatus)
+                    .Include(o => o.OrderHistory)
+                    .ThenInclude(o => o.OrderStatus)
                     .OrderBy(o => o.Id)
                     .ToListAsync();
 
