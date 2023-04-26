@@ -3,4 +3,46 @@
 @{
 }
 
-<h1>TODO: the shopping cart</h1>
+
+@if (Model.Order != null && Model.Order.Products.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>            
+        </thead>
+        <tbody>
+            @foreach(var item in Model.Order.Products)
+            {
+                <tr>
+                    <td>@item.Product.Title</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.Price</td>
+                    <td>@item.Quantity * item.Price</td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td align="left" colspan="2">Subtotal</td>
+                <td align="right" colspan="2">Model.Order.Subtotal</td>
+            </tr>
+            <tr>
+                <td align="left" colspan="2">Tax</td>
+                <td align="right" colspan="2">Model.Order.Tax</td>
+            </tr>
+            <tr>
+                <td align="left" colspan="2">Total Price</td>
+                <td align="right" colspan="2">Model.Order.TotalPrice</td>
+            </tr>
+        </tfoot>
+    </table>
+}
+else
+{
+    <h2> No items currently in cart</h2>
+}

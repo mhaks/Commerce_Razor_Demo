@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using CommerceRazorDemo.Models;
 
 namespace CommerceRazorDemo.Models
 {
+    
     public class OrderStatus
     {
         public int Id { get; set; }
@@ -11,5 +13,14 @@ namespace CommerceRazorDemo.Models
         [Required]
         [StringLength(100, MinimumLength = 2)]
         public string Name { get; set; } = String.Empty;
+    }
+
+    public enum OrderState
+    {
+         Cart = 1,
+         Cancelled = 2,
+         Shipped = 3,
+         Delivered = 4,
+         Returned = 5,                      
     }
 }

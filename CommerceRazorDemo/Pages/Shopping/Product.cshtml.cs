@@ -1,25 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using CommerceRazorDemo.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using CommerceRazorDemo.Data;
 using CommerceRazorDemo.Models;
 
-namespace CommerceRazorDemo.Pages.Products
+namespace CommerceRazorDemo.Pages.Shopping
 {
-    public class DetailsModel : PageModel
+    public class ProductModel : PageModel
     {
         private readonly CommerceRazorDemo.Data.CommerceRazorDemoContext _context;
+        private readonly ILogger<IndexModel> _logger;
 
-        public DetailsModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context)
+        public ProductModel(CommerceRazorDemoContext context, ILogger<IndexModel> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
-        public Product Product { get; set; } = default!; 
+        public Product Product { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -28,15 +26,16 @@ namespace CommerceRazorDemo.Pages.Products
                 return NotFound();
             }
 
-            var product = await _context.Product.AsNoTracking()
+            var product = await _context.Product
+                .AsNoTracking()
                 .Include(x => x.ProductCategory)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            
+
             if (product == null)
             {
                 return NotFound();
             }
-            else 
+            else
             {
                 Product = product;
             }

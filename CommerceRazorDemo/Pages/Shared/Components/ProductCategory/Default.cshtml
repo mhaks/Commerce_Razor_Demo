@@ -4,6 +4,7 @@
 <ul>
     @foreach(var item in Model)
     {
-        <li><a asp-area="" asp-page="\Shopping\Index">@item.Title</a></li>
+        var href = "..\\Shopping\\Index?category=" + item.Id;
+        <li><a href=@href >@item.Title</a></li>
     }
 </ul>

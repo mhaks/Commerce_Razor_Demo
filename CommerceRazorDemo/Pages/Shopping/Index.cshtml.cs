@@ -20,8 +20,11 @@ namespace CommerceRazorDemo.Pages.Shopping
             _context = context;
         }
 
-         [BindProperty(SupportsGet = true)]
+        [BindProperty(SupportsGet = true)]
         public string? SearchString { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public int? Category { get; set; }
        
 
         public IList<Product> Products { get;set; } = default!;
@@ -37,18 +40,15 @@ namespace CommerceRazorDemo.Pages.Shopping
                     SearchString = SearchString.ToUpper().Trim();
                     productsQuery = productsQuery.Where(p => p.Title.ToUpper().Contains(SearchString) || p.Description.ToUpper().Contains(SearchString) || p.Brand.ToUpper().Contains(SearchString) || p.ProductCategory.Title.ToUpper().Contains(SearchString));
 
-                    // wonky search for singular of plural term
-                    /*
-                    if (SearchString.EndsWith('S')) 
-                    {
-                        var singular = SearchString.Substring(0, SearchString.Length - 1);
-                        productsQuery = productsQuery.Where(p => p.Title.ToUpper().Contains(singular) || p.Description.ToUpper().Contains(singular) || p.Brand.ToUpper().Contains(SearchString) || p.ProductCategory.Title.ToUpper().Contains(singular));
-                    }
-                    */
+                }
+                else if (Category != null)
+                {
+                    productsQuery = productsQuery.Where(c => c.ProductCategoryId == Category);    
                 }
 
                 Products = await productsQuery
                     .AsNoTracking()
+                    .Include(c => c.ProductCategory)
                     .ToListAsync();
             }
         }

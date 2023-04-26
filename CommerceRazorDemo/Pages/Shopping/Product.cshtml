@@ -1,0 +1,65 @@
+﻿@page
+@model CommerceRazorDemo.Pages.Shopping.ProductModel
+@{
+}
+
+
+@{
+    ViewData["Title"] = "Product";
+}
+
+<div>
+    <h4>Product</h4>
+    <hr />
+    <dl class="row">
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Product.Title)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Product.Title)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Product.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Product.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Product.Brand)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Product.Brand)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Product.ProductCategory)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Product.ProductCategory.Title)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Product.Price)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Product.Price)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Product.AvailableQty)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Product.AvailableQty)
+        </dd>
+        <dd>
+            
+        </dd>
+        <dt>
+            <form class="form" action="..\Shopping\Cart" method="get">
+                <input id="quantity" name="quantity" value="1" min="1" max=@Model.Product.AvailableQty />
+                <input type="hidden" id ="productId" name="productId" value=@Model.Product.Id />
+                <input type="hidden" id="customerId" name="customerId" value="1"/>
+                <button class=" form-control btn btn-success" type="submit">Add to Cart</button>
+            </form>
+        </dt>
+    </dl>
+</div>

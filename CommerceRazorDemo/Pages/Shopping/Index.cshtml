@@ -11,35 +11,34 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Products[0].Brand)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Products[0].Title)
+                
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Products[0].Price)
             </th>
-            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Products[0].Brand)
+            </th>
+            <th>
+                Category
+            </th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model.Products) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Brand)
-            </td>
-            <td>
-                <!--@Html.DisplayFor(modelItem => item.Title)-->
-                <a asp-page="./Details" asp-route-id="@item.Id">@item.Title</a>                
+                <a asp-area="" asp-page="./Product" asp-route-id="@item.Id">@item.Title</a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                @Html.DisplayFor(modelItem => item.Brand)
             </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductCategory.Title)
+            </td>               
         </tr>
 }
     </tbody>
