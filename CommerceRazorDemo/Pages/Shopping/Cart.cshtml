@@ -13,6 +13,7 @@
                 <th>Quantity</th>
                 <th>Price</th>
                 <th>Total</th>
+                <th></th>
             </tr>            
         </thead>
         <tbody>
@@ -20,9 +21,21 @@
             {
                 <tr>
                     <td>@item.Product.Title</td>
-                    <td>@item.Quantity</td>
+                    <td>
+                        <!--Html.DisplayFor(item.Quantity)-->
+                        <input id="quantity" name="quantity" value=@item.Quantity />                        
+                    </td>
                     <td>@item.Price</td>
                     <td>@(item.Quantity * item.Price)</td>
+                    <td>
+                        <button class="btn bg-success">Update</button>
+                        <form method="post" asp-area="Shopping" asp-page="Cart" asp-page-handler="Edit">
+                            <input type="hidden" id="customerId" name="customerId" value=@Model.Order.CustomerId />
+                            <input type="hidden" id="orderProductId" name="orderProductId" value=@item.Id />
+                            <button class="btn bg-warning" type="submit">Remove</button>
+                        </form>
+                        
+                    </td>
                 </tr>
             }
         </tbody>

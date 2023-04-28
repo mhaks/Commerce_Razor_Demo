@@ -64,7 +64,7 @@ namespace CommerceRazorDemo.Pages.Shopping
             return RedirectToAction("Index", dict);
         }
 
-        public IActionResult OnPostEdit(int customerId, int productId, int quantity) 
+        public IActionResult OnPostEdit(int customerId, int orderProductId, int quantity) 
         {
             if (_context.Product == null)
             {
@@ -73,7 +73,7 @@ namespace CommerceRazorDemo.Pages.Shopping
 
             Order = GetCartOrder(customerId);
 
-            var prod = Order.Products.Where(p => p.ProductId == productId).FirstOrDefault();
+            var prod = Order.Products.Where(op => op.Id == orderProductId).FirstOrDefault();
             if (prod != null)
             {
                 if (quantity > 0)
@@ -89,7 +89,9 @@ namespace CommerceRazorDemo.Pages.Shopping
             
             _context.SaveChanges();
 
-            return RedirectToAction("Index");
+            var dict = new RouteValueDictionary();
+            dict.Add("customerId", customerId);
+            return RedirectToAction("Index", dict);
         }
 
 
