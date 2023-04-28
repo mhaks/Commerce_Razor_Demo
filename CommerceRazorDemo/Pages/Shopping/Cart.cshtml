@@ -4,7 +4,7 @@
 }
 
 
-@if (Model.Order != null && Model.Order.Products.Any())
+@if (Model.Order != null && Model.Order.Products != null && Model.Order.Products.Any())
 {
     <table class="table">
         <thead>
@@ -22,22 +22,22 @@
                     <td>@item.Product.Title</td>
                     <td>@item.Quantity</td>
                     <td>@item.Price</td>
-                    <td>@item.Quantity * item.Price</td>
+                    <td>@(item.Quantity * item.Price)</td>
                 </tr>
             }
         </tbody>
         <tfoot>
             <tr>
                 <td align="left" colspan="2">Subtotal</td>
-                <td align="right" colspan="2">Model.Order.Subtotal</td>
+                <td align="right" colspan="2">@Model.Order.Subtotal</td>
             </tr>
             <tr>
                 <td align="left" colspan="2">Tax</td>
-                <td align="right" colspan="2">Model.Order.Tax</td>
+                <td align="right" colspan="2">@Model.Order.Tax</td>
             </tr>
             <tr>
                 <td align="left" colspan="2">Total Price</td>
-                <td align="right" colspan="2">Model.Order.TotalPrice</td>
+                <td align="right" colspan="2">@Model.Order.TotalPrice</td>
             </tr>
         </tfoot>
     </table>

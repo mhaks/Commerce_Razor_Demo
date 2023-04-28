@@ -54,7 +54,7 @@
             
         </dd>
         <dt>
-            <form class="form" action="..\Shopping\Cart" method="get">
+            <form class="form" method="post" asp-area="Shopping" asp-page="Cart">
                 <input id="quantity" name="quantity" value="1" min="1" max=@Model.Product.AvailableQty />
                 <input type="hidden" id ="productId" name="productId" value=@Model.Product.Id />
                 <input type="hidden" id="customerId" name="customerId" value="1"/>
@@ -63,3 +63,7 @@
         </dt>
     </dl>
 </div>
+
+<!--
+    
+-->

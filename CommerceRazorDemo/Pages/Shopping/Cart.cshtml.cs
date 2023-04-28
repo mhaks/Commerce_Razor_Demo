@@ -32,7 +32,7 @@ namespace CommerceRazorDemo.Pages.Shopping
             return Page();
         }
 
-        public IActionResult OnPostAddProduct(int customerId, int productId, int quantity)
+        public IActionResult OnPost(int customerId, int productId, int quantity)
         {
             if (_context.Product == null)
             {
@@ -40,50 +40,86 @@ namespace CommerceRazorDemo.Pages.Shopping
             }
 
             Order = GetCartOrder(customerId);
-            if (Order.Products.Any())
+            if (Order.Products == null)
+                Order.Products = new List<OrderProduct>();
+
+            var product = _context.Product.Where(p => p.Id == productId).FirstOrDefault();
+            if (product == null)
             {
-                Order.Products.Add(new OrderProduct { ProductId = productId, Quantity = quantity });
+                return NotFound();
             }
 
-            if (Order.OrderHistory.Any()) 
+            Order.Products.Add(new OrderProduct { ProductId = productId, Quantity = quantity, Price =  product.Price});
+
+            if (Order.OrderHistory == null) 
             {
+                Order.OrderHistory = new List<OrderHistory>();
                 Order.OrderHistory.Add(new OrderHistory { OrderStatusId = (int)OrderState.Cart });
             }
 
             _context.SaveChanges();
 
-            return new RedirectToPageResult(nameof(OnGet));
+            var dict = new RouteValueDictionary();
+            dict.Add("customerId", customerId);
+            return RedirectToAction("Index", dict);
         }
 
-        public IActionResult OnPostEditProduct(int customerId, int productId, int quantity) 
+        public IActionResult OnPostEdit(int customerId, int productId, int quantity) 
         {
             if (_context.Product == null)
             {
                 return NotFound();
             }
 
-            // has order
-            // has history, last = cart
-            // add product to existing or new order
+            Order = GetCartOrder(customerId);
 
-            return new RedirectToPageResult(nameof(OnGet));
+            var prod = Order.Products.Where(p => p.ProductId == productId).FirstOrDefault();
+            if (prod != null)
+            {
+                if (quantity > 0)
+                {
+                    prod.Quantity = quantity;
+                }
+                else
+                {
+                    Order.Products.Remove(prod);  
+
+                }
+            }
+            
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
         }
 
 
         private Order GetCartOrder(int customerId)
         {
-            var order = _context.Order.Where(c => c.CustomerId == customerId).OrderByDescending(x => x.Id).LastOrDefault();
+            var order = _context.Order
+                .Where(c => c.CustomerId == customerId)
+                .Include(c => c.Customer)
+                .ThenInclude(c => c.StateLocation)
+                .Include(c => c.OrderHistory)
+                .Include(c => c.Products)
+                .ThenInclude(p => p.Product)
+                .OrderByDescending(x => x.Id)
+                .LastOrDefault();
+
             if (order == null)
             {
                 return new Order();
 
             }
 
-            var history = order.OrderHistory.LastOrDefault();
-            if (history == null || history.OrderStatusId != (int)OrderState.Cart)
+            if (order.OrderHistory != null) 
             {
-                return new Order();
-            }
+                var history = order.OrderHistory.OrderByDescending(x => x.Id).LastOrDefault();
+                if (history == null || history.OrderStatusId != (int)OrderState.Cart)
+                {
+                    return new Order();
+                }
+            }          
+            
 
             return order;
         }
