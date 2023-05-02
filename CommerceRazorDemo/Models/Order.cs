@@ -22,7 +22,7 @@ namespace CommerceRazorDemo.Models
                 decimal subtotal = 0;
                 foreach(var item in Products)
                 {
-                    subtotal += item.Price;
+                    subtotal += item.Price * item.Quantity;
 
                 }
                 return subtotal;
