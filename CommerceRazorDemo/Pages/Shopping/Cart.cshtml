@@ -34,7 +34,7 @@
                     <td>
                         <input type="hidden" id="orderId" name="orderId" value="@Model.OrderId" />
                         <input type="hidden" id="orderProductId" name="orderProductId" value="@item.Id" />
-                        <button type="submit" name="action" value="update" class="btn bg-success" >Update</button>                            
+                        <button type="submit" name="action" value="update" class="btn btn-secondary" >Update</button>                            
                         <button type="submit" name="action" value="remove" class="btn bg-warning" >Remove</button>
                     </td>                    
                 </tr>
@@ -65,3 +65,11 @@ else
     <h2> No items currently in cart</h2>
 }
 
+<div class="row">
+    <div class="col-3">
+        <a asp-page="Index" class="btn btn-secondary btn-lg">Continue Shopping</a>
+    </div>
+    <div class="col-3">
+        <a asp-page="Checkout" asp-route-orderId="@Model.OrderId" class="btn btn-primary btn-lg">Checkout</a>
+    </div>
+</div>
