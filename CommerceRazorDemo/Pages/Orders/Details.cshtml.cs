@@ -10,25 +10,24 @@ using CommerceRazorDemo.Models;
 
 namespace CommerceRazorDemo.Pages.Orders
 {
-    public class DetailsModel : PageModel
+    public class DetailsModel : CommerceDemoPageModel
     {
-        private readonly CommerceRazorDemo.Data.CommerceRazorDemoContext _context;
-
-        public DetailsModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context)
+        public DetailsModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<DetailsModel> logger)
+            : base(context, logger)
         {
-            _context = context;
+
         }
 
-      public Order Order { get; set; } = default!; 
+        public Order Order { get; set; } = default!; 
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.Order == null)
+            if (id == null || Context.Order == null)
             {
                 return NotFound();
             }
 
-            var order = await _context.Order
+            var order = await Context.Order
                 .AsNoTracking()
                 .Include(x => x.Customer)
                 .ThenInclude(x => x.StateLocation)

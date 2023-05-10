@@ -5,12 +5,12 @@ namespace CommerceRazorDemo.Pages.Shared.Components
 {
     public class ProductSearchViewComponent : ViewComponent
     {
-        private readonly CommerceRazorDemo.Data.CommerceRazorDemoContext _context;
+        private readonly CommerceRazorDemo.Data.CommerceRazorDemoContext Context;
         private readonly ILogger<IndexModel> _logger;
 
         public ProductSearchViewComponent(CommerceRazorDemoContext context, ILogger<IndexModel> logger)
         {
-            _context = context;
+            Context = context;
             _logger = logger;
         }
 

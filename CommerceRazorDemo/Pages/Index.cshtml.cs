@@ -3,15 +3,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CommerceRazorDemo.Pages
 {
-    public class IndexModel : PageModel
+    public class IndexModel : CommerceDemoPageModel
     {
-        private readonly CommerceRazorDemo.Data.CommerceRazorDemoContext _context;
-        private readonly ILogger<IndexModel> _logger;
-
+    
         public IndexModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<IndexModel> logger)
+            : base(context, logger)
         {
-            _context = context;
-            _logger = logger;
+
         }
 
         

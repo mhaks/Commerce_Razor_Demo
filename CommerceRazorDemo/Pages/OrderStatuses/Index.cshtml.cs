@@ -11,13 +11,12 @@ using System.ComponentModel;
 
 namespace CommerceRazorDemo.Pages.OrderStatuses
 {
-    public class IndexModel : PageModel
+    public class IndexModel : CommerceDemoPageModel
     {
-        private readonly CommerceRazorDemo.Data.CommerceRazorDemoContext _context;
-
-        public IndexModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context)
+        public IndexModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<IndexModel> logger)
+            : base(context, logger)
         {
-            _context = context;
+
         }
 
         public IList<OrderStatus> OrderStatus { get;set; } = default!;
@@ -29,9 +28,9 @@ namespace CommerceRazorDemo.Pages.OrderStatuses
 
         public async Task OnGetAsync(string? sortOrder)
         {
-            if (_context.OrderStatus != null)
+            if (Context.OrderStatus != null)
             {
-                var statusQuery = from s in _context.OrderStatus select s;
+                var statusQuery = from s in Context.OrderStatus select s;
 
                 if(!String.IsNullOrEmpty(SearchString))
                 { 

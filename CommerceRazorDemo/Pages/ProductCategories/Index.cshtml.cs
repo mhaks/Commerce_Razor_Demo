@@ -11,13 +11,12 @@ using Microsoft.Data.SqlClient;
 
 namespace CommerceRazorDemo.Pages.ProductCategories
 {
-    public class IndexModel : PageModel
+    public class IndexModel : CommerceDemoPageModel
     {
-        private readonly CommerceRazorDemo.Data.CommerceRazorDemoContext _context;
-
-        public IndexModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context)
+        public IndexModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<IndexModel> logger)
+            : base(context, logger)
         {
-            _context = context;
+
         }
 
         public IList<ProductCategory> ProductCategory { get;set; } = default!;
@@ -29,9 +28,9 @@ namespace CommerceRazorDemo.Pages.ProductCategories
 
         public async Task OnGetAsync(string sortOrder)
         {
-            if (_context.ProductCategory != null)
+            if (Context.ProductCategory != null)
             {
-                var categoryQuery = from c in _context.ProductCategory
+                var categoryQuery = from c in Context.ProductCategory
                                     select c;
 
                 if (!String.IsNullOrEmpty(SearchString))

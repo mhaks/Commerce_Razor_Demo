@@ -8,22 +8,19 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CommerceRazorDemo.Pages.Shopping
 {
-    public class CartModel : PageModel
+    public class CartModel : CommerceDemoPageModel
     {
-        private readonly CommerceRazorDemo.Data.CommerceRazorDemoContext _context;
-        private readonly ILogger<IndexModel> _logger;
-
-        public CartModel(CommerceRazorDemoContext context, ILogger<IndexModel> logger)
+        public CartModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<CartModel> logger)
+            : base(context, logger)
         {
-            _context = context;
-            _logger = logger;
+
         }
 
 
         public int OrderId { get; set; }
 
         [BindProperty]
-        public List<ProductVM> Products { get; set; }
+        public List<ProductVM> Products { get; set; } = null!;
 
         [DisplayFormat(DataFormatString = "{0:C}")]
         public decimal SubTotal { get; set; }
@@ -39,7 +36,7 @@ namespace CommerceRazorDemo.Pages.Shopping
 
         public IActionResult OnGet(int customerId)
         {
-            if ( _context.Product == null)
+            if ( Context.Product == null)
             {
                 return NotFound();
             }
@@ -61,7 +58,7 @@ namespace CommerceRazorDemo.Pages.Shopping
 
         public IActionResult OnPost(int customerId, int productId, int quantity)
         {
-            if (_context.Product == null)
+            if (Context.Product == null)
             {
                 return NotFound();
             }
@@ -70,7 +67,7 @@ namespace CommerceRazorDemo.Pages.Shopping
             if (order.Products == null)
                 order.Products = new List<OrderProduct>();
 
-            var product = _context.Product.Where(p => p.Id == productId).FirstOrDefault();
+            var product = Context.Product.Where(p => p.Id == productId).FirstOrDefault();
             if (product == null)
             {
                 return NotFound();
@@ -86,7 +83,7 @@ namespace CommerceRazorDemo.Pages.Shopping
                 };
             }
 
-            _context.SaveChanges();
+            Context.SaveChanges();
 
             var dict = new RouteValueDictionary
             {
@@ -102,7 +99,7 @@ namespace CommerceRazorDemo.Pages.Shopping
                 return Page();
             }
 
-            if (_context.Product == null)
+            if (Context.Product == null)
             {
                 return NotFound();
             }
@@ -131,7 +128,7 @@ namespace CommerceRazorDemo.Pages.Shopping
                 
             }
             
-            _context.SaveChanges();
+            Context.SaveChanges();
 
             var dict = new RouteValueDictionary();
             dict.Add("customerId", order.CustomerId);
@@ -140,7 +137,7 @@ namespace CommerceRazorDemo.Pages.Shopping
 
         private Order GetOrderByCustomer(int customerId)
         {
-            var order = _context.Order
+            var order = Context.Order
                 .Where(c => c.CustomerId == customerId)
                 .Include(c => c.Customer)
                 .ThenInclude(c => c.StateLocation)
@@ -171,7 +168,7 @@ namespace CommerceRazorDemo.Pages.Shopping
 
         private Order GetOrderById(int orderId)
         {
-            var order = _context.Order
+            var order = Context.Order
                 .Where(o => o.Id == orderId)
                 .Include(c => c.Customer)
                 .ThenInclude(c => c.StateLocation)

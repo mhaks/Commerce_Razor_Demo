@@ -6,19 +6,19 @@ namespace CommerceRazorDemo.Pages.Shared.Components
 {
     public class CartStatusViewComponent : ViewComponent
     {
-        private readonly CommerceRazorDemo.Data.CommerceRazorDemoContext _context;
+        private readonly CommerceRazorDemo.Data.CommerceRazorDemoContext Context;
         private readonly ILogger<IndexModel> _logger;
 
         public CartStatusViewComponent(CommerceRazorDemoContext context, ILogger<IndexModel> logger)
         {
-            _context = context;
+            Context = context;
             _logger = logger;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
             // TODO 
-            var orders = await _context.Order
+            var orders = await Context.Order
                 .Where(x => x.CustomerId == 0)
                 .AsNoTracking()
                 .ToListAsync();

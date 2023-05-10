@@ -11,13 +11,12 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace CommerceRazorDemo.Pages.Shopping
 {
-    public class IndexModel : PageModel
+    public class IndexModel : CommerceDemoPageModel
     {
-        private readonly CommerceRazorDemo.Data.CommerceRazorDemoContext _context;
-
-        public IndexModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context)
+        public IndexModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<IndexModel> logger)
+            : base(context, logger)
         {
-            _context = context;
+
         }
 
         [BindProperty(SupportsGet = true)]
@@ -31,9 +30,9 @@ namespace CommerceRazorDemo.Pages.Shopping
 
         public async Task OnGetAsync()
         {
-            if (_context.Product != null)
+            if (Context.Product != null)
             {
-                var productsQuery = from p in _context.Product select p;
+                var productsQuery = from p in Context.Product select p;
 
                 if (!string.IsNullOrEmpty(SearchString))
                 { 

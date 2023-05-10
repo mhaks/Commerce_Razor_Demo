@@ -1,3 +1,7 @@
-﻿@{
-    Layout = "_Layout";
+﻿@model CommerceDemoPageModel
+@{
+    if (Model.IsAdmin)
+        Layout = "_LayoutAdmin";
+    else
+        Layout = "_LayoutCustomer";
 }

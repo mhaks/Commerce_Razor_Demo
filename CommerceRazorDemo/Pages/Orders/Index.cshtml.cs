@@ -12,13 +12,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CommerceRazorDemo.Pages.Orders
 {
-    public class IndexModel : PageModel
+    public class IndexModel : CommerceDemoPageModel
     {
-        private readonly CommerceRazorDemo.Data.CommerceRazorDemoContext _context;
-
-        public IndexModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context)
+        public IndexModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<IndexModel> logger)
+            : base(context, logger)
         {
-            _context = context;
+
         }
 
         public IList<Order> Orders { get;set; } = default!;
@@ -37,10 +36,10 @@ namespace CommerceRazorDemo.Pages.Orders
 
         public async Task OnGetAsync()
         {
-            if (_context.Order != null)
+            if (Context.Order != null)
             {
                 
-                var query = from o in _context.Order select o;
+                var query = from o in Context.Order select o;
                     
 
                 if (OrderSearchId.HasValue && OrderSearchId > 0)
@@ -68,7 +67,7 @@ namespace CommerceRazorDemo.Pages.Orders
                     .OrderBy(o => o.Id)
                     .ToListAsync();
 
-                OrderStatusSelect = new SelectList(await _context.OrderStatus.OrderBy(o => o.Name).ToListAsync(), "Id", "Name");
+                OrderStatusSelect = new SelectList(await Context.OrderStatus.OrderBy(o => o.Name).ToListAsync(), "Id", "Name");
             }
         }
     }

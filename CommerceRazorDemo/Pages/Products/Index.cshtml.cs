@@ -11,13 +11,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CommerceRazorDemo.Pages.Products
 {
-    public class IndexModel : PageModel
+    public class IndexModel : CommerceDemoPageModel
     {
-        private readonly CommerceRazorDemo.Data.CommerceRazorDemoContext _context;
-
-        public IndexModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context)
+        public IndexModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<IndexModel> logger)
+            : base(context, logger)
         {
-            _context = context;
+
         }
 
         public IList<Product> Product { get;set; } = default!;
@@ -46,9 +45,9 @@ namespace CommerceRazorDemo.Pages.Products
 
         public async Task OnGetAsync(string sortOrder)
         {
-            if (_context.Product != null)
+            if (Context.Product != null)
             {
-                var productsQuery = from p in _context.Product select p;
+                var productsQuery = from p in Context.Product select p;
 
                 if (!string.IsNullOrEmpty(SearchString))
                     productsQuery = productsQuery.Where(p => p.Title.Contains(SearchString));
@@ -127,8 +126,8 @@ namespace CommerceRazorDemo.Pages.Products
                     .ToListAsync();
 
 
-                Brands = new SelectList(await _context.Product.OrderBy(x => x.Brand).Select(x => x.Brand).Distinct().ToListAsync());
-                Categories = new SelectList(await _context.ProductCategory.ToListAsync(), "Id", "Title");
+                Brands = new SelectList(await Context.Product.OrderBy(x => x.Brand).Select(x => x.Brand).Distinct().ToListAsync());
+                Categories = new SelectList(await Context.ProductCategory.ToListAsync(), "Id", "Title");
                 ActiveStatus = new SelectList(new ActiveStatusItem[] { new ActiveStatusItem() { Id = 1, Title = "Active" }, new ActiveStatusItem() { Id = 0, Title = "Inactive" } }, "Id", "Title");
             }
         }
