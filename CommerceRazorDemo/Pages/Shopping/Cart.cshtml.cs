@@ -36,7 +36,7 @@ namespace CommerceRazorDemo.Pages.Shopping
 
         public IActionResult OnGet(int customerId)
         {
-            if ( Context.Product == null)
+            if ( _context.Product == null)
             {
                 return NotFound();
             }
@@ -58,7 +58,7 @@ namespace CommerceRazorDemo.Pages.Shopping
 
         public IActionResult OnPost(int customerId, int productId, int quantity)
         {
-            if (Context.Product == null)
+            if (_context.Product == null)
             {
                 return NotFound();
             }
@@ -67,7 +67,7 @@ namespace CommerceRazorDemo.Pages.Shopping
             if (order.Products == null)
                 order.Products = new List<OrderProduct>();
 
-            var product = Context.Product.Where(p => p.Id == productId).FirstOrDefault();
+            var product = _context.Product.Where(p => p.Id == productId).FirstOrDefault();
             if (product == null)
             {
                 return NotFound();
@@ -83,7 +83,7 @@ namespace CommerceRazorDemo.Pages.Shopping
                 };
             }
 
-            Context.SaveChanges();
+            _context.SaveChanges();
 
             var dict = new RouteValueDictionary
             {
@@ -99,7 +99,7 @@ namespace CommerceRazorDemo.Pages.Shopping
                 return Page();
             }
 
-            if (Context.Product == null)
+            if (_context.Product == null)
             {
                 return NotFound();
             }
@@ -128,7 +128,7 @@ namespace CommerceRazorDemo.Pages.Shopping
                 
             }
             
-            Context.SaveChanges();
+            _context.SaveChanges();
 
             var dict = new RouteValueDictionary();
             dict.Add("customerId", order.CustomerId);
@@ -137,7 +137,7 @@ namespace CommerceRazorDemo.Pages.Shopping
 
         private Order GetOrderByCustomer(int customerId)
         {
-            var order = Context.Order
+            var order = _context.Order
                 .Where(c => c.CustomerId == customerId)
                 .Include(c => c.Customer)
                 .ThenInclude(c => c.StateLocation)
@@ -168,7 +168,7 @@ namespace CommerceRazorDemo.Pages.Shopping
 
         private Order GetOrderById(int orderId)
         {
-            var order = Context.Order
+            var order = _context.Order
                 .Where(o => o.Id == orderId)
                 .Include(c => c.Customer)
                 .ThenInclude(c => c.StateLocation)

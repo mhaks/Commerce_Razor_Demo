@@ -1,24 +1,31 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CommerceRazorDemo.Pages
 {
     public class CommerceDemoPageModel : PageModel
     {
-        private readonly CommerceRazorDemo.Data.CommerceRazorDemoContext _context;
-        private readonly ILogger<CommerceDemoPageModel> _logger;
+        protected readonly CommerceRazorDemo.Data.CommerceRazorDemoContext _context;
+        protected readonly ILogger<CommerceDemoPageModel> _logger;
 
         public CommerceDemoPageModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<CommerceDemoPageModel> logger)
         {
             _context = context;
             _logger = logger;
-            IsAdmin = false;
 
+            
+
+            // TODO is user a customer or admin role
+            IsAdmin = false;
         }
 
-        public CommerceRazorDemo.Data.CommerceRazorDemoContext Context { get => _context; }
-        public ILogger<CommerceDemoPageModel> Logger { get => _logger; }
-
         public bool IsAdmin { get; set; }
+
+        public override void OnPageHandlerExecuted(PageHandlerExecutedContext context)
+        {
+            ViewData["DbContext"] = _context;
+            base.OnPageHandlerExecuted(context);
+        }       
 
     }
 }

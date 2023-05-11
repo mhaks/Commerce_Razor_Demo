@@ -7,21 +7,20 @@ namespace CommerceRazorDemo.Pages.Shared.Components
 {
     public class CartStatusViewComponent : ViewComponent
     {
-        private readonly CommerceRazorDemo.Data.CommerceRazorDemoContext _context;
-        private readonly ILogger<CartStatusViewComponent> _logger;
-
-        public CartStatusViewComponent(CommerceRazorDemoContext context, ILogger<CartStatusViewComponent> logger)
+      
+        public CartStatusViewComponent()
         {
-            _context = context;
-            _logger = logger;
+
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
+            var context = ViewData["DbContext"] as CommerceRazorDemo.Data.CommerceRazorDemoContext;
+
             var customerId = 1;
             int itemCount = 0;
 
-            var order = await _context.Order
+            var order = await context.Order
                 .AsNoTracking()
                 .Where(o => o.CustomerId == customerId)
                 .Include(c => c.OrderHistory)
@@ -37,7 +36,7 @@ namespace CommerceRazorDemo.Pages.Shared.Components
                     itemCount = order.Products.Count;
                 }
             }
-                      
+
 
             return View(itemCount);
         }

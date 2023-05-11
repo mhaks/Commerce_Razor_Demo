@@ -31,14 +31,14 @@ namespace CommerceRazorDemo.Pages.Products
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (Context.Product == null)
+            if (_context.Product == null)
             {
                 return NotFound();
             }
 
             if (id.HasValue && id.Value != 0)
             {
-                var product = await Context.Product.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+                var product = await _context.Product.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
                 if (product == null)
                 {
                     return NotFound();
@@ -67,7 +67,7 @@ namespace CommerceRazorDemo.Pages.Products
 
             if (ProductVM.Id != 0)
             {
-                var product = await Context.Product.FindAsync(ProductVM.Id);
+                var product = await _context.Product.FindAsync(ProductVM.Id);
                 if (product == null)
                     return NotFound();
 
@@ -77,19 +77,19 @@ namespace CommerceRazorDemo.Pages.Products
             {
                 var product = new Product();
                 ProductVM.MapToDomain(product);
-               Context.Product.Add(product);
+               _context.Product.Add(product);
                
             }           
 
-            await Context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return RedirectToPage("./Index");
 
         }
 
         private async void PopulateSelections()
         {
-            Brands = new List<string>(await Context.Product.OrderBy(x => x.Brand).Select(x => x.Brand).Distinct().ToListAsync());
-            Categories = new SelectList(await Context.ProductCategory.ToListAsync(), "Id", "Title");
+            Brands = new List<string>(await _context.Product.OrderBy(x => x.Brand).Select(x => x.Brand).Distinct().ToListAsync());
+            Categories = new SelectList(await _context.ProductCategory.ToListAsync(), "Id", "Title");
         }
     }
 

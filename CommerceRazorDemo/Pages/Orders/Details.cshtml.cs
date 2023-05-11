@@ -12,6 +12,8 @@ namespace CommerceRazorDemo.Pages.Orders
 {
     public class DetailsModel : CommerceDemoPageModel
     {
+
+
         public DetailsModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<DetailsModel> logger)
             : base(context, logger)
         {
@@ -22,12 +24,12 @@ namespace CommerceRazorDemo.Pages.Orders
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || Context.Order == null)
+            if (id == null || _context.Order == null)
             {
                 return NotFound();
             }
 
-            var order = await Context.Order
+            var order = await _context.Order
                 .AsNoTracking()
                 .Include(x => x.Customer)
                 .ThenInclude(x => x.StateLocation)

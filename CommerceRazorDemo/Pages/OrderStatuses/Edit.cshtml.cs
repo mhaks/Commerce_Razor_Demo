@@ -14,6 +14,9 @@ namespace CommerceRazorDemo.Pages.OrderStatuses
 {
     public class EditModel : CommerceDemoPageModel
     {
+        private readonly CommerceRazorDemo.Data.CommerceRazorDemoContext _context;
+        private readonly ILogger<CommerceDemoPageModel> _logger;
+
         public EditModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<EditModel> logger)
              : base(context, logger)
         {
@@ -25,14 +28,14 @@ namespace CommerceRazorDemo.Pages.OrderStatuses
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (Context.OrderStatus == null)
+            if (_context.OrderStatus == null)
             {
                 return NotFound();
             }
 
             if (id.HasValue && id != 0)
             {
-                var orderstatus = await Context.OrderStatus.AsNoTracking().FirstOrDefaultAsync(m => m.Id == id);
+                var orderstatus = await _context.OrderStatus.AsNoTracking().FirstOrDefaultAsync(m => m.Id == id);
                 if (orderstatus == null)
                 {
                     return NotFound();
@@ -58,7 +61,7 @@ namespace CommerceRazorDemo.Pages.OrderStatuses
 
             if (OrderStatusVM.Id != 0)
             {
-                var orderStatus = await Context.OrderStatus.FirstOrDefaultAsync(x => x.Id == OrderStatusVM.Id);
+                var orderStatus = await _context.OrderStatus.FirstOrDefaultAsync(x => x.Id == OrderStatusVM.Id);
                 if (orderStatus == null)
                 {
                     return NotFound();
@@ -68,13 +71,13 @@ namespace CommerceRazorDemo.Pages.OrderStatuses
             else
             {
                 var orderStatus = new OrderStatus { Name = OrderStatusVM.Name };
-                Context.OrderStatus.Add(orderStatus);                
+                _context.OrderStatus.Add(orderStatus);                
             }
                         
 
             try
             {
-                await Context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -93,7 +96,7 @@ namespace CommerceRazorDemo.Pages.OrderStatuses
 
         private bool OrderStatusExists(int id)
         {
-          return Context.OrderStatus.Any(e => e.Id == id);
+          return _context.OrderStatus.Any(e => e.Id == id);
         }
     }
 

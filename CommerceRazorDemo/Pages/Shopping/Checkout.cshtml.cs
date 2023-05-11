@@ -19,7 +19,7 @@ namespace CommerceRazorDemo.Pages.Shopping
 
         public async void OnPostAsync(int orderId) 
         { 
-            var order = await Context.Order.Where(x => x.Id == orderId).FirstOrDefaultAsync();
+            var order = await _context.Order.Where(x => x.Id == orderId).FirstOrDefaultAsync();
         }
     }
 }

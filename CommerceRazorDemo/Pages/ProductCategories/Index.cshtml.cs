@@ -28,9 +28,9 @@ namespace CommerceRazorDemo.Pages.ProductCategories
 
         public async Task OnGetAsync(string sortOrder)
         {
-            if (Context.ProductCategory != null)
+            if (_context.ProductCategory != null)
             {
-                var categoryQuery = from c in Context.ProductCategory
+                var categoryQuery = from c in _context.ProductCategory
                                     select c;
 
                 if (!String.IsNullOrEmpty(SearchString))

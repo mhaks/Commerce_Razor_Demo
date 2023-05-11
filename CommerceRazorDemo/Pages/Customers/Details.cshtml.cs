@@ -23,12 +23,12 @@ namespace CommerceRazorDemo.Pages.Customers
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || Context.Customer == null)
+            if (id == null || _context.Customer == null)
             {
                 return NotFound();
             }
 
-            var customer = await Context.Customer.AsNoTracking().Include(c => c.StateLocation).FirstOrDefaultAsync(m => m.Id == id);
+            var customer = await _context.Customer.AsNoTracking().Include(c => c.StateLocation).FirstOrDefaultAsync(m => m.Id == id);
             if (customer == null)
             {
                 return NotFound();

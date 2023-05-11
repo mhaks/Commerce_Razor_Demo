@@ -30,9 +30,9 @@ namespace CommerceRazorDemo.Pages.Shopping
 
         public async Task OnGetAsync()
         {
-            if (Context.Product != null)
+            if (_context.Product != null)
             {
-                var productsQuery = from p in Context.Product select p;
+                var productsQuery = from p in _context.Product select p;
 
                 if (!string.IsNullOrEmpty(SearchString))
                 { 

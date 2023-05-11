@@ -13,6 +13,9 @@ namespace CommerceRazorDemo.Pages.OrderStatuses
 {
     public class IndexModel : CommerceDemoPageModel
     {
+        private readonly CommerceRazorDemo.Data.CommerceRazorDemoContext _context;
+        private readonly ILogger<CommerceDemoPageModel> _logger;
+
         public IndexModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<IndexModel> logger)
             : base(context, logger)
         {
@@ -28,9 +31,9 @@ namespace CommerceRazorDemo.Pages.OrderStatuses
 
         public async Task OnGetAsync(string? sortOrder)
         {
-            if (Context.OrderStatus != null)
+            if (_context.OrderStatus != null)
             {
-                var statusQuery = from s in Context.OrderStatus select s;
+                var statusQuery = from s in _context.OrderStatus select s;
 
                 if(!String.IsNullOrEmpty(SearchString))
                 { 

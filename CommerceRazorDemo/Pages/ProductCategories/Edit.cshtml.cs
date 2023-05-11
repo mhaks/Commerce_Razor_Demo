@@ -25,14 +25,14 @@ namespace CommerceRazorDemo.Pages.ProductCategories
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (Context.ProductCategory == null)
+            if (_context.ProductCategory == null)
             {
                 return NotFound();
             }
 
             if (id.HasValue && id != 0)
             {
-                var productcategory = await Context.ProductCategory.AsNoTracking().FirstOrDefaultAsync(m => m.Id == id);
+                var productcategory = await _context.ProductCategory.AsNoTracking().FirstOrDefaultAsync(m => m.Id == id);
                 if (productcategory == null)
                 {
                     return NotFound();
@@ -58,7 +58,7 @@ namespace CommerceRazorDemo.Pages.ProductCategories
 
             if (ProductCategoryVM.Id != 0)
             {
-                var productcategory = await Context.ProductCategory.FirstOrDefaultAsync(m => m.Id == ProductCategoryVM.Id);
+                var productcategory = await _context.ProductCategory.FirstOrDefaultAsync(m => m.Id == ProductCategoryVM.Id);
                 if (productcategory == null)
                 {
                     return NotFound();
@@ -67,13 +67,13 @@ namespace CommerceRazorDemo.Pages.ProductCategories
             }
             else
             {
-                Context.ProductCategory.Add(new ProductCategory { Title = ProductCategoryVM.Title });
+                _context.ProductCategory.Add(new ProductCategory { Title = ProductCategoryVM.Title });
             }
             
 
             try
             {
-                await Context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -92,7 +92,7 @@ namespace CommerceRazorDemo.Pages.ProductCategories
 
         private bool ProductCategoryExists(int id)
         {
-          return (Context.ProductCategory?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.ProductCategory?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 

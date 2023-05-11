@@ -6,21 +6,22 @@ namespace CommerceRazorDemo.Pages.Shared.Components
 {
     public class ProductSearchViewComponent : ViewComponent
     {
-        private readonly CommerceRazorDemo.Data.CommerceRazorDemoContext _context;
-        private readonly ILogger<ProductSearchViewComponent> _logger;
 
-        public ProductSearchViewComponent(CommerceRazorDemoContext context, ILogger<ProductSearchViewComponent> logger)
+        public ProductSearchViewComponent()
         {
-            _context = context;
-            _logger = logger;
+
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var categories = await _context.ProductCategory
+            var context = ViewData["DbContext"] as CommerceRazorDemo.Data.CommerceRazorDemoContext;
+
+            var categories = await context.ProductCategory
                 .AsNoTracking()
                 .OrderBy(x => x.Title)
                 .ToListAsync();
+
+            //var categories = new List<Models.ProductCategory>();
 
             return View(categories);
         }

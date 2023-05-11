@@ -19,7 +19,7 @@ namespace CommerceRazorDemo.Pages.Customers
 {
     public class EditModel : CommerceDemoPageModel
     {
-        
+
         public EditModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<EditModel> logger)
              : base(context, logger)
         {
@@ -34,14 +34,14 @@ namespace CommerceRazorDemo.Pages.Customers
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (Context.Customer == null)
+            if (_context.Customer == null)
             {
                 return NotFound();
             }
 
             if (id.HasValue && id.Value != 0)
             {
-                var customer = await Context.Customer.FirstOrDefaultAsync(m => m.Id == id);
+                var customer = await _context.Customer.FirstOrDefaultAsync(m => m.Id == id);
                 if (customer == null)
                 {
                     return NotFound();
@@ -51,7 +51,7 @@ namespace CommerceRazorDemo.Pages.Customers
             }
             else
             {
-                var states = await Context.StateLocation.OrderBy(s => s.Abbreviation).ToListAsync();
+                var states = await _context.StateLocation.OrderBy(s => s.Abbreviation).ToListAsync();
                 Customer = new CustomerViewModel { Id = 0, StateLocationId = states.First().Id };
             }
 
@@ -71,7 +71,7 @@ namespace CommerceRazorDemo.Pages.Customers
 
             if (Customer.Id != 0)
             {
-                var cust = await Context.Customer.FindAsync(Customer.Id);
+                var cust = await _context.Customer.FindAsync(Customer.Id);
                 if (cust == null)
                     return NotFound();
 
@@ -81,14 +81,14 @@ namespace CommerceRazorDemo.Pages.Customers
             {
                 var cust = new Customer();
                 Customer.MapToDomain(cust);
-                Context.Customer.Add(cust);
+                _context.Customer.Add(cust);
             }
 
 
 
             try
             {
-                await Context.SaveChangesAsync();                
+                await _context.SaveChangesAsync();                
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -108,12 +108,12 @@ namespace CommerceRazorDemo.Pages.Customers
 
         private bool CustomerExists(int id)
         {
-          return (Context.Customer?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Customer?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
         private async void LoadSelections()
         {
-            UsStates = new SelectList(await Context.StateLocation.ToListAsync(), "Id", "Abbreviation");
+            UsStates = new SelectList(await _context.StateLocation.ToListAsync(), "Id", "Abbreviation");
         }
 
        

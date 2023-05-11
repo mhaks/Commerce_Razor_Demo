@@ -12,6 +12,9 @@ namespace CommerceRazorDemo.Pages.Customers
 {
     public class IndexModel : CommerceDemoPageModel
     {
+        private readonly CommerceRazorDemo.Data.CommerceRazorDemoContext _context;
+        private readonly ILogger<CommerceDemoPageModel> _logger;
+
         public IndexModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<IndexModel> logger)
             : base(context, logger)
         {
@@ -27,9 +30,9 @@ namespace CommerceRazorDemo.Pages.Customers
 
         public async Task OnGetAsync(string sortOrder)
         {
-            if (Context.Customer != null)
+            if (_context.Customer != null)
             {
-                var customerQuery = from c in Context.Customer select c;
+                var customerQuery = from c in _context.Customer select c;
 
                 if (!String.IsNullOrEmpty(SearchString))
                 {

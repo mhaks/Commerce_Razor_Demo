@@ -18,12 +18,12 @@ namespace CommerceRazorDemo.Pages.Shopping
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || Context.Product == null)
+            if (id == null || _context.Product == null)
             {
                 return NotFound();
             }
 
-            var product = await Context.Product
+            var product = await _context.Product
                 .AsNoTracking()
                 .Include(x => x.ProductCategory)
                 .FirstOrDefaultAsync(m => m.Id == id);

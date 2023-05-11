@@ -36,10 +36,10 @@ namespace CommerceRazorDemo.Pages.Orders
 
         public async Task OnGetAsync()
         {
-            if (Context.Order != null)
+            if (_context.Order != null)
             {
                 
-                var query = from o in Context.Order select o;
+                var query = from o in _context.Order select o;
                     
 
                 if (OrderSearchId.HasValue && OrderSearchId > 0)
@@ -67,7 +67,7 @@ namespace CommerceRazorDemo.Pages.Orders
                     .OrderBy(o => o.Id)
                     .ToListAsync();
 
-                OrderStatusSelect = new SelectList(await Context.OrderStatus.OrderBy(o => o.Name).ToListAsync(), "Id", "Name");
+                OrderStatusSelect = new SelectList(await _context.OrderStatus.OrderBy(o => o.Name).ToListAsync(), "Id", "Name");
             }
         }
     }
