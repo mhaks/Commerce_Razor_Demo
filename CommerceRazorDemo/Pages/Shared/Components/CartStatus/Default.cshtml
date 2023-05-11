@@ -1,17 +1,10 @@
-﻿@model Boolean
+﻿@model int
 
-@if (Model)
-{
-    <a class="nav-link" href="\Shopping\Cart?customerId=1">
-        &nbsp;
-        <i class="bi bi-cart-fill fs-1"></i>
+<div class="d-flex ms-auto">
+    <a class="btn btn-outline-dark" href="\Shopping\Cart?customerId=1">
+        <i class="bi-cart-fill me-1"></i>
+        Cart
+        <span class="badge bg-dark text-white ms-1 rounded-pill">@Model</span>
     </a>
-}
-else
-{
-    <a class="nav-link" href="\Shopping\Cart?customerId=1">
-        &nbsp;
-        <i class="bi bi-cart fs-1"></i>
-    </a>
-}
+</div>
 

@@ -12,11 +12,13 @@ namespace CommerceRazorDemo.Pages
             _context = context;
             _logger = logger;
             IsAdmin = false;
+
         }
 
         public CommerceRazorDemo.Data.CommerceRazorDemoContext Context { get => _context; }
         public ILogger<CommerceDemoPageModel> Logger { get => _logger; }
 
         public bool IsAdmin { get; set; }
+
     }
 }

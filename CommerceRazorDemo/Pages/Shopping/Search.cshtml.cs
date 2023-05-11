@@ -23,7 +23,7 @@ namespace CommerceRazorDemo.Pages.Shopping
         public string? SearchString { get; set; }
 
         [BindProperty(SupportsGet = true)]
-        public int? Category { get; set; }
+        public int? CategoryId { get; set; }
        
 
         public IList<Product> Products { get;set; } = default!;
@@ -40,9 +40,10 @@ namespace CommerceRazorDemo.Pages.Shopping
                     productsQuery = productsQuery.Where(p => p.Title.ToUpper().Contains(SearchString) || p.Description.ToUpper().Contains(SearchString) || p.Brand.ToUpper().Contains(SearchString) || p.ProductCategory.Title.ToUpper().Contains(SearchString));
 
                 }
-                else if (Category != null)
+                
+                if (CategoryId != null)
                 {
-                    productsQuery = productsQuery.Where(c => c.ProductCategoryId == Category);    
+                    productsQuery = productsQuery.Where(c => c.ProductCategoryId == CategoryId);    
                 }
 
                 Products = await productsQuery

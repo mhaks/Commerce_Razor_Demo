@@ -23,13 +23,7 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-                <form class="d-flex ms-auto">
-                    <button class="btn btn-outline-dark" type="submit">
-                        <i class="bi-cart-fill me-1"></i>
-                        Cart
-                        <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-                    </button>
-                </form>
+                <vc:cart-status></vc:cart-status>
             </div>
         </div>
     </nav>
@@ -46,28 +40,7 @@
 
     <main>
         <!-- Section Search bar-->
-        <section class="py-1">
-            <div class="container px-4 px-lg-5 mt-5">
-                <div class="row gx-4 gx-lg-5 justify-content-center">
-                    <div class="col">
-                        <form class="d-flex">
-                            <div class="input-group me-2">
-                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">All</button>
-                                <div class="dropdown-menu">
-                                    <button class="dropdown-item" type="button" onclick="changeCategory('All')">All</button>
-                                    <button class="dropdown-item" type="button" onclick="changeCategory('Category 1')">Category 1</button>
-                                    <button class="dropdown-item" type="button" onclick="changeCategory('Category 2')">Category 2</button>
-                                    <button class="dropdown-item" type="button" onclick="changeCategory('Category 3')">Category 3</button>
-                                </div>
-                                <input class="form-control flex-grow-1 me-2" type="search" placeholder="Search for products..." aria-label="Search">
-                                <input type="hidden" id="category-input" name="category" value="All">
-                            </div>
-                            <button class="btn btn-outline-dark" type="submit">Search</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <vc:product-search></vc:product-search>
 
         <!-- Section Promoted -->
         <section class="py-5">
@@ -289,12 +262,7 @@
 
     <script src="~/js/site.js"></script>
 
-    <script>
-        function changeCategory(category) {
-            document.querySelector('.dropdown-toggle').innerHTML = category;
-            document.querySelector('#category-input').value = category;
-        }
-    </script>
+    
 
 </body>
 </html>

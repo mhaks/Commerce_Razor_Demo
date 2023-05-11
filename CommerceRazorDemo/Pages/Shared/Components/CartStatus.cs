@@ -1,4 +1,5 @@
 ﻿using CommerceRazorDemo.Data;
+using CommerceRazorDemo.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,24 +7,39 @@ namespace CommerceRazorDemo.Pages.Shared.Components
 {
     public class CartStatusViewComponent : ViewComponent
     {
-        private readonly CommerceRazorDemo.Data.CommerceRazorDemoContext Context;
-        private readonly ILogger<IndexModel> _logger;
+        private readonly CommerceRazorDemo.Data.CommerceRazorDemoContext _context;
+        private readonly ILogger<CartStatusViewComponent> _logger;
 
-        public CartStatusViewComponent(CommerceRazorDemoContext context, ILogger<IndexModel> logger)
+        public CartStatusViewComponent(CommerceRazorDemoContext context, ILogger<CartStatusViewComponent> logger)
         {
-            Context = context;
+            _context = context;
             _logger = logger;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            // TODO 
-            var orders = await Context.Order
-                .Where(x => x.CustomerId == 0)
-                .AsNoTracking()
-                .ToListAsync();
+            var customerId = 1;
+            int itemCount = 0;
 
-            return View(false);
+            var order = await _context.Order
+                .AsNoTracking()
+                .Where(o => o.CustomerId == customerId)
+                .Include(c => c.OrderHistory)
+                .Include(c => c.Products)
+                .OrderByDescending(x => x.Id)
+                .LastOrDefaultAsync();
+
+            if (order != null && order.OrderHistory != null)
+            {
+                var history = order.OrderHistory.OrderByDescending(x => x.Id).LastOrDefault();
+                if (history != null && history.OrderStatusId == (int)OrderState.Cart)
+                {
+                    itemCount = order.Products.Count;
+                }
+            }
+                      
+
+            return View(itemCount);
         }
     }
 }

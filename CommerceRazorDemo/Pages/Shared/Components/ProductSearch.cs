@@ -1,22 +1,28 @@
 ﻿using CommerceRazorDemo.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CommerceRazorDemo.Pages.Shared.Components
 {
     public class ProductSearchViewComponent : ViewComponent
     {
-        private readonly CommerceRazorDemo.Data.CommerceRazorDemoContext Context;
-        private readonly ILogger<IndexModel> _logger;
+        private readonly CommerceRazorDemo.Data.CommerceRazorDemoContext _context;
+        private readonly ILogger<ProductSearchViewComponent> _logger;
 
-        public ProductSearchViewComponent(CommerceRazorDemoContext context, ILogger<IndexModel> logger)
+        public ProductSearchViewComponent(CommerceRazorDemoContext context, ILogger<ProductSearchViewComponent> logger)
         {
-            Context = context;
+            _context = context;
             _logger = logger;
         }
 
-        public IViewComponentResult Invoke()
+        public async Task<IViewComponentResult> InvokeAsync()
         {
-            return View();
+            var categories = await _context.ProductCategory
+                .AsNoTracking()
+                .OrderBy(x => x.Title)
+                .ToListAsync();
+
+            return View(categories);
         }
     }
 }

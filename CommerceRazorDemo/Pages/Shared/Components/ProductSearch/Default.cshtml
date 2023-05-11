@@ -1,5 +1,33 @@
-﻿
-<form class="d-flex col-6" action="..\Shopping\Index" method="get">
-    <input class="form-control me-2" type="search" placeholder="Search for products..." aria-label="Search" id="SearchString" name="SearchString">
-    <button class=" form-control btn btn-success" type="submit">Search</button>
-</form>
+﻿@model List<Models.ProductCategory>
+
+<section class="py-1">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col">
+                <form class="d-flex" action="..\Shopping\Search" method="get">
+                    <div class="input-group me-2">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="category-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">All</button>
+                        <div class="dropdown-menu">
+                            <button class="dropdown-item" type="button" onclick="changeCategory('All')" value="">All</button>
+                            @foreach(var cat in Model)
+                            {
+                                <button class="dropdown-item" type="button" onclick="changeCategory('@cat.Title', @cat.Id)">@cat.Title</button>
+                            }
+                        </div>
+                        <input class="form-control flex-grow-1 me-2" type="search" placeholder="Search for products..." aria-label="Search" name="SearchString">
+                        <input type="hidden" id="category-input" name="CategoryId" value="">
+                    </div>
+                    <button class="btn btn-outline-dark" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function changeCategory(category, id) {
+        console.info(category + " " + id);
+        document.querySelector('#category-toggle').innerHTML = category;
+        document.querySelector('#category-input').value = id;        
+    }
+</script>
