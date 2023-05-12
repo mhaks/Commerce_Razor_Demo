@@ -7,69 +7,71 @@
 
 @if (Model.Products != null && Model.Products.Any())
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Item</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Total</th>
-                <th></th>
-            </tr>            
-        </thead>
-        <tbody>
-            @foreach(var item in Model.Products)
-            {
-                <form method="post" asp-area="Shopping" asp-page="Cart" asp-page-handler="Edit" id="@($"form-{item.Id}")">
-                <tr>
-                    <td>
-                        <a asp-page="Product" asp-route-id="@item.ProductId" >@item.Title</a>
-                    </td>
-                    <td>
-                        <input asp-for="@item.Quantity" name="quantity" class="form-control" />
-                        <span asp-validation-for="@item.Quantity" class="text-danger"></span>
-                    </td>
-                    <td>@Html.DisplayFor(m => item.Price)</td>
-                    <td>@Html.DisplayFor(m => item.TotalPrice)</td>
-                    <td>
-                        <input type="hidden" id="orderId" name="orderId" value="@Model.OrderId" />
-                        <input type="hidden" id="orderProductId" name="orderProductId" value="@item.Id" />
-                        <button type="submit" name="action" value="update" class="btn btn-secondary" >Update</button>                            
-                        <button type="submit" name="action" value="remove" class="btn bg-warning" >Remove</button>
-                    </td>                    
-                </tr>
-                </form>
-            }
-        </tbody>
-        <tfoot>
-            <tr>
-                <td align="left" colspan="2">Subtotal</td>
-                <td align="right" colspan="2">@Html.DisplayFor(m => m.SubTotal)</td>
-            </tr>
-            <tr>
-                <td align="left" colspan="2">Tax</td>
-                <td align="right" colspan="2">@Html.DisplayFor(m => m.Tax)</td>
-            </tr>
-            <tr>
-                <td align="left" colspan="2">Total Price</td>
-                <td align="right" colspan="2">@Html.DisplayFor(m => m.TotalPrice)</td>
-            </tr>
-            <tr>
-                <td></td>
-            </tr>
-        </tfoot>
-    </table>
+    <!-- Cart Products -->
+    <section class="py-2">
+        <div class="container px-4 px-lg-5 mt-5">
+            <div class="row ">
+
+                <table class="table gx-2 gx-lg-2">
+                    <tbody>
+                        @foreach (var item in Model.Products)
+                        {
+                            <form method="post" asp-area="Shopping" asp-page="Cart" asp-page-handler="Edit" id="@($"form-{item.Id}")">
+                                <tr>
+                                <td><img class="" src="https://dummyimage.com/150x100/dee2e6/6c757d.jpg" alt="@item.Title" /></td>
+                                    <td>
+                                        <!-- Product name-->
+                                        <a asp-page="Product" asp-route-id="@item.ProductId">
+                                            <h5 class="fw-bolder">@item.Title</h5>
+                                        </a>
+                                        <!-- Brand-->
+                                        <p class="fw-bolder">@item.Brand</p>                                       
+
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <div class="input-group my-3">
+                                                    <span class="input-group-text" id="basic-addon1" >Qty</span>
+                                                    <input type="number" class="form-control" value="1" aria-label="Quantity" aria-describedby="basic-addon1" asp-for="@item.Quantity" name="quantity">
+                                                </div>
+                                            </div>
+                                            <div class="col-3 my-3">
+                                                <button type="submit" class="btn btn-outline-dark mt-auto">Update</button>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td class="align-middle text-end">                                        
+                                        <div class="fw-bolder">@Html.DisplayFor(m => item.Price)</div>
+                                    </td>
+                                    <td class="align-middle">
+                                        <div class="text-center"><a class="btn btn-outline-danger mt-auto" href="#">Remove</a></div>
+                                    </td>
+                                </tr>
+                            </form>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td class="fw-bolder text-end" colspan="4"> @($"Subtotal ({@Model.Products.Count} items): ")@Html.DisplayFor(m => m.SubTotal)</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </section>
+
 }
 else
 {
     <h2> No items currently in cart</h2>
 }
 
-<div class="row">
-    <div class="col-3">
-        <a asp-page="Index" class="btn btn-secondary btn-lg">Continue Shopping</a>
+<!-- checkout -->
+<section class="py-2">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row">
+            <div class="col-6"><a class="btn  btn-outline-dark mt-auto" href="#">Continue shopping</a></div>
+            <div class="col-6 text-end"><a class="btn btn-outline-success mt-auto" href="#">Proceed to Checkout</a></div>
+        </div>
     </div>
-    <div class="col-3">
-        <a asp-page="Checkout" asp-route-orderId="@Model.OrderId" class="btn btn-primary btn-lg">Checkout</a>
-    </div>
-</div>
+</section>

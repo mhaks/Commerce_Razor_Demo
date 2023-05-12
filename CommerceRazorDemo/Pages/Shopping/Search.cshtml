@@ -5,41 +5,77 @@
     ViewData["Title"] = "Shopping";
 }
 
-<h1>Shopping</h1>
+<!-- Section Search bar-->
+<vc:product-search></vc:product-search>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Products[0].Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Products[0].Brand)
-            </th>
-            <th>
-                Category
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Products) {
-        <tr>
-            <td>
-                <a asp-area="" asp-page="./Product" asp-route-id="@item.Id">@item.Title</a>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Brand)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductCategory.Title)
-            </td>               
-        </tr>
-}
-    </tbody>
-</table>
+
+<!-- Section Search Results -->
+<section class="py-2">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row">
+            <h4>Search Results:&nbsp;
+                @if (String.IsNullOrEmpty(Model.CategoryName) && String.IsNullOrEmpty(Model.SearchString))
+                {
+                    <text>ALL</text>
+                }
+                else
+                {
+                    if (!String.IsNullOrEmpty(Model.CategoryName))
+                    {
+                        <text>@Model.CategoryName</text>
+                    }
+
+                    if(!String.IsNullOrEmpty(Model.SearchString))
+                    {
+                        if (!String.IsNullOrEmpty(Model.CategoryName))
+                        {
+                            <text> - </text>
+                        }
+
+                        <text>@Model.SearchString</text>
+                    }
+                }
+            </h4>
+        </div>
+
+
+        <div class="row ">
+
+            <table class="table">
+                <tbody>
+                    @foreach (var product in Model.Products)
+                    {
+                        <tr>
+                            <td><img class="" src="https://dummyimage.com/225x150/dee2e6/6c757d.jpg" alt="@product.Title" /></td>
+                            <td>
+                                <!-- Product name-->
+                                <a asp-page="Product" asp-route-id="@product.Id">
+                                    <h5 class="fw-bolder">@product.Title</h5>
+                                </a>
+                                <!-- Brand-->
+                                <p class="fw-bolder">@product.Brand</p>
+                                <!-- Product Description-->
+                                <p>@product.Description</p>
+
+                            </td>
+                            <td class="align-middle text-end">
+                                <!-- Product price-->
+                                <div class="fw-bolder">$@product.Price</div>
+                            </td>
+                            <td class="align-middle text-end">
+                                <!--TODO customer id-->
+                                <form asp-page="Cart" method="post" asp-route-customerId="1" asp-route-productId="@product.Id" asp-route-quantity="1">
+                                    <button type="submit" class="btn btn-outline-dark mt-auto text-center text-nowrap">Add to cart</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+
+
+                </tbody>
+            </table>
+
+
+        </div>
+    </div>
+</section>

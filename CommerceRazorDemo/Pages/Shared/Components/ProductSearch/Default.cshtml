@@ -14,7 +14,7 @@
                                 <button class="dropdown-item" type="button" onclick="changeCategory('@cat.Title', @cat.Id)">@cat.Title</button>
                             }
                         </div>
-                        <input class="form-control flex-grow-1 me-2" type="search" placeholder="Search for products..." aria-label="Search" name="SearchString">
+                        <input class="form-control flex-grow-1 me-2" type="search" placeholder="Search for products..." aria-label="Search" name="SearchString" value="">
                         <input type="hidden" id="category-input" name="CategoryId" value="">
                     </div>
                     <button class="btn btn-outline-dark" type="submit">Search</button>
@@ -26,7 +26,6 @@
 
 <script>
     function changeCategory(category, id) {
-        console.info(category + " " + id);
         document.querySelector('#category-toggle').innerHTML = category;
         document.querySelector('#category-input').value = id;        
     }

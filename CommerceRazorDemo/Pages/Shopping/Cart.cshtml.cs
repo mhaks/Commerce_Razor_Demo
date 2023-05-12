@@ -205,13 +205,15 @@ namespace CommerceRazorDemo.Pages.Shopping
                 Id = op.Id;
                 ProductId = op.ProductId;
                 Title = op.Product.Title;
+                Brand = op.Product.Brand;
                 Price = op.Price;
                 Quantity = op.Quantity;
             }
 
             public int Id { get; set; }
             public int ProductId { get; set; }
-            public string Title { get; set; } = null!;
+            public string Title { get; set; } = default!;
+            public string Brand { get; set; } = default!;
 
             
             [DisplayFormat(DataFormatString = "{0:C}")]

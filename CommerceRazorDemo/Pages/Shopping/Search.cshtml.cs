@@ -24,13 +24,15 @@ namespace CommerceRazorDemo.Pages.Shopping
 
         [BindProperty(SupportsGet = true)]
         public int? CategoryId { get; set; }
+
+        public string CategoryName { get; set; }
        
 
         public IList<Product> Products { get;set; } = default!;
 
         public async Task OnGetAsync()
         {
-            if (_context.Product != null)
+            if (_context != null && _context.Product != null)
             {
                 var productsQuery = from p in _context.Product select p;
 
@@ -43,7 +45,8 @@ namespace CommerceRazorDemo.Pages.Shopping
                 
                 if (CategoryId != null)
                 {
-                    productsQuery = productsQuery.Where(c => c.ProductCategoryId == CategoryId);    
+                    productsQuery = productsQuery.Where(c => c.ProductCategoryId == CategoryId);
+                    CategoryName = _context.ProductCategory.FirstOrDefault(x => x.Id == CategoryId)?.Title ?? "";
                 }
 
                 Products = await productsQuery
