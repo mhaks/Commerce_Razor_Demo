@@ -17,8 +17,10 @@
                         @foreach (var item in Model.Products)
                         {
                             <form method="post" asp-area="Shopping" asp-page="Cart" asp-page-handler="Edit" id="@($"form-{item.Id}")">
+                                <input type="hidden" name="orderId" value="@Model.OrderId"/>
+                                <input type="hidden" name="orderProductId" value="@item.Id"/>
                                 <tr>
-                                <td><img class="" src="https://dummyimage.com/150x100/dee2e6/6c757d.jpg" alt="@item.Title" /></td>
+                                    <td><img class="" src="https://dummyimage.com/150x100/dee2e6/6c757d.jpg" alt="@item.Title" /></td>
                                     <td>
                                         <!-- Product name-->
                                         <a asp-page="Product" asp-route-id="@item.ProductId">
@@ -31,11 +33,11 @@
                                             <div class="col-3">
                                                 <div class="input-group my-3">
                                                     <span class="input-group-text" id="basic-addon1" >Qty</span>
-                                                    <input type="number" class="form-control" value="1" aria-label="Quantity" aria-describedby="basic-addon1" asp-for="@item.Quantity" name="quantity">
+                                                    <input type="number" class="form-control" aria-label="Quantity" aria-describedby="basic-addon1" asp-for="@item.Quantity" name="quantity">
                                                 </div>
                                             </div>
                                             <div class="col-3 my-3">
-                                                <button type="submit" class="btn btn-outline-dark mt-auto">Update</button>
+                                            <button type="submit" class="btn btn-outline-dark mt-auto" name="action" value="update">Update</button>
                                             </div>
                                         </div>
                                     </td>
@@ -44,7 +46,7 @@
                                         <div class="fw-bolder">@Html.DisplayFor(m => item.Price)</div>
                                     </td>
                                     <td class="align-middle">
-                                        <div class="text-center"><a class="btn btn-outline-danger mt-auto" href="#">Remove</a></div>
+                                        <button type="submit" class="btn btn-outline-danger mt-auto" name="action" value="remove">Remove</button>
                                     </td>
                                 </tr>
                             </form>
@@ -67,11 +69,11 @@ else
 }
 
 <!-- checkout -->
-<section class="py-2">
-    <div class="container px-4 px-lg-5 mt-5">
+<section class="pt-2 pb-4 mb-10">
+    <div class="container px-4 px-lg-5">
         <div class="row">
-            <div class="col-6"><a class="btn  btn-outline-dark mt-auto" href="#">Continue shopping</a></div>
-            <div class="col-6 text-end"><a class="btn btn-outline-success mt-auto" href="#">Proceed to Checkout</a></div>
+            <div class="col-6"><a class="btn  btn-outline-dark mt-auto" asp-page="Search">Continue shopping</a></div>
+            <div class="col-6 text-end"><a class="btn btn-outline-success mt-auto" asp-page="Checkout">Proceed to Checkout</a></div>
         </div>
     </div>
 </section>
