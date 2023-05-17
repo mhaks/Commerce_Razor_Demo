@@ -23,6 +23,7 @@ namespace CommerceRazorDemo.Models
 
         [DataType(DataType.Currency)]
         [Column(TypeName = "decimal(18, 2)")]
+        [DisplayFormat(DataFormatString = "{0:C}")]
         public decimal Price { get; set; }
 
         

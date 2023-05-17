@@ -2,3 +2,101 @@
 @model CommerceRazorDemo.Pages.Shopping.OrderModel
 @{
 }
+
+<!-- Shipping-->
+<section class="py-2">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row">
+            <hr class="col-12" />
+            <h5 class="col-3">Shipping Address</h5>
+            <div class="col-9">
+                <div>@Model.Order.Customer.FullName</div>
+                <div>@Model.Order.Customer.Address1</div>
+                @if (!String.IsNullOrEmpty(@Model.Order.Customer.Address2))
+                {
+                    <div>@Model.Order.Customer.Address2</div>
+                }
+                <div>@($"{Model.Order.Customer.City}, {Model.Order.Customer.StateLocation.Abbreviation} {Model.Order.Customer.PostalCode}")</div>
+                <div>@Model.Order.Customer.EmailAddress</div>
+                <div>@Model.Order.Customer.PhoneNumber</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- billing -->
+<section class="py-4 mb-2">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row">
+            <hr class="col-12" />
+            <div class="col-12">
+                <div class="row">
+                    <h4 class="text-danger col-8">Order Total @Html.DisplayFor(m => m.Order.TotalPrice)</h4>
+                    <div class="col-4">
+                        <div class="row row-cols-2">
+                            <div class="col text-end">@($"Items({Model.Order.Products.Count()})")</div>
+                            <div class="col text-end">@Html.DisplayFor(m => m.Order.Subtotal)</div>
+                            <div class="col text-end underline">Tax</div>
+                            <div class="col text-end underline">@Html.DisplayFor(m => m.Order.Tax)</div>
+                            <div class="col text-end">Order Total</div>
+                            <div class="col text-end">@Html.DisplayFor(m => m.Order.TotalPrice)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Order Products -->
+<section class="py-2">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row">
+            <hr class="col-12" />
+            <h5 class="col-3">Items</h5>
+            <div class="col-9">
+
+                <table class="table gx-2 gx-lg-2 mt-2">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th class="text-end">Qty</th>
+                            <th class="text-end">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Order.Products)
+                        {
+                            <tr>
+                                <td><img class="" src="https://dummyimage.com/90x60/dee2e6/6c757d.jpg" alt="@item.Product.Title" /></td>
+                                <td>
+                                    <!-- Product name-->
+                                    <a href="">
+                                        <h5 class="fw-bolder">@item.Product.Title</h5>
+                                    </a>
+                                    <!-- Brand-->
+                                    <p class="fw-bolder">@item.Product.Brand</p>
+                                </td>
+
+                                <td class="align-middle text-end">
+                                    <!-- qty-->
+                                    <div class="fw-bolder">@item.Quantity</div>
+                                </td>
+                                <td class="align-middle text-end">
+                                    <!-- Product price-->
+                                    <div class="fw-bolder">@Html.DisplayFor(m => item.Price)</div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+
+            </div>
+        </div>
+    </div>
+</section>
+
+   
+

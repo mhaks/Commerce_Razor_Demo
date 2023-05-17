@@ -16,6 +16,7 @@ namespace CommerceRazorDemo.Models
         public ICollection<OrderHistory> OrderHistory { get; set; } = null!;
 
         [Display(Name ="Sub Total")]
+        [DisplayFormat(DataFormatString = "{0:C}")]
         public decimal Subtotal { 
             get
             {
@@ -30,6 +31,7 @@ namespace CommerceRazorDemo.Models
         }
 
         [Display(Name = "Tax")]
+        [DisplayFormat(DataFormatString = "{0:C}")]
         public decimal Tax
         {
             get
@@ -39,6 +41,7 @@ namespace CommerceRazorDemo.Models
         }
 
         [Display(Name = "Total Price")]
+        [DisplayFormat(DataFormatString = "{0:C}")]
         public decimal TotalPrice
         {
             get

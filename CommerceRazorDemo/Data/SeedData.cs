@@ -184,7 +184,7 @@ namespace CommerceRazorDemo.Data
                     var orderStatus = new OrderStatus[]
                     {
                         new OrderStatus { Name = "Cart"},
-                        new OrderStatus { Name = "Ordered"},
+                        new OrderStatus { Name = "Processing"},
                         new OrderStatus { Name = "Cancelled"},
                         new OrderStatus { Name = "Shipped"},
                         new OrderStatus { Name = "Delivered"},

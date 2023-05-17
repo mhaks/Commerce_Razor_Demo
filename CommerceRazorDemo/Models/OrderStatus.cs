@@ -18,9 +18,10 @@ namespace CommerceRazorDemo.Models
     public enum OrderState
     {
          Cart = 1,
-         Cancelled = 2,
-         Shipped = 3,
-         Delivered = 4,
-         Returned = 5,                      
+         Processing = 2,
+         Cancelled = 3,
+         Shipped = 4,
+         Delivered = 5,
+         Returned = 6,                      
     }
 }
