@@ -20,22 +20,26 @@ namespace CommerceRazorDemo.Pages.Shared.Components
             var customerId = 1;
             int itemCount = 0;
 
-            var order = await context.Order
-                .AsNoTracking()
-                .Where(o => o.CustomerId == customerId)
-                .Include(c => c.OrderHistory)
-                .Include(c => c.Products)
-                .OrderByDescending(x => x.Id)
-                .LastOrDefaultAsync();
 
-            if (order != null && order.OrderHistory != null)
+            if (context != null)
             {
-                var history = order.OrderHistory.OrderByDescending(x => x.Id).LastOrDefault();
-                if (history != null && history.OrderStatusId == (int)OrderState.Cart)
+                var order = await context.Order
+               .AsNoTracking()
+               .Where(o => o.CustomerId == customerId)
+               .Include(c => c.OrderHistory)
+               .Include(c => c.Products)
+               .OrderByDescending(x => x.Id)
+               .LastOrDefaultAsync();
+
+                if (order != null && order.OrderHistory != null)
                 {
-                    itemCount = order.Products.Count;
+                    var history = order.OrderHistory.OrderBy(x => x.Id).LastOrDefault();
+                    if (history != null && history.OrderStatusId == (int)OrderState.Cart)
+                    {
+                        itemCount = order.Products.Count;
+                    }
                 }
-            }
+            }         
 
 
             return View(itemCount);

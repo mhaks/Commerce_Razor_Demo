@@ -2,3 +2,46 @@
 @model CommerceRazorDemo.Pages.Shopping.OrdersModel
 @{
 }
+
+
+<!-- Order Products -->
+<section class="py-2">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row">
+            <hr class="col-12" />
+            <h5 class="col-3">Order History</h5>
+            <div class="col-9">
+
+                <table class="table gx-2 gx-lg-2 mt-2">
+                    <thead>
+                        <tr>
+                            <th>Ordered</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Items</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in Model.Orders)
+                        {
+                            var ordered = order.OrderHistory.First(h => h.OrderStatusId == (int)Models.OrderState.Processing);
+                            var current = order.OrderHistory.OrderBy(h => h.OrderDate).Last();
+                            <tr>
+                                <a asp-page="Order" asp-route-orderId="@order.Id">
+                                <td>@ordered.OrderDate</td>
+                                <td>@current.OrderStatus.Name</td>
+                                <td>@current.OrderDate</td>
+                                <td>@order.Products.Count()</td>
+                                <td>@Html.DisplayFor(o => order.TotalPrice)</td>
+                                </a>
+                            </tr>                        
+                        }
+                    </tbody>
+                </table>
+
+
+            </div>
+        </div>
+    </div>
+</section>

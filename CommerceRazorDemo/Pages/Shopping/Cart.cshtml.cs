@@ -155,7 +155,7 @@ namespace CommerceRazorDemo.Pages.Shopping
 
             if (order.OrderHistory != null) 
             {
-                var history = order.OrderHistory.OrderByDescending(x => x.Id).LastOrDefault();
+                var history = order.OrderHistory.OrderBy(x => x.OrderDate).LastOrDefault();
                 if (history == null || history.OrderStatusId != (int)OrderState.Cart)
                 {
                     return new Order();
@@ -175,7 +175,7 @@ namespace CommerceRazorDemo.Pages.Shopping
                 .Include(c => c.OrderHistory)
                 .Include(c => c.Products)
                 .ThenInclude(p => p.Product)
-                .OrderByDescending(x => x.Id)
+                .OrderBy(x => x.Id)
                 .LastOrDefault();
 
             if (order == null)
@@ -186,7 +186,7 @@ namespace CommerceRazorDemo.Pages.Shopping
 
             if (order.OrderHistory != null)
             {
-                var history = order.OrderHistory.OrderByDescending(x => x.Id).LastOrDefault();
+                var history = order.OrderHistory.OrderBy(x => x.OrderDate).LastOrDefault();
                 if (history == null || history.OrderStatusId != (int)OrderState.Cart)
                 {
                     return new Order();

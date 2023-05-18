@@ -3,6 +3,41 @@
 @{
 }
 
+<!-- Status -->
+<section class="py-2">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row my-2">
+            <div class="col-12 text-end">
+                <a class="btn  btn-outline-dark mt-auto" asp-page="Orders" asp-route-customerId="@Model.CustomerId">View My Orders</a>
+            </div>
+        </div>
+        <div class="row">
+            <hr class="col-12" />
+            <h5 class="col-3">Order Status</h5>
+            <div class="col-6">
+                <div class="row row-cols-2">
+                    @{
+                        var histories = Model.Order.OrderHistory.ToArray<Models.OrderHistory>();
+                        var count = histories.Length;
+                        for (var idx = 0; idx < count; idx++)
+                        {
+                            var item = histories[idx];
+                            string cls;
+                            if (idx == count - 1)
+                                cls = "col fw-bolder";
+                            else
+                                cls = "col fw-lighter";
+
+                            <div class="@cls">@item.OrderDate</div>
+                            <div class="@cls">@item.OrderStatus.Name</div>
+                        }
+                    }                    
+                </div>                
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- Shipping-->
 <section class="py-2">
     <div class="container px-4 px-lg-5 mt-5">
