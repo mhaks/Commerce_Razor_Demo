@@ -25,14 +25,6 @@ namespace CommerceRazorDemo.Pages.Shopping
         [DisplayFormat(DataFormatString = "{0:C}")]
         public decimal SubTotal { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:C}")]
-        public decimal Tax { get; set; }
-
-        [DisplayFormat(DataFormatString = "{0:C}")]
-        public decimal TotalPrice { get; set; }
-
-
-
 
         public IActionResult OnGet(int customerId)
         {
@@ -44,8 +36,6 @@ namespace CommerceRazorDemo.Pages.Shopping
             var order = GetOrderByCustomer(customerId);
             OrderId = order.Id;
             SubTotal = order.Subtotal;
-            Tax = order.Tax;
-            TotalPrice = order.TotalPrice;
             Products = new List<ProductVM>();
             if (order.Products != null)
             {

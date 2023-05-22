@@ -21,11 +21,15 @@ namespace CommerceRazorDemo.Models
             get
             {
                 decimal subtotal = 0;
-                foreach(var item in Products)
+                if (Products != null) 
                 {
-                    subtotal += item.Price * item.Quantity;
+                    foreach (var item in Products)
+                    {
+                        subtotal += item.Price * item.Quantity;
 
+                    }
                 }
+                
                 return subtotal;
             }                
         }
