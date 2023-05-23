@@ -80,7 +80,7 @@
                 @item.OrderHistory.OrderBy(x => x.OrderDate).Last().OrderDate
             </td>
             <td>
-                @item.Products.Count()
+                @item.OrderProducts.Count()
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TotalPrice)

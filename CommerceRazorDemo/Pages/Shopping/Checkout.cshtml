@@ -79,7 +79,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model.Order.Products)
+                            @foreach (var item in Model.Order.OrderProducts)
                             {
                             <tr>
                                 <td><img class="" src="https://dummyimage.com/90x60/dee2e6/6c757d.jpg" alt="@item.Product.Title" /></td>
@@ -125,7 +125,7 @@
                         <h4 class="text-danger col-8">Order Total @Html.DisplayFor(m => m.Order.TotalPrice)</h4>
                         <div class="col-4">
                             <div class="row row-cols-2">
-                                <div class="col text-end">@($"Items({Model.Order.Products.Count()})")</div>
+                                <div class="col text-end">@($"Items({Model.Order.OrderProducts.Count()})")</div>
                                 <div class="col text-end">@Html.DisplayFor(m => m.Order.Subtotal)</div>
                                 <div class="col text-end underline">Tax</div>
                                 <div class="col text-end underline">@Html.DisplayFor(m => m.Order.Tax)</div>

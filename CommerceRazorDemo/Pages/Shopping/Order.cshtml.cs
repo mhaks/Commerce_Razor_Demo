@@ -26,7 +26,7 @@ namespace CommerceRazorDemo.Pages.Shopping
                             .Where(o => o.Id == orderId)
                             .Include(c => c.Customer)
                             .ThenInclude(s => s.StateLocation)
-                            .Include(p => p.Products)
+                            .Include(p => p.OrderProducts)
                             .ThenInclude(p => p.Product)
                             .Include(h => h.OrderHistory)
                             .ThenInclude(s => s.OrderStatus)

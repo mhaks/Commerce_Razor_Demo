@@ -1,4 +1,5 @@
 using CommerceRazorDemo.Data;
+using CommerceRazorDemo.Migrations;
 using CommerceRazorDemo.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -26,36 +27,34 @@ namespace CommerceRazorDemo.Pages.Shopping
         public decimal SubTotal { get; set; }
 
 
-        public IActionResult OnGet(int customerId)
+        public async Task<IActionResult> OnGetAsync(int customerId)
         {
-            if ( _context.Product == null)
+            if (_context == null)
             {
                 return NotFound();
             }
 
-            var order = GetOrderByCustomer(customerId);
+            var query = _context.Order.Where(c => c.CustomerId == customerId).AsNoTracking();
+            var order = await GetOrder(query);
+
             OrderId = order.Id;
             SubTotal = order.Subtotal;
             Products = new List<ProductVM>();
-            if (order.Products != null)
+            if (order.OrderProducts != null)
             {
-                foreach (var op in order.Products)
+                foreach (var op in order.OrderProducts)
                     Products.Add(new ProductVM(op));
             }
 
             return Page();
         }
 
-        public IActionResult OnPost(int customerId, int productId, int quantity)
+        public async Task<IActionResult> OnPostAsync(int customerId, int productId, int quantity)
         {
             if (_context.Product == null)
             {
                 return NotFound();
             }
-
-            var order = GetOrderByCustomer(customerId);
-            if (order.Products == null)
-                order.Products = new List<OrderProduct>();
 
             var product = _context.Product.Where(p => p.Id == productId).FirstOrDefault();
             if (product == null)
@@ -63,16 +62,23 @@ namespace CommerceRazorDemo.Pages.Shopping
                 return NotFound();
             }
 
-            order.Products.Add(new OrderProduct { ProductId = productId, Quantity = quantity, Price =  product.Price});
+            var query = _context.Order.Where(c => c.CustomerId == customerId);
+            var order = await GetOrder(query);
 
-            if (order.OrderHistory == null) 
+            order.OrderProducts ??= new List<OrderProduct>();
+            order.OrderProducts.Add(new OrderProduct { Order = order, ProductId = productId, Quantity = quantity, Price =  product.Price});
+
+            
+            order.OrderHistory ??= new List<OrderHistory>
             {
-                order.OrderHistory = new List<OrderHistory>
-                {
-                    new OrderHistory { OrderStatusId = (int)OrderState.Cart }
-                };
-            }
+                new OrderHistory { Order = order, OrderDate = DateTime.UtcNow, OrderStatusId = (int)OrderState.Cart }
+            };
 
+            if (order.Id == 0)
+            {
+                order.CustomerId = customerId;
+                _context.Order.Add(order);
+            }
             _context.SaveChanges();
 
             var dict = new RouteValueDictionary
@@ -82,21 +88,22 @@ namespace CommerceRazorDemo.Pages.Shopping
             return RedirectToAction("Index", dict);
         }
 
-        public IActionResult OnPostEdit(int orderId, int orderProductId, int quantity, string action) 
+        public async Task<IActionResult> OnPostEditAsync(int orderId, int orderProductId, int quantity, string action) 
         {
+            if (_context == null)
+            {
+                return NotFound();
+            }
+
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            if (_context.Product == null)
-            {
-                return NotFound();
-            }
+            var query = _context.Order.Where(o => o.Id == orderId);
+            var order = await GetOrder(query);
 
-            var order = GetOrderById(orderId);
-
-            var prod = order.Products.Where(op => op.Id == orderProductId).FirstOrDefault();
+            var prod = order.OrderProducts.Where(op => op.Id == orderProductId).FirstOrDefault();
             if (prod != null)
             {
                 if (action == "update")
@@ -107,82 +114,58 @@ namespace CommerceRazorDemo.Pages.Shopping
                     }
                     else
                     {
-                        order.Products.Remove(prod);
+                        order.OrderProducts.Remove(prod);
 
                     }
                 }
                 else if (action == "remove")
                 {
-                    order.Products.Remove(prod);
+                    order.OrderProducts.Remove(prod);
                 }
                 
+            }
+
+            // no products, remove empty order, no
+            if (!order.OrderProducts.Any()) 
+            { 
+                _context.Order.Remove(order); 
             }
             
             _context.SaveChanges();
 
-            var dict = new RouteValueDictionary();
-            dict.Add("customerId", order.CustomerId);
+            var dict = new RouteValueDictionary
+            {
+                { "customerId", order.CustomerId }
+            };
             return RedirectToAction("Index", dict);
         }
 
-        private Order GetOrderByCustomer(int customerId)
+       
+
+
+        private async Task<Order> GetOrder(IQueryable<Order> query)
         {
-            var order = _context.Order
-                .Where(c => c.CustomerId == customerId)
+            var order = await query
                 .Include(c => c.Customer)
                 .ThenInclude(c => c.StateLocation)
-                .Include(c => c.OrderHistory)
-                .Include(c => c.Products)
+                .Include(c => c.OrderProducts)
                 .ThenInclude(p => p.Product)
-                .OrderByDescending(x => x.Id)
-                .LastOrDefault();
-
-            if (order == null)
-            {
-                return new Order();
-
-            }
-
-            if (order.OrderHistory != null) 
-            {
-                var history = order.OrderHistory.OrderBy(x => x.OrderDate).LastOrDefault();
-                if (history == null || history.OrderStatusId != (int)OrderState.Cart)
-                {
-                    return new Order();
-                }
-            }          
-            
-
-            return order;
-        }
-
-        private Order GetOrderById(int orderId)
-        {
-            var order = _context.Order
-                .Where(o => o.Id == orderId)
-                .Include(c => c.Customer)
-                .ThenInclude(c => c.StateLocation)
                 .Include(c => c.OrderHistory)
-                .Include(c => c.Products)
-                .ThenInclude(p => p.Product)
+                .ThenInclude(c => c.OrderStatus)
                 .OrderBy(x => x.Id)
-                .LastOrDefault();
+                .LastOrDefaultAsync();
 
-            if (order == null)
+            if (order == null || order.OrderHistory == null || !order.OrderHistory.Any())
             {
                 return new Order();
 
             }
 
-            if (order.OrderHistory != null)
+            var history = order.OrderHistory.OrderBy(x => x.OrderDate).LastOrDefault();
+            if (history == null || history.OrderStatusId != (int)OrderState.Cart)
             {
-                var history = order.OrderHistory.OrderBy(x => x.OrderDate).LastOrDefault();
-                if (history == null || history.OrderStatusId != (int)OrderState.Cart)
-                {
-                    return new Order();
-                }
+                return new Order();
             }
-
 
             return order;
         }

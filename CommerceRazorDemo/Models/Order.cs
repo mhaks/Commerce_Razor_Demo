@@ -11,7 +11,7 @@ namespace CommerceRazorDemo.Models
         public int? CustomerId { get; set; }
         public Customer Customer { get; set; } = null!;
        
-        public ICollection<OrderProduct> Products { get; set; } = null!;
+        public ICollection<OrderProduct> OrderProducts { get; set; } = null!;
 
         public ICollection<OrderHistory> OrderHistory { get; set; } = null!;
 
@@ -21,9 +21,9 @@ namespace CommerceRazorDemo.Models
             get
             {
                 decimal subtotal = 0;
-                if (Products != null) 
+                if (OrderProducts != null) 
                 {
-                    foreach (var item in Products)
+                    foreach (var item in OrderProducts)
                     {
                         subtotal += item.Price * item.Quantity;
 

@@ -55,7 +55,7 @@
             Products
         </dt>
         <dd class="col-sm-10">
-            @Model.Order.Products.Count() Items
+            @Model.Order.OrderProducts.Count() Items
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -65,7 +65,7 @@
                     </tr>                    
                 </thead>
                 <tbody>
-                    @foreach(var item in Model.Order.Products)
+                    @foreach(var item in Model.Order.OrderProducts)
                     {
                         <tr>
                             <td>@item.Product.Title</td>

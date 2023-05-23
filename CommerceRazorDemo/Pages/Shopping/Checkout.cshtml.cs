@@ -58,7 +58,7 @@ namespace CommerceRazorDemo.Pages.Shopping
                 .Where(o => o.Id == orderId)
                 .Include(c => c.Customer)
                 .ThenInclude(s => s.StateLocation)
-                .Include(p => p.Products)
+                .Include(p => p.OrderProducts)
                 .ThenInclude(p => p.Product)
                 .Include(h => h.OrderHistory)
                 .AsNoTracking()
@@ -68,7 +68,7 @@ namespace CommerceRazorDemo.Pages.Shopping
                 return NotFound();
 
 
-            if (!order.Products.Any() || !order.OrderHistory.Any() || order.OrderHistory.OrderByDescending(x => x.Id).Last().OrderStatusId != (int)OrderState.Cart)
+            if (!order.OrderProducts.Any() || !order.OrderHistory.Any() || order.OrderHistory.OrderByDescending(x => x.Id).Last().OrderStatusId != (int)OrderState.Cart)
                 return RedirectToPage("Cart", new { customerId = order.CustomerId });
 
             Order = order;
@@ -85,7 +85,7 @@ namespace CommerceRazorDemo.Pages.Shopping
 
             var order = await _context.Order
                 .Where(o => o.Id == orderId)
-                .Include(p => p.Products)
+                .Include(p => p.OrderProducts)
                 .ThenInclude(p => p.Product)
                 .Include(h => h.OrderHistory)                
                 .FirstOrDefaultAsync();
@@ -93,10 +93,10 @@ namespace CommerceRazorDemo.Pages.Shopping
             if (order == null)
                 return NotFound();
 
-            var processing = new OrderHistory { OrderId = orderId, OrderDate = DateTime.Now, OrderStatusId = (int)OrderState.Processing };
+            var processing = new OrderHistory { OrderId = orderId, OrderDate = DateTime.UtcNow, OrderStatusId = (int)OrderState.Processing };
             order.OrderHistory.Add(processing);
 
-            foreach(var item in order.Products)
+            foreach(var item in order.OrderProducts)
             {
                 var product = _context.Product.Where(p => p.Id == item.ProductId).FirstOrDefault();
                 if (product == null) continue;

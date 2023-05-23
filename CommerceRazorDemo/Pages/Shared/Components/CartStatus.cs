@@ -24,19 +24,19 @@ namespace CommerceRazorDemo.Pages.Shared.Components
             if (context != null)
             {
                 var order = await context.Order
-               .AsNoTracking()
-               .Where(o => o.CustomerId == customerId)
-               .Include(c => c.OrderHistory)
-               .Include(c => c.Products)
-               .OrderByDescending(x => x.Id)
-               .LastOrDefaultAsync();
+                   .AsNoTracking()
+                   .Where(o => o.CustomerId == customerId)
+                   .Include(c => c.OrderHistory)
+                   .Include(c => c.OrderProducts)
+                   .OrderBy(x => x.Id)
+                   .LastOrDefaultAsync();
 
                 if (order != null && order.OrderHistory != null)
                 {
-                    var history = order.OrderHistory.OrderBy(x => x.Id).LastOrDefault();
+                    var history = order.OrderHistory.OrderBy(x => x.OrderDate).LastOrDefault();
                     if (history != null && history.OrderStatusId == (int)OrderState.Cart)
                     {
-                        itemCount = order.Products.Count;
+                        itemCount = order.OrderProducts.Count;
                     }
                 }
             }         

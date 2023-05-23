@@ -1,8 +1,8 @@
 ﻿@page
 @model CommerceRazorDemo.Pages.Shopping.OrdersModel
 @{
+    var userTimeZone = TimeZoneInfo.Local;
 }
-
 
 <!-- Order Products -->
 <section class="py-2">
@@ -12,12 +12,30 @@
             <h5 class="col-3">Order History</h5>
             <div class="col-9">
 
-                <table class="table gx-2 gx-lg-2 mt-2">
+                <form class="form">
+                    <!--TODO: from identity-->
+                    <input type="hidden" name="customerId" value="1" />
+
+                    <div class="row justify-content-end">
+                        <div class="col-2">
+                            <select class="form-control" asp-for="StatusFilterId" asp-items="Model.StatusList">
+                                <option value="">ALL</option>
+                            </select>
+                        </div>
+                        <div class="col-2">
+                            <button type="submit" class="btn btn-outline-dark mt-auto">Filter</button>
+                        </div>
+                    </div>
+                </form>
+
+                
+                <table class="table gx-2 gx-lg-2 mt-4">
                     <thead>
                         <tr>
+                            <th>Order #</th>
                             <th>Ordered</th>
                             <th>Status</th>
-                            <th>Date</th>
+                            <th>Updated</th>
                             <th>Items</th>
                             <th>Total</th>
                         </tr>
@@ -26,15 +44,15 @@
                         @foreach (var order in Model.Orders)
                         {
                             var ordered = order.OrderHistory.First(h => h.OrderStatusId == (int)Models.OrderState.Processing);
-                            var current = order.OrderHistory.OrderBy(h => h.OrderDate).Last();
+                            var current = order.OrderHistory.OrderBy(h => h.OrderDate).Last();                           
+
                             <tr>
-                                <a asp-page="Order" asp-route-orderId="@order.Id">
-                                <td>@ordered.OrderDate</td>
+                                <td><a asp-page="Order" asp-route-orderId="@order.Id">@order.Id.ToString("D8")</a></td>
+                                <td>@TimeZoneInfo.ConvertTimeFromUtc(ordered.OrderDate, userTimeZone)</td>
                                 <td>@current.OrderStatus.Name</td>
-                                <td>@current.OrderDate</td>
-                                <td>@order.Products.Count()</td>
-                                <td>@Html.DisplayFor(o => order.TotalPrice)</td>
-                                </a>
+                                <td>@TimeZoneInfo.ConvertTimeFromUtc(current.OrderDate, userTimeZone)</td>
+                                <td>@order.OrderProducts.Count()</td>
+                                <td>@Html.DisplayFor(o => order.TotalPrice)</td>                                
                             </tr>                        
                         }
                     </tbody>

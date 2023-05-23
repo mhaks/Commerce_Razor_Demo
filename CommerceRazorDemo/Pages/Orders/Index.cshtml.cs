@@ -58,7 +58,7 @@ namespace CommerceRazorDemo.Pages.Orders
                 }
 
                 Orders = await query.AsNoTracking()
-                    .Include(o => o.Products)
+                    .Include(o => o.OrderProducts)
                     .ThenInclude(p => p.Product)
                     .Include(o => o.Customer)
                     .ThenInclude(c => c.StateLocation)
