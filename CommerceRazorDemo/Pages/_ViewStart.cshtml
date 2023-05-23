@@ -1,6 +1,6 @@
 ﻿@model CommerceDemoPageModel
 @{
-    if (Model.IsAdmin)
+    if (User.IsInRole("Admin"))
         Layout = "_LayoutAdmin";
     else
         Layout = "_LayoutCustomer";

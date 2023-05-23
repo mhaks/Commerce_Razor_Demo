@@ -12,8 +12,6 @@ namespace CommerceRazorDemo.Pages.Customers
 {
     public class IndexModel : CommerceDemoPageModel
     {
-        private readonly CommerceRazorDemo.Data.CommerceRazorDemoContext _context;
-        private readonly ILogger<CommerceDemoPageModel> _logger;
 
         public IndexModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<IndexModel> logger)
             : base(context, logger)
