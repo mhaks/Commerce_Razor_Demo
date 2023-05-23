@@ -18,7 +18,6 @@ namespace CommerceRazorDemo.Pages
         public async Task OnGet()
         {
 
-
             var products  = await _context.Product
                 .OrderByDescending(a => _context.OrderProduct.Count(b => b.ProductId == a.Id))
                 .Take(4)
