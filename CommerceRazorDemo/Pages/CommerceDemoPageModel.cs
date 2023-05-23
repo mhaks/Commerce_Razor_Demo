@@ -13,9 +13,10 @@ namespace CommerceRazorDemo.Pages
             _context = context;
             _logger = logger;
 
-            
+
 
             // TODO is user a customer or admin role
+            
             IsAdmin = false;
         }
 
@@ -23,6 +24,7 @@ namespace CommerceRazorDemo.Pages
 
         public override void OnPageHandlerExecuted(PageHandlerExecutedContext context)
         {
+            var user = HttpContext.User;
             ViewData["DbContext"] = _context;
             base.OnPageHandlerExecuted(context);
         }       
