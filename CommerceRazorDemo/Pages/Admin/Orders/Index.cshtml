@@ -5,10 +5,13 @@
     ViewData["Title"] = "Orders";
 }
 
-<h1>@ViewData["Title"]</h1>
 
-<p>
-    <form>
+<section class="py-2">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row ">
+            <h4>@ViewData["Title"]</h4>
+            <hr />
+            <form>
         <div class="row">
             <div class="col-6">
                 <label class="form-label">Search Order</label>
@@ -37,58 +40,61 @@
             </div>
         </div>
     </form>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Order
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Orders[0].Customer)
-            </th>
-            <th>
-                Status
-            </th>
-            <th>
-                Date
-            </th>
-            <th>
-                Products
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Orders[0].TotalPrice)
-            </th>
-            <th>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Order
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Orders[0].Customer)
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th>
+                            Date
+                        </th>
+                        <th>
+                            Products
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Orders[0].TotalPrice)
+                        </th>
+                        <th>
 
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Orders) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @String.Format("#{0}  {1}", item.Customer.Id, item.Customer.FullName)
-            </td>            
-            <td>
-                @item.OrderHistory.OrderBy(x => x.OrderDate).Last().OrderStatus.Name
-            </td>
-            <td>
-                @item.OrderHistory.OrderBy(x => x.OrderDate).Last().OrderDate
-            </td>
-            <td>
-                @item.OrderProducts.Count()
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TotalPrice)
-            </td>
-            <td>
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+            @foreach (var item in Model.Orders) {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @String.Format("#{0}  {1}", item.Customer.Id, item.Customer.FullName)
+                        </td>            
+                        <td>
+                            @item.OrderHistory.OrderBy(x => x.OrderDate).Last().OrderStatus.Name
+                        </td>
+                        <td>
+                            @item.OrderHistory.OrderBy(x => x.OrderDate).Last().OrderDate
+                        </td>
+                        <td>
+                            @item.OrderProducts.Count()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TotalPrice)
+                        </td>
+                        <td>
+                            <a asp-page="./Details" asp-route-id="@item.Id">Details</a>
+                        </td>
+                    </tr>
+            }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
