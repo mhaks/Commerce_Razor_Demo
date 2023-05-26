@@ -79,7 +79,8 @@ namespace CommerceRazorDemo.Pages.Shopping
                 order.CustomerId = customerId;
                 _context.Order.Add(order);
             }
-            _context.SaveChanges();
+            
+            await _context.SaveChangesAsync();
 
             var dict = new RouteValueDictionary
             {
@@ -130,8 +131,8 @@ namespace CommerceRazorDemo.Pages.Shopping
             { 
                 _context.Order.Remove(order); 
             }
-            
-            _context.SaveChanges();
+
+            await _context.SaveChangesAsync();
 
             var dict = new RouteValueDictionary
             {

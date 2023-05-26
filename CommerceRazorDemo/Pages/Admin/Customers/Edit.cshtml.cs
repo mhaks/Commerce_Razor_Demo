@@ -26,15 +26,73 @@ namespace CommerceRazorDemo.Pages.Customers
 
         }
 
-        [BindProperty]
-        public CustomerViewModel Customer { get; set; } = default!;
 
         public SelectList UsStates { get; set; } = default!;
+
+        [BindProperty]
+        public int CustomerId { get; set; }
+
+        [BindProperty]
+        [Required]
+        [StringLength(100, MinimumLength = 1)]
+        [Display(Name = "User Name")]
+        public string UserName { get; set; } = string.Empty;
+
+        [BindProperty]
+        [Required]
+        [StringLength(100, MinimumLength = 1)]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; } = string.Empty;
+
+        [BindProperty]
+        [Required]
+        [StringLength(100, MinimumLength = 1)]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; } = string.Empty;
+
+        [BindProperty]
+        [Required]
+        [StringLength(100, MinimumLength = 1)]
+        [Display(Name = "Street Address")]
+        public string Address1 { get; set; } = string.Empty;
+
+        [BindProperty]
+        [StringLength(100)]
+        [Display(Name = "Additional Address")]
+        public string? Address2 { get; set; } = string.Empty;
+
+        [BindProperty]
+        [Required]
+        [StringLength(100, MinimumLength = 1)]
+        public string City { get; set; } = string.Empty;
+
+        [BindProperty]
+        [Display(Name = "State")]
+        public int StateLocationId { get; set; }
+
+
+        [Required]
+        [StringLength(5, MinimumLength = 5)]
+        [Display(Name = "Zip")]
+        public string PostalCode { get; set; } = string.Empty;
+
+        [BindProperty]
+        [Required]
+        [Phone]
+        [Display(Name = "Phone")]
+        public string PhoneNumber { get; set; } = string.Empty;
+
+        [BindProperty]
+        [Required]
+        [EmailAddress]
+        [StringLength(100, MinimumLength = 5)]
+        [Display(Name = "Email")]
+        public string EmailAddress { get; set; } = string.Empty;
 
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (_context.Customer == null)
+            if (_context == null)
             {
                 return NotFound();
             }
@@ -46,13 +104,23 @@ namespace CommerceRazorDemo.Pages.Customers
                 {
                     return NotFound();
                 }
-                Customer = new CustomerViewModel();
-                Customer.MapToViewModel(customer);
+
+                CustomerId = customer.Id;
+                UserName = customer.UserName;
+                FirstName = customer.FirstName;
+                LastName = customer.LastName;
+                Address1 = customer.Address1;
+                Address2 = customer.Address2;
+                City = customer.City;
+                StateLocationId = customer.StateLocationId;
+                PostalCode = customer.PostalCode;
+                PhoneNumber = customer.PhoneNumber;
+                EmailAddress = customer.EmailAddress;
             }
             else
             {
-                var states = await _context.StateLocation.OrderBy(s => s.Abbreviation).ToListAsync();
-                Customer = new CustomerViewModel { Id = 0, StateLocationId = states.First().Id };
+                var state = await _context.StateLocation.OrderBy(s => s.Abbreviation).FirstAsync();
+                StateLocationId = state.Id;
             }
 
             LoadSelections();
@@ -63,25 +131,48 @@ namespace CommerceRazorDemo.Pages.Customers
         // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
+            if (_context == null)
+            {
+                return NotFound();
+            }
+
             if (!ModelState.IsValid)
             {
                 LoadSelections();
                 return Page();
             }
 
-            if (Customer.Id != 0)
+            if (CustomerId != 0)
             {
-                var cust = await _context.Customer.FindAsync(Customer.Id);
-                if (cust == null)
+                var customer = await _context.Customer.FindAsync(CustomerId);
+                if (customer == null)
                     return NotFound();
 
-                Customer.MapToDomain(cust);
+                customer.UserName = UserName;
+                customer.FirstName = FirstName;
+                customer.LastName = LastName;
+                customer.Address1 = Address1;
+                customer.Address2 = Address2;
+                customer.City = City;
+                customer.StateLocationId = StateLocationId;
+                customer.PostalCode = PostalCode;
+                customer.PhoneNumber = PhoneNumber;
+                customer.EmailAddress = EmailAddress;
             }
             else
             {
-                var cust = new Customer();
-                Customer.MapToDomain(cust);
-                _context.Customer.Add(cust);
+                var customer = new Customer();
+                customer.UserName = UserName;
+                customer.FirstName = FirstName;
+                customer.LastName = LastName;
+                customer.Address1 = Address1;
+                customer.Address2 = Address2;
+                customer.City = City;
+                customer.StateLocationId = StateLocationId;
+                customer.PostalCode = PostalCode;
+                customer.PhoneNumber = PhoneNumber;
+                customer.EmailAddress = EmailAddress;
+                _context.Customer.Add(customer);
             }
 
 
@@ -92,7 +183,7 @@ namespace CommerceRazorDemo.Pages.Customers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CustomerExists(Customer.Id))
+                if (!CustomerExists(CustomerId))
                 {
                     return NotFound();
                 }
@@ -115,101 +206,7 @@ namespace CommerceRazorDemo.Pages.Customers
         {
             UsStates = new SelectList(await _context.StateLocation.ToListAsync(), "Id", "Abbreviation");
         }
-
+        
+    }
        
-
-    }
-
-    public class CustomerViewModel
-    {
-        public int Id { get; set; }
-
-        [Required]
-        [StringLength(100, MinimumLength = 1)]
-        [Display(Name = "User Name")]
-        public string UserName { get; set; } = string.Empty;
-
-        [Required]
-        [StringLength(100, MinimumLength = 1)]
-        [Display(Name = "First Name")]
-        public string FirstName { get; set; } = string.Empty;
-
-        [Required]
-        [StringLength(100, MinimumLength = 1)]
-        [Display(Name = "Last Name")]
-        public string LastName { get; set; } = string.Empty;
-
-        [Required]
-        [StringLength(100, MinimumLength = 1)]
-        [Display(Name = "Street Address")]
-        public string Address1 { get; set; } = string.Empty;
-
-
-        [StringLength(100)]
-        [Display(Name = "Additional Address")]
-        public string? Address2 { get; set; } = string.Empty;
-
-        [Required]
-        [StringLength(100, MinimumLength = 1)]
-        public string City { get; set; } = string.Empty;
-
-        [Display(Name = "State")]
-        public int StateLocationId { get; set; }
-             
-        [Required]
-        [StringLength(5, MinimumLength = 5)]
-        [Display(Name = "Zip")]
-        public string PostalCode { get; set; } = string.Empty;
-
-        [Required]
-        [Phone]
-        [Display(Name = "Phone")]
-        public string PhoneNumber { get; set; } = string.Empty;
-
-        [Required]
-        [EmailAddress]
-        [StringLength(100, MinimumLength = 5)]
-        [Display(Name = "Email")]
-        public string EmailAddress { get; set; } = string.Empty;
-
-        [Display(Name = "Full Name")]
-        public string FullName
-        {
-            get
-            {
-                return LastName + ", " + FirstName;
-            }
-        }
-
-
-        public void MapToDomain(Customer customer)
-        {
-            customer.UserName = UserName;
-            customer.FirstName = FirstName;
-            customer.LastName = LastName;
-            customer.Address1 = Address1;
-            customer.Address2 = Address2;
-            customer.City = City;
-            customer.StateLocationId = StateLocationId;
-            customer.PostalCode = PostalCode;
-            customer.PhoneNumber = PhoneNumber;
-            customer.EmailAddress = EmailAddress;
-        }
-
-
-        public void MapToViewModel(Customer customer)
-        {
-            Id = customer.Id;
-            UserName = customer.UserName;
-            FirstName = customer.FirstName;
-            LastName = customer.LastName;
-            Address1 = customer.Address1;
-            Address2 = customer.Address2;
-            City = customer.City;
-            StateLocationId = customer.StateLocationId;
-            PostalCode = customer.PostalCode;
-            PhoneNumber = customer.PhoneNumber;
-            EmailAddress = customer.EmailAddress;
-        }
-    }
 }

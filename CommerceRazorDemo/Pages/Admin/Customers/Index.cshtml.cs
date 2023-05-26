@@ -22,36 +22,39 @@ namespace CommerceRazorDemo.Pages.Customers
         public IList<Customer> Customer { get;set; } = default!;
 
         [BindProperty(SupportsGet = true)]
-        public string SearchString { get; set; } = String.Empty;
+        public string? SearchString { get; set; }
 
         public string NameSort { get; set; } = String.Empty;
 
-        public async Task OnGetAsync(string sortOrder)
+        public async Task<IActionResult> OnGetAsync(string sortOrder)
         {
-            if (_context.Customer != null)
+            if (_context == null)
+                return NotFound();
+
+
+
+            var customerQuery = from c in _context.Customer select c;
+
+            if (!String.IsNullOrEmpty(SearchString))
             {
-                var customerQuery = from c in _context.Customer select c;
-
-                if (!String.IsNullOrEmpty(SearchString))
-                {
-                    customerQuery = customerQuery.Where(c => c.FirstName.Contains(SearchString) || c.LastName.Contains(SearchString));
-                }
-
-                NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-                switch(sortOrder)
-                {
-                    case "name_desc":
-                        customerQuery = customerQuery.OrderByDescending(c => c.LastName);
-                        break;
-
-                    default:
-                        customerQuery = customerQuery.OrderBy(c => c.LastName);
-                        break;
-                }
-
-                Customer = await customerQuery.AsNoTracking().Include(c => c.StateLocation).ToListAsync();
+                customerQuery = customerQuery.Where(c => c.FirstName.Contains(SearchString) || c.LastName.Contains(SearchString));
             }
 
+            NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            switch(sortOrder)
+            {
+                case "name_desc":
+                    customerQuery = customerQuery.OrderByDescending(c => c.LastName);
+                    break;
+
+                default:
+                    customerQuery = customerQuery.OrderBy(c => c.LastName);
+                    break;
+            }
+
+            Customer = await customerQuery.AsNoTracking().Include(c => c.StateLocation).ToListAsync();
+
+            return Page();
         }
     }
 }

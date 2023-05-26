@@ -8,96 +8,98 @@
 <section class="py-2">
     <div class="container px-4 px-lg-5 mt-5">
         <div class="row ">
-
             <h4>@ViewData["Title"]</h4>
             <hr />
-            <p>
-                <a asp-page="Edit">Create New Customer</a>
-            </p>
-            <p>
-                <form>
-                    <div class="row">
-                        <div class="col-6">
-                            <label class="form-label">Search</label>
-                            <input type="text" class="form-control" asp-for="SearchString" placeholder="search title text" />
-                        </div>
-                    </div>        
-                </form>
-            </p>
-            <table class="table">
-                <thead>
-                    <tr>            
-                        <th>
-                            <a asp-page="Index" asp-route-sortOrder="@Model.NameSort">
-                                @Html.DisplayNameFor(model => model.Customer[0].FullName)
-                            </a>
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Customer[0].Address1)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Customer[0].Address2)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Customer[0].City)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Customer[0].StateLocation)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Customer[0].PostalCode)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Customer[0].PhoneNumber)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Customer[0].EmailAddress)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Customer[0].UserName)
-                        </th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-            @foreach (var item in Model.Customer) {
-                    <tr>
-            
-                        <td>
-                            @Html.DisplayFor(modelItem => item.FullName)
-                        </td>           
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Address1)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Address2)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.City)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.StateLocation.Abbreviation)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.PostalCode)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.PhoneNumber)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.EmailAddress)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.UserName)
-                        </td>
-                        <td>
-                            <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a>
-                        </td>
-                    </tr>
-            }
-                </tbody>
-            </table>
         </div>
+
+        <div class="row mt-4">
+            <div class="col">
+                <form class="d-flex">
+                    <input type="text" class="form-control" asp-for="SearchString" placeholder="search customer name" />
+                    <button type="submit" class="btn btn-outline-dark mt-auto text-center">Search</button>                           
+                </form>
+            </div>
+            <div class="col text-end">
+                <a asp-page="Edit" class="btn btn-outline-dark mt-auto text-center">Create New Customer</a>
+            </div>
+        </div>
+            
+        <div class="row mt-4">
+            <table class="table">
+            <thead>
+                <tr>            
+                    <th>
+                        <a asp-page="Index" asp-route-sortOrder="@Model.NameSort">
+                            @Html.DisplayNameFor(model => model.Customer[0].FullName)
+                        </a>
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Customer[0].Address1)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Customer[0].Address2)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Customer[0].City)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Customer[0].StateLocation)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Customer[0].PostalCode)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Customer[0].PhoneNumber)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Customer[0].EmailAddress)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Customer[0].UserName)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+        @foreach (var item in Model.Customer) {
+                <tr>
+            
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FullName)
+                    </td>           
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Address1)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Address2)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.City)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StateLocation.Abbreviation)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PostalCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PhoneNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmailAddress)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                    <td>
+                        <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a>
+                    </td>
+                </tr>
+        }
+            </tbody>
+        </table>
+        </div>
+        
     </div>
 </section>
 
