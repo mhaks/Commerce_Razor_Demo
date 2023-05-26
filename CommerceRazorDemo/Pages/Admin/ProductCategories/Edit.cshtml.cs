@@ -21,11 +21,17 @@ namespace CommerceRazorDemo.Pages.ProductCategories
         }
 
         [BindProperty]
-        public ProductCategoryVM ProductCategoryVM { get; set; } = default!;
+        public int CategoryId { get; set; }
+
+        [BindProperty]
+        [Required]
+        [StringLength(60, MinimumLength = 3)]
+        public string Title { get; set; } = String.Empty;
+
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (_context.ProductCategory == null)
+            if (_context == null)
             {
                 return NotFound();
             }
@@ -37,11 +43,14 @@ namespace CommerceRazorDemo.Pages.ProductCategories
                 {
                     return NotFound();
                 }
-                ProductCategoryVM = new ProductCategoryVM { Id = productcategory.Id, Title = productcategory.Title };
+
+                CategoryId = productcategory.Id;
+                Title = productcategory.Title;
             }
             else
             {
-                ProductCategoryVM = new ProductCategoryVM { Id = 0 };
+                CategoryId = 0;
+                Title = String.Empty;
             }
             
             return Page();
@@ -51,23 +60,28 @@ namespace CommerceRazorDemo.Pages.ProductCategories
         // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
+            if (_context == null)
+            {
+                return NotFound();
+            }
+
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            if (ProductCategoryVM.Id != 0)
+            if (CategoryId != 0)
             {
-                var productcategory = await _context.ProductCategory.FirstOrDefaultAsync(m => m.Id == ProductCategoryVM.Id);
+                var productcategory = await _context.ProductCategory.FirstOrDefaultAsync(m => m.Id == CategoryId);
                 if (productcategory == null)
                 {
                     return NotFound();
                 }
-                productcategory.Title = ProductCategoryVM.Title;               
+                productcategory.Title = Title;               
             }
             else
             {
-                _context.ProductCategory.Add(new ProductCategory { Title = ProductCategoryVM.Title });
+                _context.ProductCategory.Add(new ProductCategory { Title = Title });
             }
             
 
@@ -77,7 +91,7 @@ namespace CommerceRazorDemo.Pages.ProductCategories
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProductCategoryExists(ProductCategoryVM.Id))
+                if (!ProductCategoryExists(CategoryId))
                 {
                     return NotFound();
                 }
@@ -96,12 +110,4 @@ namespace CommerceRazorDemo.Pages.ProductCategories
         }
     }
 
-    public class ProductCategoryVM
-    {
-        public int Id { get; set; }
-
-        [Required]
-        [StringLength(60, MinimumLength = 3)]
-        public string Title { get; set; } = String.Empty;
-    }
 }
