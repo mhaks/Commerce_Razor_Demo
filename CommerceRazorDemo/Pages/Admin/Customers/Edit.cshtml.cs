@@ -161,17 +161,19 @@ namespace CommerceRazorDemo.Pages.Customers
             }
             else
             {
-                var customer = new Customer();
-                customer.UserName = UserName;
-                customer.FirstName = FirstName;
-                customer.LastName = LastName;
-                customer.Address1 = Address1;
-                customer.Address2 = Address2;
-                customer.City = City;
-                customer.StateLocationId = StateLocationId;
-                customer.PostalCode = PostalCode;
-                customer.PhoneNumber = PhoneNumber;
-                customer.EmailAddress = EmailAddress;
+                var customer = new Customer
+                {
+                    UserName = UserName,
+                    FirstName = FirstName,
+                    LastName = LastName,
+                    Address1 = Address1,
+                    Address2 = Address2,
+                    City = City,
+                    StateLocationId = StateLocationId,
+                    PostalCode = PostalCode,
+                    PhoneNumber = PhoneNumber,
+                    EmailAddress = EmailAddress
+                };
                 _context.Customer.Add(customer);
             }
 
