@@ -3,6 +3,7 @@
 
 @{
     ViewData["Title"] = "Orders";
+    var userTimeZone = TimeZoneInfo.Local;
 }
 
 
@@ -11,90 +12,75 @@
         <div class="row ">
             <h4>@ViewData["Title"]</h4>
             <hr />
-            <form>
-        <div class="row">
-            <div class="col-6">
-                <label class="form-label">Search Order</label>
-                <input type="text" class="form-control" asp-for="OrderSearchId" placeholder="order id" />
-            </div>
-            <div class="row">
-                <div class="col-6">
-                    <label class="form-label">Search Customer</label>
+        </div>
+
+        <div class="row mt-4">
+            <form class="form d-flex" method="get">
+                
+                <div class="col mx-1">
+                    <input type="text" class="form-control" asp-for="OrderSearchId" placeholder="order id" />
+                </div>
+
+                <div class="col mx-1">
                     <input type="text" class="form-control" asp-for="CustomerSearchId" placeholder="customer id" />
                 </div>
 
-            </div>
-            <div class="row">
-                <div class="col-6">
-                    <label class="form-label">Order Status</label>
+                <div class="col mx-1">
                     <select class="form-control" asp-items="@Model.OrderStatusSelect" asp-for="@Model.OrderStatusFilterId">
                         <option value="">ALL</option>
                     </select>
                 </div>
 
-            </div>
+                <div class="col mx-1">
+                    <button type="submit" class="btn btn-outline-dark mt-auto text-center">Search</button>
+                </div>
+               
+            </form>
         </div>
-        <div class="row mt-3">
-            <div class="col-4">
-                <input type="submit" class="form-control btn btn-primary" value="Filter" />
-            </div>
-        </div>
-    </form>
-            <table class="table">
+
+        <div class="row mt-4">
+            <table class="table gx-2 gx-lg-2 mt-4">
                 <thead>
                     <tr>
-                        <th>
-                            Order
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Orders[0].Customer)
-                        </th>
-                        <th>
-                            Status
-                        </th>
-                        <th>
-                            Date
-                        </th>
-                        <th>
-                            Products
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Orders[0].TotalPrice)
-                        </th>
-                        <th>
-
-                        </th>
+                        <th>Order #</th>
+                        <th>Customer #</th>
+                        <th>Ordered</th>
+                        <th>Status</th>
+                        <th>Updated</th>
+                        <th>Process</th>
                     </tr>
                 </thead>
                 <tbody>
-            @foreach (var item in Model.Orders) {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Id)
-                        </td>
-                        <td>
-                            @String.Format("#{0}  {1}", item.Customer.Id, item.Customer.FullName)
-                        </td>            
-                        <td>
-                            @item.OrderHistory.OrderBy(x => x.OrderDate).Last().OrderStatus.Name
-                        </td>
-                        <td>
-                            @item.OrderHistory.OrderBy(x => x.OrderDate).Last().OrderDate
-                        </td>
-                        <td>
-                            @item.OrderProducts.Count()
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.TotalPrice)
-                        </td>
-                        <td>
-                            <a asp-page="./Details" asp-route-id="@item.Id">Details</a>
-                        </td>
-                    </tr>
-            }
+                    @foreach (var order in Model.Orders)
+                    {
+                        var ordered = order.OrderHistory.First(h => h.OrderStatusId == (int)Models.OrderState.Processing);
+                        var current = order.OrderHistory.OrderBy(h => h.OrderDate).Last();
+
+                        <tr>
+                            <td><a asp-page="./Details" asp-route-id="@order.Id" target="_blank" >@order.Id.ToString("D8")</a></td>
+                            <td>@order.CustomerId?.ToString("D8")</td>
+                            <td>@TimeZoneInfo.ConvertTimeFromUtc(ordered.OrderDate, userTimeZone)</td>
+                            <td>@current.OrderStatus.Name</td>
+                            <td>@TimeZoneInfo.ConvertTimeFromUtc(current.OrderDate, userTimeZone)</td>
+                            <td>
+                                @{
+                                    var next = Model.ProcessStates.FirstOrDefault(item => item.Value == (current.OrderStatusId + 1).ToString());
+                                    if (next != null)
+                                    {
+                                        <form method="post">
+                                            <input type="hidden" value="@order.Id" name="orderId">
+                                            <input type="hidden" value="@next.Value" name="orderStateId">
+                                            <button type="submit" class="btn btn-outline-dark mt-auto text-center">@next.Text</button>
+                                        </form>                                        
+                                    }
+                                }                                                             
+                            </td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </div>
+
     </div>
 </section>
 

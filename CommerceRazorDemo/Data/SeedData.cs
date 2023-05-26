@@ -185,7 +185,6 @@ namespace CommerceRazorDemo.Data
                     {
                         new OrderStatus { Name = "Cart"},
                         new OrderStatus { Name = "Processing"},
-                        new OrderStatus { Name = "Cancelled"},
                         new OrderStatus { Name = "Shipped"},
                         new OrderStatus { Name = "Delivered"},
                         new OrderStatus { Name = "Returned"},

@@ -2,109 +2,134 @@
 @model CommerceRazorDemo.Pages.Orders.DetailsModel
 
 @{
-    ViewData["Title"] = "Order Details";
+    ViewData["Title"] = "Order";
+    var userTimeZone = TimeZoneInfo.Local;
 }
 
 
-
+<!-- Status -->
 <section class="py-2">
     <div class="container px-4 px-lg-5 mt-5">
-        <div class="row ">
-                <h4>Order</h4>
-                <hr />
-                <dl class="row">
-                    <dt class="col-sm-2">
-                        Order Number
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.Order.Id)
-                    </dd>
-                    <dt class="col-sm-2">
-                        Customer ID
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Model.Order.Customer.Id
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Order.Customer)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Model.Order.Customer.FullName<br />
-                        @Model.Order.Customer.Address1<br />
-                        @Model.Order.Customer.Address2<br />
-                        @String.Format("{0} {1} {2}", Model.Order.Customer.City, Model.Order.Customer.StateLocation.Abbreviation, Model.Order.Customer.PostalCode)
-                    </dd>
-        
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Order.Subtotal)
-                    </dt>
-                    <dd class="col-sm-10" >
-                        $@Html.DisplayFor(model => model.Order.Subtotal)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Order.Tax)
-                    </dt>
-                    <dd class="col-sm-10" >
-                        $@Html.DisplayFor(model => model.Order.Tax)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Order.TotalPrice)
-                    </dt>
-                    <dd class="col-sm-10">
-                        $@Html.DisplayFor(model => model.Order.TotalPrice)
-                    </dd>
-                    <dt class="col-sm-2">
-                        Products
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Model.Order.OrderProducts.Count() Items
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Title</th>
-                                    <th>Quantity</th>
-                                    <th>Price</th>                        
-                                </tr>                    
-                            </thead>
-                            <tbody>
-                                @foreach(var item in Model.Order.OrderProducts)
-                                {
-                                    <tr>
-                                        <td>@item.Product.Title</td>
-                                        <td>@item.Quantity</td>
-                                        <td>@item.Product.Price</td>
-                                    </tr>
-                                }                    
-                            </tbody>
-                        </table>
-                    </dd>
-                    <dt class="col-sm-2">
-                        Status
-                    </dt>
-                    <dd class="col-sm-10">            
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Status</th>                        
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model.Order.OrderHistory.OrderByDescending(x => x.OrderDate))
-                                {
-                                    <tr>
-                                        <td>@item.OrderDate</td>
-                                        <td>@item.OrderStatus.Name</td>                            
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </dd>
-                </dl>
+
+        <div class="row">
+            <hr class="col-12" />
+            <h5 class="col-3">Order Status</h5>
+            <div class="col-6">
+                <div class="row row-cols-2">
+                    @{
+                        var histories = Model.Order.OrderHistory.ToArray<Models.OrderHistory>();
+                        var count = histories.Length;
+                        for (var idx = 0; idx < count; idx++)
+                        {
+                            var item = histories[idx];
+                            string cls;
+                            if (idx == count - 1)
+                                cls = "col fw-bolder";
+                            else
+                                cls = "col fw-lighter";
+
+                            <div class="@cls">@TimeZoneInfo.ConvertTimeFromUtc(item.OrderDate, userTimeZone)</div>
+                            <div class="@cls">@item.OrderStatus.Name</div>
+                        }
+                    }
+                </div>
             </div>
-            <div>
-                <a asp-page="./Index">Back to List</a>
+        </div>
+    </div>
+</section>
+
+<!-- Shipping-->
+<section class="py-2">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row">
+            <hr class="col-12" />
+            <h5 class="col-3">Shipping Address</h5>
+            <div class="col-9">
+                <div>@Model.Order.Customer.FullName</div>
+                <div>@Model.Order.Customer.Address1</div>
+                @if (!String.IsNullOrEmpty(@Model.Order.Customer.Address2))
+                {
+                    <div>@Model.Order.Customer.Address2</div>
+                }
+                <div>@($"{Model.Order.Customer.City}, {Model.Order.Customer.StateLocation.Abbreviation} {Model.Order.Customer.PostalCode}")</div>
+                <div>@Model.Order.Customer.EmailAddress</div>
+                <div>@Model.Order.Customer.PhoneNumber</div>
             </div>
+        </div>
+    </div>
+</section>
+
+<!-- billing -->
+<section class="py-4 mb-2">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row">
+            <hr class="col-12" />
+            <div class="col-12">
+                <div class="row">
+                    <h4 class="text-danger col-8">Order Total @Html.DisplayFor(m => m.Order.TotalPrice)</h4>
+                    <div class="col-4">
+                        <div class="row row-cols-2">
+                            <div class="col text-end">@($"Items({Model.Order.OrderProducts.Count()})")</div>
+                            <div class="col text-end">@Html.DisplayFor(m => m.Order.Subtotal)</div>
+                            <div class="col text-end underline">Tax</div>
+                            <div class="col text-end underline">@Html.DisplayFor(m => m.Order.Tax)</div>
+                            <div class="col text-end">Order Total</div>
+                            <div class="col text-end">@Html.DisplayFor(m => m.Order.TotalPrice)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Order Products -->
+<section class="py-2">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row">
+            <hr class="col-12" />
+            <h5 class="col-3">Items</h5>
+            <div class="col-9">
+
+                <table class="table gx-2 gx-lg-2 mt-2">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th class="text-end">Qty</th>
+                            <th class="text-end">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Order.OrderProducts)
+                        {
+                            <tr>
+                                <td><img class="" src="https://dummyimage.com/90x60/dee2e6/6c757d.jpg" alt="@item.Product.Title" /></td>
+                                <td>
+                                    <!-- Product name-->
+                                    <a asp-page="/Shopping/Product" target="_blank" asp-route-id="@item.ProductId">
+                                        <h5 class="fw-bolder">@item.Product.Title</h5>
+                                    </a>
+                                    <!-- Brand-->
+                                    <p class="fw-bolder">@item.Product.Brand</p>
+                                </td>
+
+                                <td class="align-middle text-end">
+                                    <!-- qty-->
+                                    <div class="fw-bolder">@item.Quantity</div>
+                                </td>
+                                <td class="align-middle text-end">
+                                    <!-- Product price-->
+                                    <div class="fw-bolder">@Html.DisplayFor(m => item.Price)</div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+
+            </div>
+        </div>
     </div>
 </section>
 
