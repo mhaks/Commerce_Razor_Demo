@@ -109,7 +109,7 @@
                                 <td><img class="" src="https://dummyimage.com/90x60/dee2e6/6c757d.jpg" alt="@item.Product.Title" /></td>
                                 <td>
                                     <!-- Product name-->
-                                    <a href="./Product" target="_blank" asp-route-id="@item.ProductId">
+                                    <a asp-page="./Product" target="_blank" asp-route-id="@item.ProductId">
                                         <h5 class="fw-bolder">@item.Product.Title</h5>
                                     </a>
                                     <!-- Brand-->
