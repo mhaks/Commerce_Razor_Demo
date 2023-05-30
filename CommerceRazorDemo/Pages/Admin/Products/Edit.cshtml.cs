@@ -10,7 +10,7 @@ using CommerceRazorDemo.Data;
 using CommerceRazorDemo.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
-using CommerceRazorDemo.Migrations;
+
 
 namespace CommerceRazorDemo.Pages.Products
 {

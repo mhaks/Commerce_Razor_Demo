@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Components.Forms;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 using System.Drawing.Drawing2D;
-using CommerceRazorDemo.Migrations;
+
 using CommerceRazorDemo.Pages.Products;
 
 namespace CommerceRazorDemo.Pages.Customers

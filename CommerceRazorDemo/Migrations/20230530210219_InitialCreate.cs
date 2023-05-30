@@ -1,11 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace CommerceRazorDemo.Migrations
 {
-    public partial class productsubcategory : Migration
+    /// <inheritdoc />
+    public partial class InitialCreate : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -22,23 +25,16 @@ namespace CommerceRazorDemo.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductSubCategory",
+                name: "ProductCategory",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
-                    ProductCategoryId = table.Column<int>(type: "int", nullable: false)
+                    Title = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductSubCategory", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ProductSubCategory_ProductCategory_ProductCategoryId",
-                        column: x => x.ProductCategoryId,
-                        principalTable: "ProductCategory",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                    table.PrimaryKey("PK_ProductCategory", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -57,15 +53,41 @@ namespace CommerceRazorDemo.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Product",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(140)", maxLength: 140, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    Brand = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    AvailableQty = table.Column<int>(type: "int", nullable: false),
+                    ProductCategoryId = table.Column<int>(type: "int", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    ModelNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Product", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Product_ProductCategory_ProductCategoryId",
+                        column: x => x.ProductCategoryId,
+                        principalTable: "ProductCategory",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Customer",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    UserName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Address1 = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Address2 = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Address2 = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     StateLocationId = table.Column<int>(type: "int", nullable: false),
                     PostalCode = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
@@ -89,8 +111,7 @@ namespace CommerceRazorDemo.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CustomerId = table.Column<int>(type: "int", nullable: false),
-                    OrderStatusId = table.Column<int>(type: "int", nullable: false)
+                    CustomerId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -99,12 +120,32 @@ namespace CommerceRazorDemo.Migrations
                         name: "FK_Order_Customer_CustomerId",
                         column: x => x.CustomerId,
                         principalTable: "Customer",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderHistory",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    OrderStatusId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderHistory", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrderHistory_OrderStatus_OrderStatusId",
+                        column: x => x.OrderStatusId,
+                        principalTable: "OrderStatus",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Order_OrderStatus_OrderStatusId",
-                        column: x => x.OrderStatusId,
-                        principalTable: "OrderStatus",
+                        name: "FK_OrderHistory_Order_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Order",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -116,6 +157,7 @@ namespace CommerceRazorDemo.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Quantity = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     OrderId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -147,8 +189,13 @@ namespace CommerceRazorDemo.Migrations
                 column: "CustomerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Order_OrderStatusId",
-                table: "Order",
+                name: "IX_OrderHistory_OrderId",
+                table: "OrderHistory",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderHistory_OrderStatusId",
+                table: "OrderHistory",
                 column: "OrderStatusId");
 
             migrationBuilder.CreateIndex(
@@ -162,27 +209,34 @@ namespace CommerceRazorDemo.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductSubCategory_ProductCategoryId",
-                table: "ProductSubCategory",
+                name: "IX_Product_ProductCategoryId",
+                table: "Product",
                 column: "ProductCategoryId");
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "OrderHistory");
+
             migrationBuilder.DropTable(
                 name: "OrderProduct");
 
             migrationBuilder.DropTable(
-                name: "ProductSubCategory");
+                name: "OrderStatus");
 
             migrationBuilder.DropTable(
                 name: "Order");
 
             migrationBuilder.DropTable(
+                name: "Product");
+
+            migrationBuilder.DropTable(
                 name: "Customer");
 
             migrationBuilder.DropTable(
-                name: "OrderStatus");
+                name: "ProductCategory");
 
             migrationBuilder.DropTable(
                 name: "StateLocation");

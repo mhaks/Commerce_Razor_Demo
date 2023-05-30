@@ -12,17 +12,18 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CommerceRazorDemo.Migrations
 {
     [DbContext(typeof(CommerceRazorDemoContext))]
-    [Migration("20220920040234_customer")]
-    partial class customer
+    [Migration("20230530210219_InitialCreate")]
+    partial class InitialCreate
     {
+        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.9")
+                .HasAnnotation("ProductVersion", "7.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("CommerceRazorDemo.Models.Customer", b =>
                 {
@@ -30,7 +31,7 @@ namespace CommerceRazorDemo.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address1")
                         .IsRequired()
@@ -91,21 +92,42 @@ namespace CommerceRazorDemo.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("OrderStatusId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
+                    b.ToTable("Order");
+                });
+
+            modelBuilder.Entity("CommerceRazorDemo.Models.OrderHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderStatusId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
                     b.HasIndex("OrderStatusId");
 
-                    b.ToTable("Order");
+                    b.ToTable("OrderHistory");
                 });
 
             modelBuilder.Entity("CommerceRazorDemo.Models.OrderProduct", b =>
@@ -114,12 +136,15 @@ namespace CommerceRazorDemo.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("OrderId")
+                    b.Property<int>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ProductId")
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
@@ -140,7 +165,7 @@ namespace CommerceRazorDemo.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -158,7 +183,7 @@ namespace CommerceRazorDemo.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AvailableQty")
                         .HasColumnType("int");
@@ -173,8 +198,15 @@ namespace CommerceRazorDemo.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModelNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<int?>("ProductCategoryId")
                         .HasColumnType("int");
@@ -197,7 +229,7 @@ namespace CommerceRazorDemo.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -215,7 +247,7 @@ namespace CommerceRazorDemo.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Abbreviation")
                         .IsRequired()
@@ -252,11 +284,24 @@ namespace CommerceRazorDemo.Migrations
                         .WithMany()
                         .HasForeignKey("CustomerId");
 
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("CommerceRazorDemo.Models.OrderHistory", b =>
+                {
+                    b.HasOne("CommerceRazorDemo.Models.Order", "Order")
+                        .WithMany("OrderHistory")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CommerceRazorDemo.Models.OrderStatus", "OrderStatus")
                         .WithMany()
-                        .HasForeignKey("OrderStatusId");
+                        .HasForeignKey("OrderStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Customer");
+                    b.Navigation("Order");
 
                     b.Navigation("OrderStatus");
                 });
@@ -264,12 +309,16 @@ namespace CommerceRazorDemo.Migrations
             modelBuilder.Entity("CommerceRazorDemo.Models.OrderProduct", b =>
                 {
                     b.HasOne("CommerceRazorDemo.Models.Order", "Order")
-                        .WithMany("Products")
-                        .HasForeignKey("OrderId");
+                        .WithMany("OrderProducts")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("CommerceRazorDemo.Models.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Order");
 
@@ -287,7 +336,9 @@ namespace CommerceRazorDemo.Migrations
 
             modelBuilder.Entity("CommerceRazorDemo.Models.Order", b =>
                 {
-                    b.Navigation("Products");
+                    b.Navigation("OrderHistory");
+
+                    b.Navigation("OrderProducts");
                 });
 #pragma warning restore 612, 618
         }

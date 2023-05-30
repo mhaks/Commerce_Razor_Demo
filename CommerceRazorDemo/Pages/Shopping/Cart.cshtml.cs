@@ -1,5 +1,5 @@
 using CommerceRazorDemo.Data;
-using CommerceRazorDemo.Migrations;
+
 using CommerceRazorDemo.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
