@@ -73,13 +73,13 @@ namespace CommerceRazorDemo.Pages.Orders
                 .OrderBy(o => o.Id)
                 .ToListAsync();
 
-            OrderStatusSelect = new SelectList(await _context.OrderStatus.OrderBy(o => o.Name).ToListAsync(), "Id", "Name", (int)OrderState.Processing);
+            OrderStatusSelect = new SelectList(await _context.OrderStatus.OrderBy(o => o.Name).ToListAsync(), "Id", "Name", OrderStatusFilterId.HasValue ? OrderStatusFilterId : 0);
 
             List<SelectListItem> items = new List<SelectListItem>
             {
                 new SelectListItem { Text = "Ship", Value = "3" },
-                new SelectListItem { Text = "Deliver", Value = "5" },
-                new SelectListItem { Text = "Return", Value = "6" },
+                new SelectListItem { Text = "Deliver", Value = "4" },
+                new SelectListItem { Text = "Return", Value = "5" },
             };
 
             ProcessStates = new SelectList(items, "Value", "Text");
