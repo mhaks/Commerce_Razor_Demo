@@ -2,6 +2,8 @@
 @{
     if (User.IsInRole("Admin"))
         Layout = "_LayoutAdmin";
-    else
+    else if (User.IsInRole("Customer"))
+        Layout = "_LayoutCustomer";
+    else 
         Layout = "_LayoutCustomer";
 }
