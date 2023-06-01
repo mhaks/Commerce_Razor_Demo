@@ -2,8 +2,8 @@
 
 
 <div>
-    <form >
-        <select class="form-control" asp-items="@Model" name="id">
+    <form asp-page="..\Index" method="post" >
+        <select class="form-control" asp-items="@Model" name="userId">
             <option value="0">Administrator</option>
         </select>
         <button type="submit">Login</button>

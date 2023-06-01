@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using CommerceRazorDemo.Data;
 using CommerceRazorDemo;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,8 +12,8 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<CommerceRazorDemoContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("CommerceRazorDemoContext") ?? throw new InvalidOperationException("Connection string 'CommerceRazorDemoContext' not found.")));
 
-builder.Services.AddAuthentication("BasicAuthentication")
-                .AddScheme<AuthenticationSchemeOptions, MockAuthenticatedUser>("BasicAuthentication", null);
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<CommerceRazorDemoContext>();
 
 var app = builder.Build();
 
@@ -36,6 +37,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
 
 app.UseAuthentication();
 app.UseAuthorization();

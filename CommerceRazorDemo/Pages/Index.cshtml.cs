@@ -1,30 +1,59 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using CommerceRazorDemo.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 
 namespace CommerceRazorDemo.Pages
 {
     public class IndexModel : CommerceDemoPageModel
     {
-    
-        public IndexModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<IndexModel> logger)
-            : base(context, logger)
-        {
+        private readonly SignInManager<IdentityUser> _signInManager;
 
+        public IndexModel(CommerceRazorDemoContext context, ILogger<CommerceDemoPageModel> logger, SignInManager<IdentityUser> signInManager) : base(context, logger)
+        {
+            _signInManager = signInManager;
         }
 
-        public List<Models.Product> TopProducts { get; set; } = default!;
-        
-        public async Task OnGet()
+        public IActionResult OnGetAsync()
         {
+            if (User.IsInRole("Customer"))
+            {
+                return RedirectToPage("/Shopping/Index");
+            }
+            else if (User.IsInRole("Admin"))
+            {
+                return RedirectToPage("/Admin/Index");
+            }
 
-            var products  = await _context.Product
-                .OrderByDescending(a => _context.OrderProduct.Count(b => b.ProductId == a.Id))
-                .Take(4)
-                .ToListAsync();
+            return RedirectToPage("/Shopping/Index");
+        }
 
-            TopProducts = products;
+        public async Task<IActionResult> OnPost(int userId) 
+        { 
+            if(_context == null)
+                return NotFound();
 
+            if (userId == 0)
+            {
+                // sign into admin
+            }
+            else if (userId > 0) {
+                var user = _context.Customer.Where(x => x.Id == userId).FirstOrDefault();
+                if (user != null)
+                {
+                    // Sign out the current user
+                    await _signInManager.SignOutAsync();
+
+                    // Sign in the new user
+                    var iuser = new IdentityUser(user.UserName);
+                    iuser.Id = user.Id.ToString();
+
+                    await _signInManager.SignInAsync(iuser, isPersistent: false);
+                }
+            }
+            
+
+            return RedirectToAction("Index");
         }
     }
 }

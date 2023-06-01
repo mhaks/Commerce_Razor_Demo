@@ -11,9 +11,9 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace CommerceRazorDemo.Pages.Shopping
 {
-    public class IndexModel : CommerceDemoPageModel
+    public class SearchModel : CommerceDemoPageModel
     {
-        public IndexModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<IndexModel> logger)
+        public SearchModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<SearchModel> logger)
             : base(context, logger)
         {
 
