@@ -209,7 +209,7 @@ namespace CommerceRazorDemo.Data
                         var adminUser = new ApplicationUser
                         {
                             UserName = "administrator",
-                            NormalizedUserName = "ADMIN",
+                            NormalizedUserName = "ADMINISTRATOR",
                             FirstName = "Ad",
                             LastName = "Min",
                             Address1 = "100 Main",
