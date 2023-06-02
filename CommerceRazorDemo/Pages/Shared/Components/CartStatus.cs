@@ -2,6 +2,7 @@
 using CommerceRazorDemo.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace CommerceRazorDemo.Pages.Shared.Components
 {
@@ -17,7 +18,7 @@ namespace CommerceRazorDemo.Pages.Shared.Components
         {
             var context = ViewData["DbContext"] as CommerceRazorDemo.Data.CommerceRazorDemoContext;
 
-            var userId = HttpContext.User.Identity?.Name;
+            var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             int itemCount = 0;
 
 
