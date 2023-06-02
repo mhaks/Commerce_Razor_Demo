@@ -31,7 +31,7 @@ namespace CommerceRazorDemo.Pages.Orders
 
             var order = await _context.Order
                 .AsNoTracking()
-                .Include(x => x.Customer)
+                .Include(x => x.User)
                 .ThenInclude(x => x.StateLocation)
                 .Include(x => x.OrderHistory)
                 .ThenInclude(x => x.OrderStatus)

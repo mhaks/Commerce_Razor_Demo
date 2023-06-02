@@ -17,7 +17,7 @@ namespace CommerceRazorDemo.Pages.Shared.Components
         {
             var context = ViewData["DbContext"] as CommerceRazorDemo.Data.CommerceRazorDemoContext;
 
-            var customerId = 1;
+            var userId = HttpContext.User.Identity?.Name;
             int itemCount = 0;
 
 
@@ -25,7 +25,7 @@ namespace CommerceRazorDemo.Pages.Shared.Components
             {
                 var order = await context.Order
                    .AsNoTracking()
-                   .Where(o => o.CustomerId == customerId)
+                   .Where(o => o.UserId == userId)
                    .Include(c => c.OrderHistory)
                    .Include(c => c.OrderProducts)
                    .OrderBy(x => x.Id)

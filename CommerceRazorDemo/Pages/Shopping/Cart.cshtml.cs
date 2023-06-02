@@ -27,14 +27,14 @@ namespace CommerceRazorDemo.Pages.Shopping
         public decimal SubTotal { get; set; }
 
 
-        public async Task<IActionResult> OnGetAsync(int customerId)
+        public async Task<IActionResult> OnGetAsync(string userId)
         {
             if (_context == null)
             {
                 return NotFound();
             }
 
-            var query = _context.Order.Where(c => c.CustomerId == customerId).AsNoTracking();
+            var query = _context.Order.Where(c => c.UserId == userId).AsNoTracking();
             var order = await GetOrder(query);
 
             OrderId = order.Id;
@@ -49,7 +49,7 @@ namespace CommerceRazorDemo.Pages.Shopping
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int customerId, int productId, int quantity)
+        public async Task<IActionResult> OnPostAsync(string userId, int productId, int quantity)
         {
             if (_context.Product == null)
             {
@@ -62,7 +62,7 @@ namespace CommerceRazorDemo.Pages.Shopping
                 return NotFound();
             }
 
-            var query = _context.Order.Where(c => c.CustomerId == customerId);
+            var query = _context.Order.Where(c => c.UserId == userId);
             var order = await GetOrder(query);
 
             order.OrderProducts ??= new List<OrderProduct>();
@@ -76,7 +76,7 @@ namespace CommerceRazorDemo.Pages.Shopping
 
             if (order.Id == 0)
             {
-                order.CustomerId = customerId;
+                order.UserId = userId;
                 _context.Order.Add(order);
             }
             
@@ -84,7 +84,7 @@ namespace CommerceRazorDemo.Pages.Shopping
 
             var dict = new RouteValueDictionary
             {
-                { "customerId", customerId }
+                { "userId", userId }
             };
             return RedirectToAction("Index", dict);
         }
@@ -136,7 +136,7 @@ namespace CommerceRazorDemo.Pages.Shopping
 
             var dict = new RouteValueDictionary
             {
-                { "customerId", order.CustomerId }
+                { "userId", order.UserId }
             };
             return RedirectToAction("Index", dict);
         }
@@ -147,7 +147,7 @@ namespace CommerceRazorDemo.Pages.Shopping
         private async Task<Order> GetOrder(IQueryable<Order> query)
         {
             var order = await query
-                .Include(c => c.Customer)
+                .Include(c => c.User)
                 .ThenInclude(c => c.StateLocation)
                 .Include(c => c.OrderProducts)
                 .ThenInclude(p => p.Product)

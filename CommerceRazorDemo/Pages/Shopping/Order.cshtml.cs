@@ -13,7 +13,7 @@ namespace CommerceRazorDemo.Pages.Shopping
 
         }
 
-        public int CustomerId { get; set; }
+        public string UserId { get; set; }
         public Order Order { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int orderId)
@@ -24,7 +24,7 @@ namespace CommerceRazorDemo.Pages.Shopping
 
             var order = await _context.Order
                             .Where(o => o.Id == orderId)
-                            .Include(c => c.Customer)
+                            .Include(c => c.User)
                             .ThenInclude(s => s.StateLocation)
                             .Include(p => p.OrderProducts)
                             .ThenInclude(p => p.Product)
@@ -41,7 +41,7 @@ namespace CommerceRazorDemo.Pages.Shopping
 
 
             Order = order;
-            CustomerId = order.CustomerId ?? 0;
+            UserId = order.UserId;
             return Page();
         }
     }

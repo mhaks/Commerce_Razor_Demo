@@ -1,17 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace CommerceRazorDemo.Models
 {
-    public class Customer
+    public class ApplicationUser : IdentityUser
     {
-        public int Id { get; set; }
-
-        [Required]
-        [StringLength(100, MinimumLength = 1)]
-        [Display(Name = "User Name")]
-        public string UserName { get; set; } = string.Empty;
 
         [Required]
         [StringLength(100, MinimumLength = 1)]
@@ -45,17 +40,6 @@ namespace CommerceRazorDemo.Models
         [StringLength(5, MinimumLength = 5)]
         [Display(Name = "Zip")]
         public string PostalCode { get; set; } = string.Empty;
-
-        [Required]
-        [Phone]
-        [Display(Name = "Phone")]
-        public string PhoneNumber { get; set; } = string.Empty;
-
-        [Required]
-        [EmailAddress]
-        [StringLength(100, MinimumLength = 5)]
-        [Display(Name = "Email")]
-        public string EmailAddress { get; set; } = string.Empty;
 
         [Display(Name = "Full Name")]
         public string FullName

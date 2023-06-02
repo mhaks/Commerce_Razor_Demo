@@ -56,7 +56,7 @@ namespace CommerceRazorDemo.Pages.Shopping
 
             var order = await _context.Order
                 .Where(o => o.Id == orderId)
-                .Include(c => c.Customer)
+                .Include(c => c.User)
                 .ThenInclude(s => s.StateLocation)
                 .Include(p => p.OrderProducts)
                 .ThenInclude(p => p.Product)
@@ -69,7 +69,7 @@ namespace CommerceRazorDemo.Pages.Shopping
 
 
             if (!order.OrderProducts.Any() || !order.OrderHistory.Any() || order.OrderHistory.OrderByDescending(x => x.Id).Last().OrderStatusId != (int)OrderState.Cart)
-                return RedirectToPage("Cart", new { customerId = order.CustomerId });
+                return RedirectToPage("Cart", new { customerId = order.UserId });
 
             Order = order;
             return Page();

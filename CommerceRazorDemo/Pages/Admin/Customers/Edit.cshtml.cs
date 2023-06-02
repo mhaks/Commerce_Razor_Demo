@@ -30,7 +30,7 @@ namespace CommerceRazorDemo.Pages.Customers
         public SelectList UsStates { get; set; } = default!;
 
         [BindProperty]
-        public int CustomerId { get; set; }
+        public string UserId { get; set; }
 
         [BindProperty]
         [Required]
@@ -90,32 +90,32 @@ namespace CommerceRazorDemo.Pages.Customers
         public string EmailAddress { get; set; } = string.Empty;
 
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(string id)
         {
             if (_context == null)
             {
                 return NotFound();
             }
 
-            if (id.HasValue && id.Value != 0)
+            if (!String.IsNullOrEmpty(id))
             {
-                var customer = await _context.Customer.FirstOrDefaultAsync(m => m.Id == id);
-                if (customer == null)
+                var user = await _context.Users.FirstOrDefaultAsync(m => m.Id == id);
+                if (user == null)
                 {
                     return NotFound();
                 }
 
-                CustomerId = customer.Id;
-                UserName = customer.UserName;
-                FirstName = customer.FirstName;
-                LastName = customer.LastName;
-                Address1 = customer.Address1;
-                Address2 = customer.Address2;
-                City = customer.City;
-                StateLocationId = customer.StateLocationId;
-                PostalCode = customer.PostalCode;
-                PhoneNumber = customer.PhoneNumber;
-                EmailAddress = customer.EmailAddress;
+                UserId = user.Id;
+                UserName = user.UserName;
+                FirstName = user.FirstName;
+                LastName = user.LastName;
+                Address1 = user.Address1;
+                Address2 = user.Address2;
+                City = user.City;
+                StateLocationId = user.StateLocationId;
+                PostalCode = user.PostalCode;
+                PhoneNumber = user.PhoneNumber;
+                EmailAddress = user.Email;
             }
             else
             {
@@ -142,9 +142,9 @@ namespace CommerceRazorDemo.Pages.Customers
                 return Page();
             }
 
-            if (CustomerId != 0)
+            if (!String.IsNullOrEmpty(UserId))
             {
-                var customer = await _context.Customer.FindAsync(CustomerId);
+                var customer = await _context.Users.FindAsync(UserId);
                 if (customer == null)
                     return NotFound();
 
@@ -157,11 +157,11 @@ namespace CommerceRazorDemo.Pages.Customers
                 customer.StateLocationId = StateLocationId;
                 customer.PostalCode = PostalCode;
                 customer.PhoneNumber = PhoneNumber;
-                customer.EmailAddress = EmailAddress;
+                customer.Email = EmailAddress;
             }
             else
             {
-                var customer = new Customer
+                var customer = new ApplicationUser
                 {
                     UserName = UserName,
                     FirstName = FirstName,
@@ -172,9 +172,9 @@ namespace CommerceRazorDemo.Pages.Customers
                     StateLocationId = StateLocationId,
                     PostalCode = PostalCode,
                     PhoneNumber = PhoneNumber,
-                    EmailAddress = EmailAddress
+                    Email = EmailAddress
                 };
-                _context.Customer.Add(customer);
+                _context.Users.Add(customer);
             }
 
 
@@ -185,7 +185,7 @@ namespace CommerceRazorDemo.Pages.Customers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CustomerExists(CustomerId))
+                if (!CustomerExists(UserId))
                 {
                     return NotFound();
                 }
@@ -199,9 +199,9 @@ namespace CommerceRazorDemo.Pages.Customers
             return RedirectToPage("./Index");
         }
 
-        private bool CustomerExists(int id)
+        private bool CustomerExists(string id)
         {
-          return (_context.Customer?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Users?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
         private async void LoadSelections()

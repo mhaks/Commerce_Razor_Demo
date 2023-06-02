@@ -19,7 +19,7 @@ namespace CommerceRazorDemo.Pages.Customers
 
         }
 
-        public IList<Customer> Customer { get;set; } = default!;
+        public IList<ApplicationUser> Customer { get;set; } = default!;
 
         [BindProperty(SupportsGet = true)]
         public string? SearchString { get; set; }
@@ -33,7 +33,7 @@ namespace CommerceRazorDemo.Pages.Customers
 
 
 
-            var customerQuery = from c in _context.Customer select c;
+            var customerQuery = from c in _context.Users select c;
 
             if (!String.IsNullOrEmpty(SearchString))
             {

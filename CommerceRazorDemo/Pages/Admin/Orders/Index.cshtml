@@ -58,7 +58,7 @@
 
                         <tr>
                             <td><a asp-page="./Details" asp-route-id="@order.Id" target="_blank" >@order.Id.ToString("D8")</a></td>
-                            <td>@order.CustomerId?.ToString("D8")</td>
+                            <td>@order.User.UserName</td>
                             <td>@TimeZoneInfo.ConvertTimeFromUtc(ordered.OrderDate, userTimeZone)</td>
                             <td>@current.OrderStatus.Name</td>
                             <td>@TimeZoneInfo.ConvertTimeFromUtc(current.OrderDate, userTimeZone)</td>

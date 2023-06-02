@@ -21,7 +21,7 @@ namespace CommerceRazorDemo.Pages.Shopping
         [BindProperty(SupportsGet = true)]
         public int? StatusFilterId { get; set; }
 
-        public async Task<IActionResult> OnGet(int customerId)
+        public async Task<IActionResult> OnGet(string userId)
         {
             if (_context == null)
                 return NotFound();
@@ -29,11 +29,11 @@ namespace CommerceRazorDemo.Pages.Shopping
             StatusList = new SelectList(await _context.OrderStatus.Where(x => x.Id > 1).OrderBy(x => x.Name).ToListAsync(), "Id", "Name");
 
             var orders = await _context.Order
-                            .Where(o => o.CustomerId == customerId)
+                            .Where(o => o.UserId == userId)
                             .Include(p => p.OrderProducts)
                             .Include(h => h.OrderHistory) 
                             .ThenInclude(s => s.OrderStatus)
-                            .Include(c => c.Customer)
+                            .Include(c => c.User)
                             .ThenInclude(s => s.StateLocation)
                             .OrderByDescending(o => o.OrderHistory.First().OrderDate)
                             .AsNoTracking()

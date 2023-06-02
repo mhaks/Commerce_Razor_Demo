@@ -30,7 +30,7 @@ namespace CommerceRazorDemo.Pages.Orders
         public int? OrderSearchId { get; set; } = default!;
 
         [BindProperty(SupportsGet = true)]
-        public int? CustomerSearchId {  get; set; } = default!;
+        public string? CustomerSearchId {  get; set; } = default!;
 
         
 
@@ -53,9 +53,9 @@ namespace CommerceRazorDemo.Pages.Orders
                 query = query.Where(o => o.Id == OrderSearchId);
             }
 
-            if (CustomerSearchId.HasValue && CustomerSearchId > 0)
+            if (!String.IsNullOrEmpty(CustomerSearchId))
             {
-                query = query.Where(o => o.Customer.Id == CustomerSearchId);
+                query = query.Where(o => o.User.UserName == CustomerSearchId);
             }
 
             if (OrderStatusFilterId.HasValue && OrderStatusFilterId > 0)
@@ -66,7 +66,7 @@ namespace CommerceRazorDemo.Pages.Orders
             Orders = await query.AsNoTracking()
                 .Include(o => o.OrderProducts)
                 .ThenInclude(p => p.Product)
-                .Include(o => o.Customer)
+                .Include(o => o.User)
                 .ThenInclude(c => c.StateLocation)
                 .Include(o => o.OrderHistory)
                 .ThenInclude(o => o.OrderStatus)

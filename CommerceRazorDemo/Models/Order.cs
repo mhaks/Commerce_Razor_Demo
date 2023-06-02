@@ -8,8 +8,8 @@ namespace CommerceRazorDemo.Models
     {
         public int Id { get; set; }
 
-        public int? CustomerId { get; set; }
-        public Customer Customer { get; set; } = null!;
+        public string UserId { get; set; } = default!;
+        public ApplicationUser User { get; set; } = null!;
        
         public ICollection<OrderProduct> OrderProducts { get; set; } = null!;
 
@@ -40,7 +40,7 @@ namespace CommerceRazorDemo.Models
         {
             get
             {
-                return Subtotal * Customer.StateLocation.TaxRate;
+                return Subtotal * User.StateLocation.TaxRate;
             }
         }
 

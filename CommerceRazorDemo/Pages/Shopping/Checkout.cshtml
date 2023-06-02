@@ -11,15 +11,15 @@
                 <hr class="col-12" />
                 <h5 class="col-3">Shipping Address</h5>
                 <div class="col-9">
-                    <div>@Model.Order.Customer.FullName</div>
-                    <div>@Model.Order.Customer.Address1</div>
-                    @if(!String.IsNullOrEmpty(@Model.Order.Customer.Address2))
+                    <div>@Model.Order.User.FullName</div>
+                    <div>@Model.Order.User.Address1</div>
+                    @if (!String.IsNullOrEmpty(@Model.Order.User.Address2))
                     {
-                        <div>@Model.Order.Customer.Address2</div>
+                        <div>@Model.Order.User.Address2</div>
                     }
-                    <div>@($"{Model.Order.Customer.City}, {Model.Order.Customer.StateLocation.Abbreviation} {Model.Order.Customer.PostalCode}")</div>
-                    <div>@Model.Order.Customer.EmailAddress</div>
-                    <div>@Model.Order.Customer.PhoneNumber</div>
+                    <div>@($"{Model.Order.User.City}, {Model.Order.User.StateLocation.Abbreviation} {Model.Order.User.PostalCode}")</div>
+                    <div>@Model.Order.User.Email</div>
+                    <div>@Model.Order.User.PhoneNumber</div>
                 </div>
             </div>
         </div>

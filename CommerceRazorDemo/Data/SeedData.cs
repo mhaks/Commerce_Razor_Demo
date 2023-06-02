@@ -1,4 +1,6 @@
 ﻿using CommerceRazorDemo.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using System.Drawing;
@@ -15,7 +17,7 @@ namespace CommerceRazorDemo.Data
 {
     public static class SeedData
     {
-        public static void Initialize(IServiceProvider serviceProvider)
+        public static async void Initialize(IServiceProvider serviceProvider)
         {
             using (var context = new CommerceRazorDemoContext(serviceProvider.GetRequiredService<DbContextOptions<CommerceRazorDemoContext>>()))
             {
@@ -24,76 +26,6 @@ namespace CommerceRazorDemo.Data
                     throw new ArgumentNullException(nameof(context));
                 }
 
-                #region states
-                // US States
-                if (!context.StateLocation.Any())
-                {                    
-                    var states = new StateLocation[]
-                    {
-                        new StateLocation{Name = "Alabama", Abbreviation = "AL", TaxRate = 0.04M },
-                        new StateLocation{Name = "Alaska", Abbreviation = "AK", TaxRate = 0.05M },
-                        new StateLocation{Name = "Arizona", Abbreviation = "AZ", TaxRate = 0.06M },
-                        new StateLocation{Name = "Arkansas", Abbreviation = "AR", TaxRate = 0.07M },
-                        new StateLocation{Name = "California", Abbreviation = "CA", TaxRate = 0.08M },
-                        new StateLocation{Name = "Colorado", Abbreviation = "CO", TaxRate = 0.07M },
-                        new StateLocation{Name = "Connecticut", Abbreviation = "CT", TaxRate = 0.06M },
-                        new StateLocation{Name = "Delaware", Abbreviation = "DE", TaxRate = 0.05M },
-                        new StateLocation{Name = "Florida", Abbreviation = "FL", TaxRate = 0.04M },
-                        new StateLocation{Name = "Georgia", Abbreviation = "GA", TaxRate = 0.05M },
-                        new StateLocation{Name = "Hawaii", Abbreviation = "HI", TaxRate = 0.06M },
-                        new StateLocation{Name = "Idaho", Abbreviation = "ID", TaxRate = 0.07M },
-                        new StateLocation{Name = "Illinois", Abbreviation = "IL", TaxRate = 0.08M },
-                        new StateLocation{Name = "Indiana", Abbreviation = "IN", TaxRate = 0.07M },
-                        new StateLocation{Name = "Iowa", Abbreviation = "IA", TaxRate = 0.06M },
-                        new StateLocation{Name = "Kansas", Abbreviation = "KS", TaxRate = 0.05M },
-                        new StateLocation{Name = "Kentucky", Abbreviation = "KY", TaxRate = 0.04M },
-                        new StateLocation{Name = "Louisiana", Abbreviation = "LA", TaxRate = 0.05M },
-                        new StateLocation{Name = "Maine", Abbreviation = "ME", TaxRate = 0.06M },
-                        new StateLocation{Name = "Maryland", Abbreviation = "MD", TaxRate = 0.07M },
-                        new StateLocation{Name = "Massachusetts", Abbreviation = "MA", TaxRate = 0.08M },
-                        new StateLocation{Name = "Michigan", Abbreviation = "MI", TaxRate = 0.07M },
-                        new StateLocation{Name = "Minnesota", Abbreviation = "MN", TaxRate = 0.06M },
-                        new StateLocation{Name = "Mississippi", Abbreviation = "MS", TaxRate = 0.05M },
-                        new StateLocation{Name = "Missouri", Abbreviation = "MO", TaxRate = 0.04M },
-                        new StateLocation{Name = "Montana", Abbreviation = "MT", TaxRate = 0.05M },
-                        new StateLocation{Name = "Nebraska", Abbreviation = "NE", TaxRate = 0.06M },
-                        new StateLocation{Name = "Nevada", Abbreviation = "NV", TaxRate = 0.07M },
-                        new StateLocation{Name = "New Hampshire", Abbreviation = "NH", TaxRate = 0.08M },
-                        new StateLocation{Name = "New Jersey", Abbreviation = "NJ", TaxRate = 0.08M },
-                        new StateLocation{Name = "New Mexico", Abbreviation = "NM", TaxRate = 0.07M },
-                        new StateLocation{Name = "New York", Abbreviation = "NY", TaxRate = 0.06M },
-                        new StateLocation{Name = "North Carolina", Abbreviation = "NC", TaxRate = 0.05M },
-                        new StateLocation{Name = "North Dakota", Abbreviation = "ND", TaxRate = 0.04M },
-                        new StateLocation{Name = "Ohio", Abbreviation = "OH", TaxRate = 0.08M },
-                        new StateLocation{Name = "Oklahoma", Abbreviation = "OK", TaxRate = 0.04M },
-                        new StateLocation{Name = "Oregon", Abbreviation = "OR", TaxRate = 0.05M },
-                        new StateLocation{Name = "Pennsylvania", Abbreviation = "PA", TaxRate = 0.08M },
-                        new StateLocation{Name = "Rhode Island", Abbreviation = "RI", TaxRate = 0.07M },
-                        new StateLocation{Name = "South Carolina", Abbreviation = "SC", TaxRate = 0.04M },
-                        new StateLocation{Name = "South Dakota", Abbreviation = "SD", TaxRate = 0.04M },
-                        new StateLocation{Name = "Tennessee", Abbreviation = "TN", TaxRate = 0.04M },
-                        new StateLocation{Name = "Texas", Abbreviation = "TX", TaxRate = 0.0M },
-                        new StateLocation{Name = "Utah", Abbreviation = "UT", TaxRate = 0.05M },
-                        new StateLocation{Name = "Vermont", Abbreviation = "VT", TaxRate = 0.05M },
-                        new StateLocation{Name = "Virginia", Abbreviation = "VA", TaxRate = 0.06M },
-                        new StateLocation{Name = "Washington", Abbreviation = "WA", TaxRate = 0.04M },
-                        new StateLocation{Name = "West Virginia", Abbreviation = "WV", TaxRate = 0.03M },
-                        new StateLocation{Name = "Wisconsin", Abbreviation = "WI", TaxRate = 0.06M },
-                        new StateLocation{Name = "Wyoming", Abbreviation = "WY", TaxRate = 0.00M },
-                        new StateLocation{Name = "District of Columbia", Abbreviation = "DC", TaxRate = 0.06M },
-                        new StateLocation{Name = "Guam", Abbreviation = "GU", TaxRate = 0.06M },
-                        new StateLocation{Name = "Marshall Islands", Abbreviation = "MH", TaxRate = 0.06M },
-                        new StateLocation{Name = "Northern Mariana Island", Abbreviation = "MP", TaxRate = 0.06M },
-                        new StateLocation{Name = "Puerto Rico", Abbreviation = "PR", TaxRate = 0.06M },
-                        new StateLocation{Name = "Virgin Islands", Abbreviation = "VI", TaxRate = 0.06M }
-                    };
-
-                    foreach(var item in states)
-                        context.StateLocation.Add(item);
-
-                    context.SaveChanges();                                                         
-                }
-                #endregion
 
                 #region product category
                 if (!context.ProductCategory.Any())
@@ -158,28 +90,8 @@ namespace CommerceRazorDemo.Data
                 }
                 #endregion
 
-                #region customer
-                if (!context.Customer.Any())
-                {
-                    var customers = new Customer[]
-                    {
-                        new Customer{UserName = "jerry", FirstName = "Jerry", LastName="Seinfeld", Address1="151 5th Avenue", Address2="#201", City="New York", StateLocationId=context.StateLocation.Single(x=>x.Abbreviation=="NY").Id, PostalCode="10001", PhoneNumber="212-555-1234", EmailAddress="jerry@seinfeld.com"},
-                        new Customer{UserName = "elaine", FirstName = "Elaine", LastName="Benes", Address1="325 Columbus Avenue", Address2="#12", City="New York", StateLocationId=context.StateLocation.Single(x=>x.Abbreviation=="NY").Id, PostalCode="10001", PhoneNumber="212-555-2345", EmailAddress="elaine@seinfeld.com"},
-                        new Customer{UserName = "kramer", FirstName = "Cosmo", LastName="Kramer", Address1="151 5th Avenue", Address2="#202", City="New York", StateLocationId=context.StateLocation.Single(x=>x.Abbreviation=="NY").Id, PostalCode="10001", PhoneNumber="212-555-3456", EmailAddress="kramer@seinfeld.com"},
-                        new Customer{UserName = "george", FirstName = "George", LastName="Costanza", Address1="525 42nd St", Address2="#604", City="New York", StateLocationId=context.StateLocation.Single(x=>x.Abbreviation=="NY").Id, PostalCode="10001", PhoneNumber="212-555-4567", EmailAddress="george@seinfeld.com"},
-                        new Customer{UserName = "newman", FirstName = "N", LastName="Newman", Address1="151 5th Avenue", Address2="#5", City="New York", StateLocationId=context.StateLocation.Single(x=>x.Abbreviation=="NY").Id, PostalCode="10001", PhoneNumber="212-555-5678", EmailAddress="newman@seinfeld.com"}
-                    };
-
-                    foreach(var item in customers)
-                        context.Customer.Add(item);
-
-                    context.SaveChanges();
-                }
-
-                #endregion
-
                 #region order status
-                if(!context.OrderStatus.Any())
+                if (!context.OrderStatus.Any())
                 {
                     var orderStatus = new OrderStatus[]
                     {
@@ -190,12 +102,165 @@ namespace CommerceRazorDemo.Data
                         new OrderStatus { Name = "Returned"},
                     };
 
-                    foreach (var item in orderStatus)   
+                    foreach (var item in orderStatus)
                         context.OrderStatus.Add(item);
 
                     context.SaveChanges();
                 }
                 #endregion
+
+                #region states
+                // US States
+                if (!context.StateLocation.Any())
+                {
+                    var states = new StateLocation[]
+                    {
+                        new StateLocation{Name = "Alabama", Abbreviation = "AL", TaxRate = 0.04M },
+                        new StateLocation{Name = "Alaska", Abbreviation = "AK", TaxRate = 0.05M },
+                        new StateLocation{Name = "Arizona", Abbreviation = "AZ", TaxRate = 0.06M },
+                        new StateLocation{Name = "Arkansas", Abbreviation = "AR", TaxRate = 0.07M },
+                        new StateLocation{Name = "California", Abbreviation = "CA", TaxRate = 0.08M },
+                        new StateLocation{Name = "Colorado", Abbreviation = "CO", TaxRate = 0.07M },
+                        new StateLocation{Name = "Connecticut", Abbreviation = "CT", TaxRate = 0.06M },
+                        new StateLocation{Name = "Delaware", Abbreviation = "DE", TaxRate = 0.05M },
+                        new StateLocation{Name = "Florida", Abbreviation = "FL", TaxRate = 0.04M },
+                        new StateLocation{Name = "Georgia", Abbreviation = "GA", TaxRate = 0.05M },
+                        new StateLocation{Name = "Hawaii", Abbreviation = "HI", TaxRate = 0.06M },
+                        new StateLocation{Name = "Idaho", Abbreviation = "ID", TaxRate = 0.07M },
+                        new StateLocation{Name = "Illinois", Abbreviation = "IL", TaxRate = 0.08M },
+                        new StateLocation{Name = "Indiana", Abbreviation = "IN", TaxRate = 0.07M },
+                        new StateLocation{Name = "Iowa", Abbreviation = "IA", TaxRate = 0.06M },
+                        new StateLocation{Name = "Kansas", Abbreviation = "KS", TaxRate = 0.05M },
+                        new StateLocation{Name = "Kentucky", Abbreviation = "KY", TaxRate = 0.04M },
+                        new StateLocation{Name = "Louisiana", Abbreviation = "LA", TaxRate = 0.05M },
+                        new StateLocation{Name = "Maine", Abbreviation = "ME", TaxRate = 0.06M },
+                        new StateLocation{Name = "Maryland", Abbreviation = "MD", TaxRate = 0.07M },
+                        new StateLocation{Name = "Massachusetts", Abbreviation = "MA", TaxRate = 0.08M },
+                        new StateLocation{Name = "Michigan", Abbreviation = "MI", TaxRate = 0.07M },
+                        new StateLocation{Name = "Minnesota", Abbreviation = "MN", TaxRate = 0.06M },
+                        new StateLocation{Name = "Mississippi", Abbreviation = "MS", TaxRate = 0.05M },
+                        new StateLocation{Name = "Missouri", Abbreviation = "MO", TaxRate = 0.04M },
+                        new StateLocation{Name = "Montana", Abbreviation = "MT", TaxRate = 0.05M },
+                        new StateLocation{Name = "Nebraska", Abbreviation = "NE", TaxRate = 0.06M },
+                        new StateLocation{Name = "Nevada", Abbreviation = "NV", TaxRate = 0.07M },
+                        new StateLocation{Name = "New Hampshire", Abbreviation = "NH", TaxRate = 0.08M },
+                        new StateLocation{Name = "New Jersey", Abbreviation = "NJ", TaxRate = 0.08M },
+                        new StateLocation{Name = "New Mexico", Abbreviation = "NM", TaxRate = 0.07M },
+                        new StateLocation{Name = "New York", Abbreviation = "NY", TaxRate = 0.06M },
+                        new StateLocation{Name = "North Carolina", Abbreviation = "NC", TaxRate = 0.05M },
+                        new StateLocation{Name = "North Dakota", Abbreviation = "ND", TaxRate = 0.04M },
+                        new StateLocation{Name = "Ohio", Abbreviation = "OH", TaxRate = 0.08M },
+                        new StateLocation{Name = "Oklahoma", Abbreviation = "OK", TaxRate = 0.04M },
+                        new StateLocation{Name = "Oregon", Abbreviation = "OR", TaxRate = 0.05M },
+                        new StateLocation{Name = "Pennsylvania", Abbreviation = "PA", TaxRate = 0.08M },
+                        new StateLocation{Name = "Rhode Island", Abbreviation = "RI", TaxRate = 0.07M },
+                        new StateLocation{Name = "South Carolina", Abbreviation = "SC", TaxRate = 0.04M },
+                        new StateLocation{Name = "South Dakota", Abbreviation = "SD", TaxRate = 0.04M },
+                        new StateLocation{Name = "Tennessee", Abbreviation = "TN", TaxRate = 0.04M },
+                        new StateLocation{Name = "Texas", Abbreviation = "TX", TaxRate = 0.0M },
+                        new StateLocation{Name = "Utah", Abbreviation = "UT", TaxRate = 0.05M },
+                        new StateLocation{Name = "Vermont", Abbreviation = "VT", TaxRate = 0.05M },
+                        new StateLocation{Name = "Virginia", Abbreviation = "VA", TaxRate = 0.06M },
+                        new StateLocation{Name = "Washington", Abbreviation = "WA", TaxRate = 0.04M },
+                        new StateLocation{Name = "West Virginia", Abbreviation = "WV", TaxRate = 0.03M },
+                        new StateLocation{Name = "Wisconsin", Abbreviation = "WI", TaxRate = 0.06M },
+                        new StateLocation{Name = "Wyoming", Abbreviation = "WY", TaxRate = 0.00M },
+                        new StateLocation{Name = "District of Columbia", Abbreviation = "DC", TaxRate = 0.06M },
+                        new StateLocation{Name = "Guam", Abbreviation = "GU", TaxRate = 0.06M },
+                        new StateLocation{Name = "Marshall Islands", Abbreviation = "MH", TaxRate = 0.06M },
+                        new StateLocation{Name = "Northern Mariana Island", Abbreviation = "MP", TaxRate = 0.06M },
+                        new StateLocation{Name = "Puerto Rico", Abbreviation = "PR", TaxRate = 0.06M },
+                        new StateLocation{Name = "Virgin Islands", Abbreviation = "VI", TaxRate = 0.06M }
+                    };
+
+                    foreach (var item in states)
+                        context.StateLocation.Add(item);
+
+                    context.SaveChanges();
+                }
+                #endregion
+
+                #region users
+
+                if (!context.Roles.Any())
+                {
+                    var roleStore = new RoleStore<IdentityRole>(context);
+                    if (roleStore != null)
+                    {
+                        string[] roles = new string[] { "ADMIN", "CUSTOMER" };
+                        foreach (string role in roles)
+                        {
+                            await roleStore.CreateAsync(new IdentityRole { Name = role, NormalizedName = role });
+                        }
+                    }
+
+                    await context.SaveChangesAsync();
+                }
+
+
+                if (!context.Users.Any())
+                {
+                    UserStore<IdentityUser> userStore = new UserStore<IdentityUser>(context);
+                    var hasher = new PasswordHasher<IdentityUser>();
+
+                    if (userStore != null && hasher != null)
+                    {
+                        // admin
+                        var adminUser = new ApplicationUser
+                        {
+                            UserName = "administrator",
+                            NormalizedUserName = "ADMIN",
+                            FirstName = "Ad",
+                            LastName = "Min",
+                            Address1 = "100 Main",
+                            Address2 = "#1",
+                            City = "Longmont",
+                            StateLocationId = context.StateLocation.Single(x => x.Abbreviation == "CO").Id,
+                            PostalCode = "80501",
+                            PhoneNumber = "111-111-1111",
+                            Email = "admin@commercedemo.com",
+                            NormalizedEmail = "ADMIN@COMMERCEDEMO.COM",
+                            EmailConfirmed = true,
+                            PhoneNumberConfirmed = true,
+                            SecurityStamp = Guid.NewGuid().ToString("D")
+                        };
+
+                        adminUser.PasswordHash = hasher.HashPassword(adminUser, "password");
+                        await userStore.CreateAsync(adminUser);
+                        await userStore.AddToRoleAsync(adminUser, "ADMIN");
+
+
+                        // customers
+                        var customers = new ApplicationUser[]
+                       {
+                            new ApplicationUser{UserName = "jerry", NormalizedUserName = "JERRY", FirstName = "Jerry", LastName="Seinfeld", Address1="151 5th Avenue", Address2="#201", City="New York", StateLocationId=context.StateLocation.Single(x=>x.Abbreviation=="NY").Id, PostalCode="10001", PhoneNumber="212-555-1234", Email="jerry@seinfeld.com", NormalizedEmail = "JERRY@SEINFELD.COM", EmailConfirmed = true, PhoneNumberConfirmed = true, SecurityStamp = Guid.NewGuid().ToString("D")},
+                            new ApplicationUser{UserName = "elaine", NormalizedUserName = "ELAINE", FirstName = "Elaine", LastName="Benes", Address1="325 Columbus Avenue", Address2="#12", City="New York", StateLocationId=context.StateLocation.Single(x=>x.Abbreviation=="NY").Id, PostalCode="10001", PhoneNumber="212-555-2345", Email="ELAINE@SEINFELD.COM", NormalizedEmail = "elaine@seinfeld.com", EmailConfirmed = true, PhoneNumberConfirmed = true, SecurityStamp = Guid.NewGuid().ToString("D")},
+                            new ApplicationUser{UserName = "kramer", NormalizedUserName = "KRAMER", FirstName = "Cosmo", LastName="Kramer", Address1="151 5th Avenue", Address2="#202", City="New York", StateLocationId=context.StateLocation.Single(x=>x.Abbreviation=="NY").Id, PostalCode="10001", PhoneNumber="212-555-3456", Email="KRAMER@SEINFELD.COM", NormalizedEmail = "kramer@seinfeld.com", EmailConfirmed = true, PhoneNumberConfirmed = true, SecurityStamp = Guid.NewGuid().ToString("D")},
+                            new ApplicationUser{UserName = "george", NormalizedUserName = "GEORGE", FirstName = "George", LastName="Costanza", Address1="525 42nd St", Address2="#604", City="New York", StateLocationId=context.StateLocation.Single(x=>x.Abbreviation=="NY").Id, PostalCode="10001", PhoneNumber="212-555-4567", Email="GEORGE@SEINFELD.COM", NormalizedEmail = "george@seinfeld.com", EmailConfirmed = true, PhoneNumberConfirmed = true, SecurityStamp = Guid.NewGuid().ToString("D")},
+                            new ApplicationUser{UserName = "newman", NormalizedUserName = "NEWMAN", FirstName = "N", LastName="Newman", Address1="151 5th Avenue", Address2="#5", City="New York", StateLocationId=context.StateLocation.Single(x=>x.Abbreviation=="NY").Id, PostalCode="10001", PhoneNumber="212-555-5678", Email="newman@seinfeld.com", NormalizedEmail = "NEWMAN@SEINFELD.COM",EmailConfirmed = true, PhoneNumberConfirmed = true, SecurityStamp = Guid.NewGuid().ToString("D")}
+                       };
+
+                        foreach (var user in customers)
+                        {
+                            user.PasswordHash = hasher.HashPassword(user, "password");
+                            await userStore.CreateAsync(user);
+                            await userStore.AddToRoleAsync(user, "CUSTOMER");
+                        }                           
+
+                        await context.SaveChangesAsync();
+
+                    }
+
+                }
+
+                // admin
+
+                // customers
+               
+
+                #endregion
+
+
 
             }
         }

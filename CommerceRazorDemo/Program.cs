@@ -4,6 +4,7 @@ using CommerceRazorDemo.Data;
 using CommerceRazorDemo;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
+using CommerceRazorDemo.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,17 +13,17 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<CommerceRazorDemoContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("CommerceRazorDemoContext") ?? throw new InvalidOperationException("Connection string 'CommerceRazorDemoContext' not found.")));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<CommerceRazorDemoContext>();
+
 
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    SeedData.Initialize(services);
-
-    
+    SeedData.Initialize(services);    
 }
 
 // Configure the HTTP request pipeline.

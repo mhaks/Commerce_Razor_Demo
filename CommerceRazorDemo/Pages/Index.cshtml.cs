@@ -1,5 +1,7 @@
 using CommerceRazorDemo.Data;
+using CommerceRazorDemo.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -7,20 +9,38 @@ namespace CommerceRazorDemo.Pages
 {
     public class IndexModel : CommerceDemoPageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public IndexModel(CommerceRazorDemoContext context, ILogger<CommerceDemoPageModel> logger, SignInManager<IdentityUser> signInManager) : base(context, logger)
+        public IndexModel(CommerceRazorDemoContext context, ILogger<CommerceDemoPageModel> logger, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager) : base(context, logger)
         {
+            _userManager = userManager;
             _signInManager = signInManager;
         }
 
-        public IActionResult OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
-            if (User.IsInRole("Customer"))
+
+            if (User.Identity == null || !User.Identity.IsAuthenticated)
+            {
+                string defaultUsername = "jerry";
+
+                
+                // Find the default user by username
+                var defaultUser = await _userManager.FindByNameAsync(defaultUsername);
+
+                if (defaultUser != null)
+                {
+                    // Sign in the default user
+                    await _signInManager.SignInAsync(defaultUser, isPersistent: false);
+                }                
+            }
+
+            if (User.IsInRole("CUSTOMER"))
             {
                 return RedirectToPage("/Shopping/Index");
             }
-            else if (User.IsInRole("Admin"))
+            else if (User.IsInRole("ADMIN"))
             {
                 return RedirectToPage("/Admin/Index");
             }
@@ -28,30 +48,22 @@ namespace CommerceRazorDemo.Pages
             return RedirectToPage("/Shopping/Index");
         }
 
-        public async Task<IActionResult> OnPost(int userId) 
+        public async Task<IActionResult> OnPost(string name) 
         { 
             if(_context == null)
                 return NotFound();
 
-            if (userId == 0)
+            if (User.Identity == null || User.Identity.Name != name)
             {
-                // sign into admin
-            }
-            else if (userId > 0) {
-                var user = _context.Customer.Where(x => x.Id == userId).FirstOrDefault();
+                var user = await _userManager.FindByNameAsync(name);
+
                 if (user != null)
                 {
-                    // Sign out the current user
-                    await _signInManager.SignOutAsync();
-
-                    // Sign in the new user
-                    var iuser = new IdentityUser(user.UserName);
-                    iuser.Id = user.Id.ToString();
-
-                    await _signInManager.SignInAsync(iuser, isPersistent: false);
+                    await _signInManager.SignOutAsync();                    
+                    await _signInManager.SignInAsync(user, isPersistent: false);
                 }
             }
-            
+           
 
             return RedirectToAction("Index");
         }

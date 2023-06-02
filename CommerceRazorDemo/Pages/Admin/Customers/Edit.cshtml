@@ -2,7 +2,7 @@
 @model CommerceRazorDemo.Pages.Customers.EditModel
 
 @{
-    if (Model.CustomerId != 0)
+    if (String.IsNullOrEmpty(Model.UserId))
     {
         ViewData["Title"] = "Edit Customer";
     }
@@ -24,7 +24,7 @@
                 <div class="col-md-4">
                     <form method="post">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <input type="hidden" asp-for="CustomerId" />
+                        <input type="hidden" asp-for="UserId" />
             
                         <div class="form-group mt-3">
                             <label asp-for="FirstName" class="control-label"></label>

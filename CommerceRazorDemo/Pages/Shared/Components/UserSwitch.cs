@@ -24,7 +24,7 @@ namespace CommerceRazorDemo.Pages.Shared.Components
             SelectList users = null;
             if (context != null)
             {
-                users = new SelectList(await context.Customer.OrderBy(c => c.LastName).ToListAsync(), "Id", "FullName");
+                users = new SelectList(await context.Users.OrderBy(c => c.UserName).ToListAsync(), "UserName", "UserName");
             }
             
             
