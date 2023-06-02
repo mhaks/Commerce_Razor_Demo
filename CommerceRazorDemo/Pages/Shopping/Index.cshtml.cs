@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,6 +15,7 @@ namespace CommerceRazorDemo.Pages.Shopping
         }
 
         public List<Models.Product> TopProducts { get; set; } = default!;
+
 
         public async Task OnGet()
         {

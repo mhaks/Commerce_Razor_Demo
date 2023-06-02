@@ -27,14 +27,14 @@ namespace CommerceRazorDemo.Pages.Shopping
         public decimal SubTotal { get; set; }
 
 
-        public async Task<IActionResult> OnGetAsync(string userId)
+        public async Task<IActionResult> OnGetAsync()
         {
             if (_context == null)
             {
                 return NotFound();
             }
 
-            var query = _context.Order.Where(c => c.UserId == userId).AsNoTracking();
+            var query = _context.Order.Where(c => c.UserId == UserId).AsNoTracking();
             var order = await GetOrder(query);
 
             OrderId = order.Id;
@@ -49,7 +49,7 @@ namespace CommerceRazorDemo.Pages.Shopping
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(string userId, int productId, int quantity)
+        public async Task<IActionResult> OnPostAsync(int productId, int quantity)
         {
             if (_context.Product == null)
             {
@@ -62,7 +62,7 @@ namespace CommerceRazorDemo.Pages.Shopping
                 return NotFound();
             }
 
-            var query = _context.Order.Where(c => c.UserId == userId);
+            var query = _context.Order.Where(c => c.UserId == UserId);
             var order = await GetOrder(query);
 
             order.OrderProducts ??= new List<OrderProduct>();
@@ -76,17 +76,14 @@ namespace CommerceRazorDemo.Pages.Shopping
 
             if (order.Id == 0)
             {
-                order.UserId = userId;
+                order.UserId = UserId;
                 _context.Order.Add(order);
             }
             
             await _context.SaveChangesAsync();
 
-            var dict = new RouteValueDictionary
-            {
-                { "userId", userId }
-            };
-            return RedirectToAction("Index", dict);
+           
+            return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> OnPostEditAsync(int orderId, int orderProductId, int quantity, string action) 
@@ -134,14 +131,10 @@ namespace CommerceRazorDemo.Pages.Shopping
 
             await _context.SaveChangesAsync();
 
-            var dict = new RouteValueDictionary
-            {
-                { "userId", order.UserId }
-            };
-            return RedirectToAction("Index", dict);
+          
+            return RedirectToAction("Index");
         }
-
-       
+              
 
 
         private async Task<Order> GetOrder(IQueryable<Order> query)

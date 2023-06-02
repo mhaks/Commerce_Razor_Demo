@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Security.Claims;
 
 namespace CommerceRazorDemo.Pages
 {
@@ -13,16 +14,19 @@ namespace CommerceRazorDemo.Pages
             _context = context;
             _logger = logger;
 
-            
-
-            // TODO is user a customer or admin role
-            IsAdmin = false;
         }
 
-        public bool IsAdmin { get; set; }
+        public String? UserId { get; set; } = String.Empty;
+
+        public override void OnPageHandlerExecuting(PageHandlerExecutingContext context)
+        {
+            UserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            base.OnPageHandlerExecuting(context);
+        }
 
         public override void OnPageHandlerExecuted(PageHandlerExecutedContext context)
         {
+            
             ViewData["DbContext"] = _context;
             base.OnPageHandlerExecuted(context);
         }       
