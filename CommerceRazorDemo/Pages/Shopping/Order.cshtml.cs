@@ -1,10 +1,13 @@
 using CommerceRazorDemo.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace CommerceRazorDemo.Pages.Shopping
 {
+    [Authorize(Roles = "CUSTOMER")]
     public class OrderModel : CommerceDemoPageModel
     {
         public OrderModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<OrderModel> logger)

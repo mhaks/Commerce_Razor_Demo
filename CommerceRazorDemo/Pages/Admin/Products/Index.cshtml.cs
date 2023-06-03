@@ -8,9 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using CommerceRazorDemo.Data;
 using CommerceRazorDemo.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace CommerceRazorDemo.Pages.Products
 {
+    [Authorize(Roles = "ADMIN")]
     public class IndexModel : CommerceDemoPageModel
     {
         public IndexModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<IndexModel> logger)

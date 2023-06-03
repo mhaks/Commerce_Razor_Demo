@@ -9,11 +9,15 @@ using Microsoft.EntityFrameworkCore;
 using CommerceRazorDemo.Data;
 using CommerceRazorDemo.Models;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace CommerceRazorDemo.Pages.ProductCategories
 {
+    [Authorize(Roles = "ADMIN")]
     public class EditModel : CommerceDemoPageModel
     {
+                
         public EditModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<EditModel> logger)
             : base(context, logger)
         {

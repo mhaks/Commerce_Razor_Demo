@@ -6,9 +6,12 @@ using Microsoft.EntityFrameworkCore;
 using CommerceRazorDemo.Models;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace CommerceRazorDemo.Pages.Shopping
 {
+    [Authorize(Roles = "CUSTOMER")]
     public class CheckoutModel : CommerceDemoPageModel
     {
         public CheckoutModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<CheckoutModel> logger)

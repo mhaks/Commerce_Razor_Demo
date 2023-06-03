@@ -14,9 +14,12 @@ using System.Xml.Linq;
 using System.Drawing.Drawing2D;
 
 using CommerceRazorDemo.Pages.Products;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace CommerceRazorDemo.Pages.Customers
 {
+    [Authorize(Roles = "ADMIN")]
     public class EditModel : CommerceDemoPageModel
     {
 

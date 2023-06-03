@@ -10,10 +10,12 @@ using CommerceRazorDemo.Data;
 using CommerceRazorDemo.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
-
+using System.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CommerceRazorDemo.Pages.Products
 {
+    [Authorize(Roles = "ADMIN")]
     public class EditModel : CommerceDemoPageModel
     {
         public EditModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<EditModel> logger)

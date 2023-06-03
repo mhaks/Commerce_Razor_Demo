@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CommerceRazorDemo.Pages.Shopping
 {
+    [Authorize(Roles = "CUSTOMER")]
     public class IndexModel : CommerceDemoPageModel
     {
 

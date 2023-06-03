@@ -9,9 +9,13 @@ using CommerceRazorDemo.Data;
 using CommerceRazorDemo.Models;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace CommerceRazorDemo.Pages.Orders
 {
+
+    [Authorize(Roles = "ADMIN")]
     public class IndexModel : CommerceDemoPageModel
     {
         public IndexModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<IndexModel> logger)
