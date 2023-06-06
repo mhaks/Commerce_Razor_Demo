@@ -16,6 +16,9 @@ using System.Drawing.Drawing2D;
 using CommerceRazorDemo.Pages.Products;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using System.Security.Policy;
+using Microsoft.AspNetCore.Identity;
 
 namespace CommerceRazorDemo.Pages.Customers
 {
@@ -32,8 +35,8 @@ namespace CommerceRazorDemo.Pages.Customers
 
         public SelectList UsStates { get; set; } = default!;
 
-        [BindProperty]
-        public string UserId { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string? CustomerId { get; set; }
 
         [BindProperty]
         [Required]
@@ -70,10 +73,11 @@ namespace CommerceRazorDemo.Pages.Customers
         public string City { get; set; } = string.Empty;
 
         [BindProperty]
+        [Required]
         [Display(Name = "State")]
         public int StateLocationId { get; set; }
 
-
+        [BindProperty]
         [Required]
         [StringLength(5, MinimumLength = 5)]
         [Display(Name = "Zip")]
@@ -93,22 +97,22 @@ namespace CommerceRazorDemo.Pages.Customers
         public string EmailAddress { get; set; } = string.Empty;
 
 
-        public async Task<IActionResult> OnGetAsync(string id)
+        public async Task<IActionResult> OnGetAsync()
         {
             if (_context == null)
             {
                 return NotFound();
             }
 
-            if (!String.IsNullOrEmpty(id))
+            if (!String.IsNullOrEmpty(CustomerId))
             {
-                var user = await _context.Users.FirstOrDefaultAsync(m => m.Id == id);
+                var user = await _context.Users.FirstOrDefaultAsync(m => m.Id == CustomerId);
                 if (user == null)
                 {
                     return NotFound();
                 }
 
-                UserId = user.Id;
+                CustomerId = user.Id;
                 UserName = user.UserName;
                 FirstName = user.FirstName;
                 LastName = user.LastName;
@@ -145,13 +149,12 @@ namespace CommerceRazorDemo.Pages.Customers
                 return Page();
             }
 
-            if (!String.IsNullOrEmpty(UserId))
+            if (!String.IsNullOrEmpty(CustomerId))
             {
-                var customer = await _context.Users.FindAsync(UserId);
+                var customer = await _context.Users.FindAsync(CustomerId);
                 if (customer == null)
                     return NotFound();
 
-                customer.UserName = UserName;
                 customer.FirstName = FirstName;
                 customer.LastName = LastName;
                 customer.Address1 = Address1;
@@ -164,9 +167,20 @@ namespace CommerceRazorDemo.Pages.Customers
             }
             else
             {
+                if (await _context.Users.AnyAsync(u => u.UserName == UserName))
+                {
+                    ModelState.AddModelError("UserName", "Username already exists");
+                    LoadSelections();
+                    return Page();
+                }
+
+                UserStore<IdentityUser> userStore = new UserStore<IdentityUser>(_context);
+                var hasher = new PasswordHasher<IdentityUser>();
+
                 var customer = new ApplicationUser
                 {
                     UserName = UserName,
+                    NormalizedUserName = UserName.ToUpper(),
                     FirstName = FirstName,
                     LastName = LastName,
                     Address1 = Address1,
@@ -175,12 +189,17 @@ namespace CommerceRazorDemo.Pages.Customers
                     StateLocationId = StateLocationId,
                     PostalCode = PostalCode,
                     PhoneNumber = PhoneNumber,
-                    Email = EmailAddress
+                    Email = EmailAddress,
+                    NormalizedEmail = EmailAddress.ToUpper(),
+                    EmailConfirmed = true,
+                    PhoneNumberConfirmed = true,
+                    SecurityStamp = Guid.NewGuid().ToString("D")
                 };
-                _context.Users.Add(customer);
+
+                customer.PasswordHash = hasher.HashPassword(customer, "password");
+                await userStore.CreateAsync(customer);
+                await userStore.AddToRoleAsync(customer, "CUSTOMER");
             }
-
-
 
             try
             {
@@ -188,7 +207,7 @@ namespace CommerceRazorDemo.Pages.Customers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CustomerExists(UserId))
+                if (!CustomerExists(CustomerId))
                 {
                     return NotFound();
                 }

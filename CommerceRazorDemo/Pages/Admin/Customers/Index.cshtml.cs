@@ -9,6 +9,7 @@ using CommerceRazorDemo.Data;
 using CommerceRazorDemo.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace CommerceRazorDemo.Pages.Customers
 {
@@ -16,10 +17,12 @@ namespace CommerceRazorDemo.Pages.Customers
     public class IndexModel : CommerceDemoPageModel
     {
 
-        public IndexModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<IndexModel> logger)
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public IndexModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<IndexModel> logger, UserManager<ApplicationUser> userManager)
             : base(context, logger)
         {
-
+            _userManager = userManager;
         }
 
         public IList<ApplicationUser> Customer { get;set; } = default!;
@@ -35,8 +38,12 @@ namespace CommerceRazorDemo.Pages.Customers
                 return NotFound();
 
 
+            var customers = await _userManager.GetUsersInRoleAsync("CUSTOMER");
 
-            var customerQuery = from c in _context.Users select c;
+            var customerQuery = from c in customers 
+                                join st in _context.StateLocation on c.StateLocationId equals st.Id
+                                select c;
+
 
             if (!String.IsNullOrEmpty(SearchString))
             {
@@ -55,7 +62,7 @@ namespace CommerceRazorDemo.Pages.Customers
                     break;
             }
 
-            Customer = await customerQuery.AsNoTracking().Include(c => c.StateLocation).ToListAsync();
+            Customer = customerQuery.ToList();
 
             return Page();
         }
