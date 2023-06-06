@@ -4,6 +4,13 @@
     ViewData["Title"] = "Cart";
 }
 
+<section class="bg-dark py-1">
+    <div class="container px-4 px-lg-5">
+        <div class="text-left text-white">
+            <h5 class="fw-bolder">@ViewData["Title"]</h5>
+        </div>
+    </div>
+</section>
 
 @if (Model.Products != null && Model.Products.Any())
 {
