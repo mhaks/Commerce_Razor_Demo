@@ -3,8 +3,9 @@
 
 <div>
     <form asp-page="..\Index" method="post" >
-        <select class="form-control" asp-items="@Model" name="name">            
-        </select>
-        <button type="submit">Login</button>
+        <div class="input-group">
+            <select class="form-control" asp-items="@Model" name="name"></select>
+            <button type="submit" class="btn btn-outline-light">Switch</button>
+        </div>        
     </form>
 </div>
