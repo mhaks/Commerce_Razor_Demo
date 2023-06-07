@@ -11,3 +11,94 @@
         </div>
     </div>
 </section>
+
+
+<section class="py-5">
+    <div class="container px-4 mt-5">
+        <div class="row row-cols-3 gx-4 justify-content-center">
+
+            <!-- Sales-->
+            <div class="col mb-5">
+                <div class="card h-100">
+                    <div class="card-header text-center">
+                        <h4>Sales</h4>                        
+                    </div>                    
+                    <div class="card-body">
+                        <h6>Past 7 days</h6>
+                        <div class="row row-cols-2 px-4">
+                            <div class="col">Orders</div>
+                            <div class="col text-end">@Model.SalesOrderCount</div>
+                            <div class="col">Products</div>
+                            <div class="col text-end">@Model.SalesProductCount</div>
+                            <div class="col">Revenue</div>
+                            <div class="col text-end">@Html.DisplayFor(m => m.SalesDollarRevenue)</div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders-->
+            <div class="col mb-5">
+                <div class="card h-100">
+                    <div class="card-header text-center">
+                        <h4>Orders</h4>
+                    </div>
+                    <div class="card-body">
+                        <h6>Fulfillment</h6>
+                        <div class="row row-cols-2 px-4">
+                            <div class="col">Cart</div>
+                            <div class="col text-end">@Model.OrderCartCount</div>
+                            <div class="col">Processing</div>
+                            <div class="col text-end">@Model.OrderProcessingCount</div>
+                            <div class="col">Shipped</div>
+                            <div class="col text-end">@Model.OrderShippedCount</div>
+                        </div>
+                        <hr />
+                        <h6>Past 7 days</h6>
+                        <div class="row row-cols-2 px-4">
+                            <div class="col">Delivered</div>
+                            <div class="col text-end">@Model.OrderDeliveredCount</div>
+                            <div class="col">Returns</div>
+                            <div class="col text-end">@Model.OrderReturnCount</div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inventory -->
+            <div class="col mb-5">
+                <div class="card h-100">
+                    <div class="card-header text-center">
+                        <h4>Inventory</h4>                        
+                    </div>
+                    <div class="card-body">
+                        <h6>Products</h6>
+                        <div class="row row-cols-2 px-4">
+                            <div class="col">Active</div>
+                            <div class="col text-end">@Model.InventoryActiveCount</div>
+                        </div>
+                        <hr />
+                        <h6>Stock</h6>
+                        <div class="row row-cols-2 px-4">
+                            <div class="col">Good</div>
+                            <div class="col text-end">@Model.InventoryStockGoodCount</div>
+                            <div class="col">Low (&lt; 10)</div>
+                            <div class="col text-end">@Model.InventoryStockLowCount</div>
+                            <div class="col">Out</div>
+                            <div class="col text-end">@Model.InventoryStockOutCount</div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

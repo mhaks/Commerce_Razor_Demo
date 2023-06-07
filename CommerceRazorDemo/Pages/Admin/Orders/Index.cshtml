@@ -56,13 +56,20 @@
                 <tbody>
                     @foreach (var order in Model.Orders)
                     {
-                        var ordered = order.OrderHistory.First(h => h.OrderStatusId == (int)Models.OrderState.Processing);
+                        var ordered = order.OrderHistory.FirstOrDefault(h => h.OrderStatusId == (int)Models.OrderState.Processing);
                         var current = order.OrderHistory.OrderBy(h => h.OrderDate).Last();
 
                         <tr>
                             <td><a asp-page="./Details" asp-route-id="@order.Id" target="_blank" >@order.Id.ToString("D8")</a></td>
                             <td>@order.User.UserName</td>
-                            <td>@TimeZoneInfo.ConvertTimeFromUtc(ordered.OrderDate, userTimeZone)</td>
+                            <td>
+                                @{
+                                    if (ordered != null)
+                                    {
+                                        <span>@TimeZoneInfo.ConvertTimeFromUtc(ordered.OrderDate, userTimeZone)</span>
+                                    }                                     
+                                }
+                            </td>
                             <td>@current.OrderStatus.Name</td>
                             <td>@TimeZoneInfo.ConvertTimeFromUtc(current.OrderDate, userTimeZone)</td>
                             <td>
