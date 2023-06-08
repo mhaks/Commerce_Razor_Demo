@@ -52,6 +52,7 @@ namespace CommerceRazorDemo.Pages.Shopping
                 Products = await productsQuery
                     .AsNoTracking()
                     .Include(c => c.ProductCategory)
+                    .Take(20)
                     .ToListAsync();
             }
         }
