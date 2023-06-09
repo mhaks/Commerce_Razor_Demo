@@ -16,7 +16,7 @@ namespace CommerceRazorDemo.Pages
 
         }
 
-        public String? UserId { get; set; } = String.Empty;
+        public string? UserId { get; set; } = String.Empty;
 
         public override void OnPageHandlerExecuting(PageHandlerExecutingContext context)
         {

@@ -12,6 +12,7 @@ namespace CommerceRazorDemo.Pages.Errors
 
         public void OnGet()
         {
+            _logger.LogWarning("404 Page Not Found");
         }
     }
 }

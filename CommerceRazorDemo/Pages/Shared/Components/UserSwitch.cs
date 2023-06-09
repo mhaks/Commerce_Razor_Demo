@@ -21,14 +21,18 @@ namespace CommerceRazorDemo.Pages.Shared.Components
         {
             var context = ViewData["DbContext"] as CommerceRazorDemo.Data.CommerceRazorDemoContext;
 
-            SelectList users = null;
+            SelectList users;
             if (context != null)
             {
                 users = new SelectList(await context.Users.OrderBy(c => c.UserName).ToListAsync(), "UserName", "UserName");
             }
-            
-            
-            
+            else
+            {
+                users = new SelectList(Enumerable.Empty<SelectListItem>(), "UserName", "UserName");
+            }
+
+
+
             return View(users);
         }
 

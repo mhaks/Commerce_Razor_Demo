@@ -113,7 +113,7 @@ namespace CommerceRazorDemo.Pages.Customers
                 }
 
                 CustomerId = user.Id;
-                UserName = user.UserName;
+                UserName = user.UserName ?? String.Empty;
                 FirstName = user.FirstName;
                 LastName = user.LastName;
                 Address1 = user.Address1;
@@ -121,8 +121,8 @@ namespace CommerceRazorDemo.Pages.Customers
                 City = user.City;
                 StateLocationId = user.StateLocationId;
                 PostalCode = user.PostalCode;
-                PhoneNumber = user.PhoneNumber;
-                EmailAddress = user.Email;
+                PhoneNumber = user.PhoneNumber ?? String.Empty;
+                EmailAddress = user.Email ?? string.Empty;
             }
             else
             {
@@ -207,7 +207,7 @@ namespace CommerceRazorDemo.Pages.Customers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CustomerExists(CustomerId))
+                if (!String.IsNullOrEmpty(CustomerId) && !CustomerExists(CustomerId))
                 {
                     return NotFound();
                 }

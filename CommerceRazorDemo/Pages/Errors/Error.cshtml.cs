@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Diagnostics;
 
-namespace CommerceRazorDemo.Pages
+namespace CommerceRazorDemo.Pages.Errors
 {
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     [IgnoreAntiforgeryToken]
@@ -22,6 +22,7 @@ namespace CommerceRazorDemo.Pages
         public void OnGet()
         {
             RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
+            _logger.LogError(RequestId ?? "Error Occurred", string.Empty);
         }
     }
 }

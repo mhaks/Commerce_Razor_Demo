@@ -20,7 +20,7 @@ namespace CommerceRazorDemo.Pages.Shopping
 
         }
 
-        public List<SelectListItem> Expirations {  get; set; }
+        public List<SelectListItem> Expirations { get; set; } = default!;
 
 
         public Order Order { get; set; } = default!;
@@ -29,26 +29,26 @@ namespace CommerceRazorDemo.Pages.Shopping
         [BindProperty]
         [MinLength(2)]
         [Display(Name = "Cardholder Name")]
-        public string CardName { get; set; }
+        public string CardName { get; set; } = string.Empty;
 
         [BindProperty]
         [Required]
         [MinLength(16)]
         [MaxLength(16)]
         [Display(Name = "Card Number")]
-        public string CardNumber { get; set; }
-        
+        public string CardNumber { get; set; } = string.Empty;
+
         [BindProperty]
         [Required]
-        public string CardExpiration { get; set; }
+        public string CardExpiration { get; set; } = string.Empty;
 
         [BindProperty]
         [Required]
         [MinLength(3)]
         [MaxLength(3)]
         [Display(Name = "CCV")]
-        public string CardCCV { get; set; }
-         
+        public string CardCCV { get; set; } = string.Empty;
+
 
         public async Task<IActionResult> OnGetAsync(int orderId)
         {

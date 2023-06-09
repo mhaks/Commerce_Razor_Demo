@@ -16,12 +16,20 @@ namespace CommerceRazorDemo.Pages.Shared.Components
         {
             var context = ViewData["DbContext"] as CommerceRazorDemo.Data.CommerceRazorDemoContext;
 
-            var categories = await context.ProductCategory
+            List<Models.ProductCategory> categories;
+
+            if (context != null)
+            {
+                categories = await context.ProductCategory
                 .AsNoTracking()
                 .OrderBy(x => x.Title)
                 .ToListAsync();
-
-            //var categories = new List<Models.ProductCategory>();
+            }
+            else
+            {
+                categories = new List<Models.ProductCategory>();
+            }
+ 
 
             return View(categories);
         }

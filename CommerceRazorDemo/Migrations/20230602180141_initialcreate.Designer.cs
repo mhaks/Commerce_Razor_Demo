@@ -13,7 +13,7 @@ namespace CommerceRazorDemo.Migrations
 {
     [DbContext(typeof(CommerceRazorDemoContext))]
     [Migration("20230602180141_initialcreate")]
-    partial class initialcreate
+    partial class Initialcreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

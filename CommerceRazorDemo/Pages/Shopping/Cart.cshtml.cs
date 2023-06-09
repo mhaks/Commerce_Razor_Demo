@@ -77,7 +77,7 @@ namespace CommerceRazorDemo.Pages.Shopping
                 new OrderHistory { Order = order, OrderDate = DateTime.UtcNow, OrderStatusId = (int)OrderState.Cart }
             };
 
-            if (order.Id == 0)
+            if (order.Id == 0 && !String.IsNullOrEmpty(UserId))
             {
                 order.UserId = UserId;
                 _context.Order.Add(order);

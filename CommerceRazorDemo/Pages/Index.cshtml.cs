@@ -33,6 +33,7 @@ namespace CommerceRazorDemo.Pages
                 {
                     // Sign in the default user
                     await _signInManager.SignInAsync(defaultUser, isPersistent: false);
+                    _logger.LogInformation("Login as default user: {defaultUser}", defaultUser);
                 }                
             }
 
@@ -55,12 +56,14 @@ namespace CommerceRazorDemo.Pages
 
             if (User.Identity == null || User.Identity.Name != name)
             {
+                _logger.LogInformation("Logging in as user: {name}", name);
                 var user = await _userManager.FindByNameAsync(name);
 
                 if (user != null)
                 {
                     await _signInManager.SignOutAsync();                    
                     await _signInManager.SignInAsync(user, isPersistent: false);
+                    _logger.LogInformation("Logged in as user: {name}", name);
                 }
             }
            
