@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <Configurations>Debug;Release;Azure</Configurations>
+    <UserSecretsId>1de76295-a7bd-4e7c-9cd4-907a1f06aa32</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
