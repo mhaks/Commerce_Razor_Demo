@@ -5,8 +5,7 @@
       "secretStore": "AzureAppSettings",
       "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/mhaks/databases/commercedemo",
       "type": "mssql.azure",
-      "connectionId": "ConnectionStrings:CommerceRazorDemoContext",
-      "dynamicId": null
+      "connectionId": "ConnectionStrings:CommerceRazorDemoContext"
     }
   }
 }
