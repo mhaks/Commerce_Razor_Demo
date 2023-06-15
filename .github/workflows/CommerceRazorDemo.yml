@@ -50,4 +50,4 @@ jobs:
       run: | 
         dotnet tool install --global dotnet-ef 
         dotnet tool restore 
-        dotnet-ef database update -p DotNetCoreSqlDb --connection '${{ secrets.DBConnection }}'
+        dotnet-ef database update -p CommerceRazorDemo --connection '${{ secrets.DBConnection }}'
