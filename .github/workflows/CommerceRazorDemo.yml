@@ -46,8 +46,3 @@ jobs:
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
         publish-profile: ${{ secrets.CommerceRazorDemo_66DF }}
         package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-    - name: Run EF Migration
-      run: | 
-        dotnet tool install --global dotnet-ef 
-        dotnet tool restore 
-        dotnet ef database update -p CommerceRazorDemo --connection '${{ secrets.DBConnection }}'
