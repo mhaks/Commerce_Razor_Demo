@@ -24,7 +24,9 @@ namespace CommerceRazorDemo.Pages.Shared.Components
             SelectList users;
             if (context != null)
             {
-                users = new SelectList(await context.Users.OrderBy(c => c.UserName).ToListAsync(), "UserName", "UserName");
+                string? username = HttpContext.User.Identity != null ? HttpContext.User.Identity.Name : null;
+                users = new SelectList(await context.Users.OrderBy(c => c.UserName).ToListAsync(), "UserName", "UserName", username);
+                
             }
             else
             {
