@@ -34,7 +34,7 @@ namespace CommerceRazorDemo.Pages.Shopping
         {
             if (_context != null && _context.Product != null)
             {
-                var productsQuery = from p in _context.Product select p;
+                var productsQuery = from p in _context.Product where p.IsActive select p;
 
                 if (!string.IsNullOrEmpty(SearchString))
                 { 

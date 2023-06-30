@@ -130,7 +130,7 @@ namespace CommerceRazorDemo.Pages.Customers
                 StateLocationId = state.Id;
             }
 
-            LoadSelections();
+            await LoadSelections();
             return Page();
         }
 
@@ -145,7 +145,7 @@ namespace CommerceRazorDemo.Pages.Customers
 
             if (!ModelState.IsValid)
             {
-                LoadSelections();
+                await LoadSelections();
                 return Page();
             }
 
@@ -170,7 +170,7 @@ namespace CommerceRazorDemo.Pages.Customers
                 if (await _context.Users.AnyAsync(u => u.UserName == UserName))
                 {
                     ModelState.AddModelError("UserName", "Username already exists");
-                    LoadSelections();
+                    await LoadSelections();
                     return Page();
                 }
 
@@ -226,7 +226,7 @@ namespace CommerceRazorDemo.Pages.Customers
           return (_context.Users?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
-        private async void LoadSelections()
+        private async Task LoadSelections()
         {
             UsStates = new SelectList(await _context.StateLocation.ToListAsync(), "Id", "Abbreviation");
         }
