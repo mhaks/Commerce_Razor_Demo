@@ -107,7 +107,7 @@ namespace CommerceRazorDemo.Pages.Products
                 
 
 
-            PopulateSelections();
+            await PopulateSelections();
             return Page();
         }
 
@@ -122,7 +122,7 @@ namespace CommerceRazorDemo.Pages.Products
 
             if (!ModelState.IsValid)
             {
-                PopulateSelections();
+                await PopulateSelections();
                 return Page();
             }
 
@@ -166,22 +166,11 @@ namespace CommerceRazorDemo.Pages.Products
 
         }
 
-        private async void PopulateSelections()
+        private async Task PopulateSelections()
         {
             Brands = new List<string>(await _context.Product.OrderBy(x => x.Brand).Select(x => x.Brand).Distinct().ToListAsync());
             Categories = new SelectList(await _context.ProductCategory.ToListAsync(), "Id", "Title");
         }
     }
 
-    public class ProductVM
-    {
-        
-
-        public void MapToDomain(Product product)
-        {
-            
-        }
-
-
-    }
 }
