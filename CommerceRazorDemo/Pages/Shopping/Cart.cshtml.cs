@@ -69,7 +69,11 @@ namespace CommerceRazorDemo.Pages.Shopping
             var order = await GetOrder(query);
 
             order.OrderProducts ??= new List<OrderProduct>();
-            order.OrderProducts.Add(new OrderProduct { Order = order, ProductId = productId, Quantity = quantity, Price =  product.Price});
+            var oproduct = order.OrderProducts.FirstOrDefault(op => op.ProductId == productId);
+            if (oproduct != null)
+                oproduct.Quantity += quantity;
+            else
+                order.OrderProducts.Add(new OrderProduct { Order = order, ProductId = productId, Quantity = quantity, Price =  product.Price});
 
             
             order.OrderHistory ??= new List<OrderHistory>
