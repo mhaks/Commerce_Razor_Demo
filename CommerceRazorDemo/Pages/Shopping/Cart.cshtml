@@ -23,9 +23,7 @@
                     <tbody>
                         @foreach (var item in Model.Products)
                         {
-                            <form method="post" asp-area="Shopping" asp-page="Cart" asp-page-handler="Edit" id="@($"form-{item.Id}")">
-                                <input type="hidden" name="orderId" value="@Model.OrderId"/>
-                                <input type="hidden" name="orderProductId" value="@item.Id"/>
+                            
                                 <tr>
                                     <td><img class="" src="https://dummyimage.com/150x100/dee2e6/6c757d.jpg" alt="@item.Title" /></td>
                                     <td>
@@ -34,29 +32,37 @@
                                             <h5 class="fw-bolder">@item.Title</h5>
                                         </a>
                                         <!-- Brand-->
-                                        <p class="fw-bolder">@item.Brand</p>                                       
-
-                                        <div class="row">
-                                            <div class="col-3">
-                                                <div class="input-group my-3">
-                                                    <span class="input-group-text" id="basic-addon1" >Qty</span>
-                                                    <input type="number" class="form-control" aria-label="Quantity" aria-describedby="basic-addon1" asp-for="@item.Quantity" name="quantity">
+                                        <p class="fw-bolder">@item.Brand</p>
+                                        <form method="post" asp-area="Shopping" asp-page="Cart" asp-page-handler="Edit">
+                                            <input type="hidden" name="orderId" value="@Model.OrderId" />
+                                            <input type="hidden" name="orderProductId" value="@item.Id" />
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <div class="input-group my-3">
+                                                        <span class="input-group-text" id="basic-addon1" >Qty</span>
+                                                    <input type="number" class="form-control" aria-label="Quantity" aria-describedby="basic-addon1" asp-for="@item.Quantity" name="quantity" min="0" max="50">
+                                                    </div>
+                                                </div>
+                                                <div class="col-3 my-3">
+                                                <button type="submit" class="btn btn-outline-dark mt-auto" name="action" value="update">Update</button>
                                                 </div>
                                             </div>
-                                            <div class="col-3 my-3">
-                                            <button type="submit" class="btn btn-outline-dark mt-auto" name="action" value="update">Update</button>
-                                            </div>
-                                        </div>
+                                        </form>
                                     </td>
 
                                     <td class="align-middle text-end">                                        
                                         <div class="fw-bolder">@Html.DisplayFor(m => item.Price)</div>
                                     </td>
                                     <td class="align-middle">
-                                        <button type="submit" class="btn btn-outline-danger mt-auto" name="action" value="remove">Remove</button>
+                                    <form method="post" asp-area="Shopping" asp-page="Cart" asp-page-handler="Edit">
+                                            <input type="hidden" name="orderId" value="@Model.OrderId" />
+                                            <input type="hidden" name="orderProductId" value="@item.Id" />
+                                            <input type="hidden" name="quantity" value="0" />
+                                            <button type="submit" className="btn btn-outline-danger mt-auto" name="action" value="remove">Remove</button>
+                                        </form>
                                     </td>
                                 </tr>
-                            </form>
+                            
                         }
                     </tbody>
                     <tfoot>
