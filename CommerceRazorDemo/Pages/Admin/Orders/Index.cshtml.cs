@@ -91,7 +91,7 @@ namespace CommerceRazorDemo.Pages.Orders
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int orderId, int orderStateId)
+        public async Task<IActionResult> OnPostAsync(int orderId, int orderStateId, int? filterId)
         {
             if (_context == null)
             {
@@ -111,7 +111,7 @@ namespace CommerceRazorDemo.Pages.Orders
             order.OrderHistory.Add(new OrderHistory() { OrderId = orderId, OrderStatusId = orderStateId, OrderDate = DateTime.UtcNow });
 
             await _context.SaveChangesAsync();
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Index", new {OrderStatusFilterId = filterId});
         }
 
     }

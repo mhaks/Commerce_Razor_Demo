@@ -80,6 +80,7 @@
                                         <form method="post">
                                             <input type="hidden" value="@order.Id" name="orderId">
                                             <input type="hidden" value="@next.Value" name="orderStateId">
+                                            <input type="hidden" value="@Model.OrderStatusFilterId" name="filterId" />
                                             <button type="submit" class="btn btn-outline-dark mt-auto text-center">@next.Text</button>
                                         </form>                                        
                                     }
