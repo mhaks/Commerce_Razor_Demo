@@ -1,4 +1,4 @@
-﻿@model List<Models.ProductCategory>
+﻿@model CommerceRazorDemo.Pages.Shared.Components.SearchViewModel
 
 <section class="py-1">
     <div class="container px-4 px-lg-5 mt-5">
@@ -9,12 +9,12 @@
                         <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="category-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">All</button>
                         <div class="dropdown-menu">
                             <button class="dropdown-item" type="button" onclick="changeCategory('All')" value="">All</button>
-                            @foreach(var cat in Model)
+                            @foreach(var cat in Model.Categories)
                             {
                                 <button class="dropdown-item" type="button" onclick="changeCategory('@cat.Title', @cat.Id)">@cat.Title</button>
                             }
                         </div>
-                        <input class="form-control flex-grow-1 me-2" type="search" placeholder="Search for products..." aria-label="Search" name="SearchString" value="">
+                        <input class="form-control flex-grow-1 me-2" type="search" placeholder="Search for products..." aria-label="Search" name="SearchString" value=@Model.SearchTerm>
                         <input type="hidden" id="category-input" name="CategoryId" value="">
                     </div>
                     <button class="btn btn-outline-dark" type="submit">Search</button>

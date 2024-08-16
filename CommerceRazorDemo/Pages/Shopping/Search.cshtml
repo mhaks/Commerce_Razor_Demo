@@ -15,7 +15,7 @@
 
 
 <!-- Section Search bar-->
-<vc:product-search></vc:product-search>
+@await Component.InvokeAsync("ProductSearch", new { searchTerm = Model.SearchString })
 
 
 <!-- Section Search Results -->

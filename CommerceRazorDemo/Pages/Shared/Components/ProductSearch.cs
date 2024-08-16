@@ -12,7 +12,7 @@ namespace CommerceRazorDemo.Pages.Shared.Components
 
         }
 
-        public async Task<IViewComponentResult> InvokeAsync()
+        public async Task<IViewComponentResult> InvokeAsync(string? searchTerm)
         {
             var context = ViewData["DbContext"] as CommerceRazorDemo.Data.CommerceRazorDemoContext;
 
@@ -31,7 +31,13 @@ namespace CommerceRazorDemo.Pages.Shared.Components
             }
  
 
-            return View(categories);
-        }
+            return View(new SearchViewModel { Categories = categories, SearchTerm = searchTerm ?? string.Empty});
+        }        
+    }
+
+    public class SearchViewModel
+    {
+        public required List<Models.ProductCategory> Categories { get; set; }
+        public required string SearchTerm { get; set; }
     }
 }

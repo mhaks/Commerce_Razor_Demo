@@ -38,8 +38,13 @@ namespace CommerceRazorDemo.Pages.Shopping
 
                 if (!string.IsNullOrEmpty(SearchString))
                 { 
-                    SearchString = SearchString.ToUpper().Trim();
-                    productsQuery = productsQuery.Where(p => p.Title.ToUpper().Contains(SearchString) || p.Description.ToUpper().Contains(SearchString) || p.Brand.ToUpper().Contains(SearchString) || p.ProductCategory.Title.ToUpper().Contains(SearchString));
+                    var search = SearchString.ToUpper().Trim();
+                    
+                    productsQuery = productsQuery.Where(p => 
+                        p.Title.ToUpper().Contains(search) || 
+                        p.Description.ToUpper().Contains(search) || 
+                        p.Brand.ToUpper().Contains(search) || 
+                        p.ProductCategory.Title.ToUpper().Contains(search));
 
                 }
                 
