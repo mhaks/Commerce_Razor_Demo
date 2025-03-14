@@ -19,7 +19,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Clone dependent repository
-        run:
+        run:|
           git clone --depth 1 --branch master https://github.com/mhaks/CommerceDemo.Data.git dependencies/dependent-repo
           ls dependencies/dependent-repo  # Debugging step to confirm checkout
     - name: Setup .NET SDK
