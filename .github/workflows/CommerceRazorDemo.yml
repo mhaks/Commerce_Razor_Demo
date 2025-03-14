@@ -17,12 +17,13 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-    - name Checkout main repository
+    - name: checkout main repo
       uses: actions/checkout@v4
-    
+  
     - name: Clone dependent repository
       run: git clone --depth 1 --branch master https://github.com/mhaks/CommerceDemo.Data.git dependencies/dependent-repo
-          ls dependencies/dependent-repo  # Debugging step to confirm checkout
+          ls dependencies/dependent-repo  # Debugging step to confirm checkout  
+      
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@v4
       with:
