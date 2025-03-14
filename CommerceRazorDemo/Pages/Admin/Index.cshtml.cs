@@ -1,8 +1,6 @@
-using CommerceRazorDemo.Data;
-using CommerceRazorDemo.Models;
+using CommerceDemo.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
@@ -12,7 +10,7 @@ namespace CommerceRazorDemo.Pages.Admin
     [Authorize(Roles = "ADMIN")]
     public class IndexModel : CommerceDemoPageModel
     {
-        public IndexModel(CommerceRazorDemoContext context, ILogger<CommerceDemoPageModel> logger) : base(context, logger)
+        public IndexModel(CommerceDemo.Data.CommerceDemoContext context, ILogger<CommerceDemoPageModel> logger) : base(context, logger)
         {
         }
 

@@ -1,22 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using CommerceRazorDemo.Data;
-using CommerceRazorDemo;
-using Microsoft.AspNetCore.Authentication;
+﻿using CommerceDemo.Data;
 using Microsoft.AspNetCore.Identity;
-using CommerceRazorDemo.Models;
+using Microsoft.EntityFrameworkCore;
+using CommerceDemo.Data.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 
-builder.Services.AddDbContext<CommerceRazorDemoContext>(options =>
+builder.Services.AddDbContext<CommerceDemoContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("CommerceRazorDemoContext") ?? throw new InvalidOperationException("Connection string 'CommerceRazorDemoContext' not found.")));
 
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<CommerceRazorDemoContext>();
+                .AddEntityFrameworkStores<CommerceDemoContext>();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {

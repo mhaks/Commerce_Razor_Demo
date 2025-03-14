@@ -1,17 +1,14 @@
-using CommerceRazorDemo.Data;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using CommerceRazorDemo.Models;
+using CommerceDemo.Data.Models;
 using Microsoft.AspNetCore.Authorization;
-using System.Data;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CommerceRazorDemo.Pages.Shopping
 {
     [Authorize(Roles = "CUSTOMER, ADMIN")]
     public class ProductModel : CommerceDemoPageModel
     {        
-        public ProductModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<ProductModel> logger)
+        public ProductModel(CommerceDemo.Data.CommerceDemoContext context, ILogger<ProductModel> logger)
             : base(context, logger)
         {
 

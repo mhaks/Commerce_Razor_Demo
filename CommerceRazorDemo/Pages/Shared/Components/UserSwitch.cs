@@ -1,10 +1,6 @@
-﻿using CommerceRazorDemo.Data;
-using CommerceRazorDemo.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.ComponentModel;
 
 namespace CommerceRazorDemo.Pages.Shared.Components
 {
@@ -19,7 +15,7 @@ namespace CommerceRazorDemo.Pages.Shared.Components
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var context = ViewData["DbContext"] as CommerceRazorDemo.Data.CommerceRazorDemoContext;
+            var context = ViewData["DbContext"] as CommerceDemo.Data.CommerceDemoContext;
 
             SelectList users;
             if (context != null)

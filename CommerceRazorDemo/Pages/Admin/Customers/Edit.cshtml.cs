@@ -1,24 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using CommerceDemo.Data.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using CommerceRazorDemo.Data;
-using CommerceRazorDemo.Models;
-using Microsoft.AspNetCore.Components.Forms;
 using System.ComponentModel.DataAnnotations;
-using System.Xml.Linq;
-using System.Drawing.Drawing2D;
-
-using CommerceRazorDemo.Pages.Products;
-using Microsoft.AspNetCore.Authorization;
 using System.Data;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using System.Security.Policy;
-using Microsoft.AspNetCore.Identity;
 
 namespace CommerceRazorDemo.Pages.Customers
 {
@@ -26,7 +14,7 @@ namespace CommerceRazorDemo.Pages.Customers
     public class EditModel : CommerceDemoPageModel
     {
 
-        public EditModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<EditModel> logger)
+        public EditModel(CommerceDemo.Data.CommerceDemoContext context, ILogger<EditModel> logger)
              : base(context, logger)
         {
 

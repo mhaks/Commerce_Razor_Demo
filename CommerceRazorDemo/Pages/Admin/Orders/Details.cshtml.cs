@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using CommerceRazorDemo.Data;
-using CommerceRazorDemo.Models;
+﻿using CommerceDemo.Data.Models;
 using Microsoft.AspNetCore.Authorization;
-using System.Data;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CommerceRazorDemo.Pages.Orders
 {
@@ -18,7 +11,7 @@ namespace CommerceRazorDemo.Pages.Orders
     {
 
 
-        public DetailsModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<DetailsModel> logger)
+        public DetailsModel(CommerceDemo.Data.CommerceDemoContext context, ILogger<DetailsModel> logger)
             : base(context, logger)
         {
 

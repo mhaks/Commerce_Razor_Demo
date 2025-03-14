@@ -1,4 +1,4 @@
-﻿using CommerceRazorDemo.Data;
+﻿using CommerceDemo.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,9 +14,9 @@ namespace CommerceRazorDemo.Pages.Shared.Components
 
         public async Task<IViewComponentResult> InvokeAsync(string? searchTerm)
         {
-            var context = ViewData["DbContext"] as CommerceRazorDemo.Data.CommerceRazorDemoContext;
+            var context = ViewData["DbContext"] as CommerceDemo.Data.CommerceDemoContext;
 
-            List<Models.ProductCategory> categories;
+            List<ProductCategory> categories;
 
             if (context != null)
             {
@@ -27,7 +27,7 @@ namespace CommerceRazorDemo.Pages.Shared.Components
             }
             else
             {
-                categories = new List<Models.ProductCategory>();
+                categories = new List<ProductCategory>();
             }
  
 
@@ -37,7 +37,7 @@ namespace CommerceRazorDemo.Pages.Shared.Components
 
     public class SearchViewModel
     {
-        public required List<Models.ProductCategory> Categories { get; set; }
+        public required List<ProductCategory> Categories { get; set; }
         public required string SearchTerm { get; set; }
     }
 }

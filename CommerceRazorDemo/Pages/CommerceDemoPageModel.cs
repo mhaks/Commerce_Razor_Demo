@@ -6,10 +6,10 @@ namespace CommerceRazorDemo.Pages
 {
     public class CommerceDemoPageModel : PageModel
     {
-        protected readonly CommerceRazorDemo.Data.CommerceRazorDemoContext _context;
+        protected readonly CommerceDemo.Data.CommerceDemoContext _context;
         protected readonly ILogger<CommerceDemoPageModel> _logger;
 
-        public CommerceDemoPageModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<CommerceDemoPageModel> logger)
+        public CommerceDemoPageModel(CommerceDemo.Data.CommerceDemoContext context, ILogger<CommerceDemoPageModel> logger)
         {
             _context = context;
             _logger = logger;

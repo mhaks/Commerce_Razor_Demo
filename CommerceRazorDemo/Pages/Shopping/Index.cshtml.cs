@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using CommerceDemo.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 namespace CommerceRazorDemo.Pages.Shopping
@@ -9,13 +8,13 @@ namespace CommerceRazorDemo.Pages.Shopping
     public class IndexModel : CommerceDemoPageModel
     {
 
-        public IndexModel(Data.CommerceRazorDemoContext context, ILogger<SearchModel> logger)
+        public IndexModel(CommerceDemo.Data.CommerceDemoContext context, ILogger<SearchModel> logger)
             : base(context, logger)
         {
 
         }
 
-        public List<Models.Product> TopProducts { get; set; } = default!;
+        public List<Product> TopProducts { get; set; } = default!;
 
 
         public async Task OnGet()

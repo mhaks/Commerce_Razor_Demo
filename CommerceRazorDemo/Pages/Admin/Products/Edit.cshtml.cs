@@ -1,24 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using CommerceDemo.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using CommerceRazorDemo.Data;
-using CommerceRazorDemo.Models;
 using System.ComponentModel.DataAnnotations;
-using System.Xml.Linq;
 using System.Data;
-using Microsoft.AspNetCore.Authorization;
 
 namespace CommerceRazorDemo.Pages.Products
 {
     [Authorize(Roles = "ADMIN")]
     public class EditModel : CommerceDemoPageModel
     {
-        public EditModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<EditModel> logger)
+        public EditModel(CommerceDemo.Data.CommerceDemoContext context, ILogger<EditModel> logger)
             : base(context, logger)
         {
 

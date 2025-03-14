@@ -1,4 +1,5 @@
 ﻿@page
+@using CommerceDemo.Data.Models
 @model CommerceRazorDemo.Pages.Shopping.OrdersModel
 @{
     ViewData["Title"] = "Orders";
@@ -49,7 +50,7 @@
                     <tbody>
                         @foreach (var order in Model.Orders)
                         {
-                            var ordered = order.OrderHistory.First(h => h.OrderStatusId == (int)Models.OrderState.Processing);
+                            var ordered = order.OrderHistory.First(h => h.OrderStatusId == (int)OrderState.Processing);
                             var current = order.OrderHistory.OrderBy(h => h.OrderDate).Last();                           
 
                             <tr>

@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using CommerceRazorDemo.Data;
-using CommerceRazorDemo.Models;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using CommerceDemo.Data.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System.Data;
 
 namespace CommerceRazorDemo.Pages.Products
@@ -16,7 +10,7 @@ namespace CommerceRazorDemo.Pages.Products
     [Authorize(Roles = "ADMIN")]
     public class IndexModel : CommerceDemoPageModel
     {
-        public IndexModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<IndexModel> logger)
+        public IndexModel(CommerceDemo.Data.CommerceDemoContext context, ILogger<IndexModel> logger)
             : base(context, logger)
         {
 

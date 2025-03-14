@@ -26,4 +26,8 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\CommerceDemo.Data\CommerceDemo.Data.csproj" />
+  </ItemGroup>
+
 </Project>

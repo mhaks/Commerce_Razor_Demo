@@ -1,12 +1,9 @@
-using CommerceRazorDemo.Data;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using CommerceRazorDemo.Models;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using CommerceDemo.Data.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 
 namespace CommerceRazorDemo.Pages.Shopping
@@ -14,7 +11,7 @@ namespace CommerceRazorDemo.Pages.Shopping
     [Authorize(Roles = "CUSTOMER")]
     public class CheckoutModel : CommerceDemoPageModel
     {
-        public CheckoutModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<CheckoutModel> logger)
+        public CheckoutModel(CommerceDemo.Data.CommerceDemoContext context, ILogger<CheckoutModel> logger)
             : base(context, logger)
         {
 

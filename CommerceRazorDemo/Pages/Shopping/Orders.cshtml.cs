@@ -1,18 +1,16 @@
-using CommerceRazorDemo.Models;
+using CommerceDemo.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace CommerceRazorDemo.Pages.Shopping
 {
     [Authorize(Roles = "CUSTOMER")]
     public class OrdersModel : CommerceDemoPageModel
     {
-        public OrdersModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<OrdersModel> logger)
+        public OrdersModel(CommerceDemo.Data.CommerceDemoContext context, ILogger<OrdersModel> logger)
             : base(context, logger)
         {
 

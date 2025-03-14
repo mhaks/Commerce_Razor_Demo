@@ -1,4 +1,5 @@
 ﻿@page
+@using CommerceDemo.Data.Models
 @model CommerceRazorDemo.Pages.Orders.DetailsModel
 
 @{
@@ -23,8 +24,9 @@
             <h5 class="col-3">Order Status</h5>
             <div class="col-6">
                 <div class="row row-cols-2">
+                    
                     @{
-                        var histories = Model.Order.OrderHistory.ToArray<Models.OrderHistory>();
+                        var histories = Model.Order.OrderHistory.ToArray<OrderHistory>();
                         var count = histories.Length;
                         for (var idx = 0; idx < count; idx++)
                         {
@@ -38,7 +40,8 @@
                             <div class="@cls">@TimeZoneInfo.ConvertTimeFromUtc(item.OrderDate, userTimeZone)</div>
                             <div class="@cls">@item.OrderStatus.Name</div>
                         }
-                    }
+                    }                   
+                    
                 </div>
             </div>
         </div>

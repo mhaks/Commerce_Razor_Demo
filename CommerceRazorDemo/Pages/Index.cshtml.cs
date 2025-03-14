@@ -1,9 +1,6 @@
-using CommerceRazorDemo.Data;
-using CommerceRazorDemo.Models;
+using CommerceDemo.Data.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CommerceRazorDemo.Pages
 {
@@ -12,7 +9,7 @@ namespace CommerceRazorDemo.Pages
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public IndexModel(CommerceRazorDemoContext context, ILogger<CommerceDemoPageModel> logger, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager) : base(context, logger)
+        public IndexModel(CommerceDemo.Data.CommerceDemoContext context, ILogger<CommerceDemoPageModel> logger, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager) : base(context, logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;

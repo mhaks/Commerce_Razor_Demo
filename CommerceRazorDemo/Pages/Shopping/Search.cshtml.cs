@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using CommerceDemo.Data.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using CommerceRazorDemo.Data;
-using CommerceRazorDemo.Models;
-using Microsoft.IdentityModel.Tokens;
 
 namespace CommerceRazorDemo.Pages.Shopping
 {
     public class SearchModel : CommerceDemoPageModel
     {
-        public SearchModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<SearchModel> logger)
+        public SearchModel(CommerceDemo.Data.CommerceDemoContext context, ILogger<SearchModel> logger)
             : base(context, logger)
         {
 

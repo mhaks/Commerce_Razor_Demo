@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using CommerceRazorDemo.Data;
-using CommerceRazorDemo.Models;
+﻿using CommerceDemo.Data.Models;
 using Microsoft.AspNetCore.Authorization;
-using System.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace CommerceRazorDemo.Pages.Customers
 {
@@ -19,7 +13,7 @@ namespace CommerceRazorDemo.Pages.Customers
 
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public IndexModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<IndexModel> logger, UserManager<ApplicationUser> userManager)
+        public IndexModel(CommerceDemo.Data.CommerceDemoContext context, ILogger<IndexModel> logger, UserManager<ApplicationUser> userManager)
             : base(context, logger)
         {
             _userManager = userManager;

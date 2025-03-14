@@ -1,5 +1,4 @@
-﻿using CommerceRazorDemo.Data;
-using CommerceRazorDemo.Models;
+﻿using CommerceDemo.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -16,7 +15,7 @@ namespace CommerceRazorDemo.Pages.Shared.Components
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var context = ViewData["DbContext"] as CommerceRazorDemo.Data.CommerceRazorDemoContext;
+            var context = ViewData["DbContext"] as CommerceDemo.Data.CommerceDemoContext;
 
             var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             int itemCount = 0;

@@ -1,10 +1,6 @@
-using CommerceRazorDemo.Data;
-
-using CommerceRazorDemo.Models;
+using CommerceDemo.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
@@ -14,7 +10,7 @@ namespace CommerceRazorDemo.Pages.Shopping
     [Authorize(Roles = "CUSTOMER")]
     public class CartModel : CommerceDemoPageModel
     {
-        public CartModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<CartModel> logger)
+        public CartModel(CommerceDemo.Data.CommerceDemoContext context, ILogger<CartModel> logger)
             : base(context, logger)
         {
 

@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using CommerceRazorDemo.Data;
-using CommerceRazorDemo.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using CommerceDemo.Data.Models;
 using Microsoft.AspNetCore.Authorization;
-using System.Data;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace CommerceRazorDemo.Pages.ProductCategories
 {
@@ -18,7 +10,7 @@ namespace CommerceRazorDemo.Pages.ProductCategories
     public class EditModel : CommerceDemoPageModel
     {
                 
-        public EditModel(CommerceRazorDemo.Data.CommerceRazorDemoContext context, ILogger<EditModel> logger)
+        public EditModel(CommerceDemo.Data.CommerceDemoContext context, ILogger<EditModel> logger)
             : base(context, logger)
         {
 
