@@ -3,6 +3,10 @@ on:
   push:
     branches:
     - master
+  
+  pull_request:
+    branches:
+      - master
 env:
   AZURE_WEBAPP_NAME: CommerceRazorDemo
   AZURE_WEBAPP_PACKAGE_PATH: .\published
@@ -14,6 +18,10 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v4
+    - name: Clone dependent repository
+        run:
+          git clone --depth 1 --branch master https://github.com/mhaks/CommerceDemo.Data.git dependencies/dependent-repo
+          ls dependencies/dependent-repo  # Debugging step to confirm checkout
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@v4
       with:
